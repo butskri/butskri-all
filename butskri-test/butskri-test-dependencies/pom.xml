@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>be.butskri</groupId>
+    <artifactId>butskri-test-dependencies</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <butskri.test.version>0.0.1-SNAPSHOT</butskri.test.version>
+        <butskri.external-dependencies.version>0.0.1-SNAPSHOT</butskri.external-dependencies.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>be.butskri</groupId>
+                <artifactId>butskri-external-dependencies</artifactId>
+                <version>${butskri.external-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>be.butskri</groupId>
+                <artifactId>butskri-test-backwardscompatibility</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
