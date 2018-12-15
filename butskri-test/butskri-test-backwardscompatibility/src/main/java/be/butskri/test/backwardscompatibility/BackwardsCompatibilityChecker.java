@@ -47,11 +47,7 @@ public class BackwardsCompatibilityChecker {
     }
 
     private void hashesOfAllClassesRemainedSame() {
-        List<HashForClass> hashesForClasses = classesToBeChecked().stream()
-                .map(HashForClass::forClass)
-                .sorted()
-                .collect(Collectors.toList());
-
+        List<HashForClass> hashesForClasses = hashesFor(classesToBeChecked());
         try {
             assertThat(hashesForClasses).containsExactlyElementsOf(expectedHashes());
         } catch (Throwable t) {
@@ -60,6 +56,14 @@ public class BackwardsCompatibilityChecker {
             }
             throw t;
         }
+    }
+
+    private List<HashForClass> hashesFor(Collection<Class> classesToBeChecked) {
+        HashBuilder hashBuilder = new HashBuilder();
+        return classesToBeChecked.stream()
+                .map(clazz -> HashForClass.create(clazz, hashBuilder))
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private Collection<Class> classesToBeChecked() {
@@ -90,14 +94,18 @@ public class BackwardsCompatibilityChecker {
                 logger.warn("resource does not exist {}", resourceName);
                 return emptyList();
             }
-            List<String> lines = IOUtils.readLines(inputStream, UTF_8);
-            return lines.stream()
-                    .filter(((Predicate<String>) String::isEmpty).negate())
-                    .map(HashForClass::fromLine)
-                    .collect(Collectors.toList());
+            return loadExpectedHashes(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<? extends HashForClass> loadExpectedHashes(InputStream inputStream) throws IOException {
+        List<String> lines = IOUtils.readLines(inputStream, UTF_8);
+        return lines.stream()
+                .filter(((Predicate<String>) String::isEmpty).negate())
+                .map(HashForClass::fromLine)
+                .collect(Collectors.toList());
     }
 
     private String actualResourceName() {
@@ -109,6 +117,10 @@ public class BackwardsCompatibilityChecker {
     }
 
     private String resource(String type) {
-        return "/backwardscompatibility/" + type + "-hashes-" + classes.getName() + ".txt";
+        return "/backwardscompatibility/" + type + "-" + name() + ".txt";
+    }
+
+    private String name() {
+        return "hashes-" + classes.getName();
     }
 }

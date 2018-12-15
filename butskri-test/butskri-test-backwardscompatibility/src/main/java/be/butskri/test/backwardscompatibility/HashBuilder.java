@@ -1,42 +1,36 @@
 package be.butskri.test.backwardscompatibility;
 
+import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.DigestUtils;
 
-import java.io.InputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class HashBuilder {
     private static Logger LOGGER = LoggerFactory.getLogger(HashBuilder.class);
-    private Class<?> clazz;
 
-    HashBuilder(Class<?> clazz) {
-        this.clazz = clazz;
+    private List<ClassInfoResolver> infoResolvers = Lists.newArrayList(ClassInfoResolver.BYTECODE_RESOLVER);
+    private HashingAlgorithm hashingAlgorithm = HashingAlgorithm.MD5;
+
+    HashBuilder() {
     }
 
-    String buildHash() {
+    String hashFor(Class<?> clazz) {
+        return infoResolvers.stream()
+                .map(resolver -> resolveHash(clazz, resolver))
+                .collect(Collectors.joining("_"));
+    }
+
+    private String resolveHash(Class<?> clazz, ClassInfoResolver resolver) {
         try {
-            InputStream stream = resourceAsStream();
-            return DigestUtils.md5DigestAsHex(stream);
-        } catch (Exception e) {
-            LOGGER.error("Problem loading resource {} for class {}", classResourceName(), clazz, e);
-            throw new RuntimeException(e);
+            return resolver.resolveHashedInfo(clazz, hashingAlgorithm);
+        } catch (IOException e) {
+            String logId = UUID.randomUUID().toString().replaceAll("-", "");
+            LOGGER.error("Problem calculating hash {}", logId, e);
+            return "ERROR-" + logId;
         }
-    }
-
-    private InputStream resourceAsStream() {
-        LOGGER.info("getting resource {}", classResourceName());
-        return clazz.getResourceAsStream(classResourceName());
-    }
-
-    private String classResourceName() {
-        return getClassName(this.clazz) + ".class";
-    }
-
-    private String getClassName(Class<?> theClazz) {
-        if (theClazz.getEnclosingClass() == null) {
-            return theClazz.getSimpleName();
-        }
-        return getClassName(theClazz.getEnclosingClass()) + "$" + theClazz.getSimpleName();
     }
 }
