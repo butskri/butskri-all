@@ -109,6 +109,6 @@ public class BackwardsCompatibilityChecker {
     }
 
     private String resource(String type) {
-        return "/" + type + "-hashes-" + classes.getName() + ".txt";
+        return "/backwardscompatibility/" + type + "-hashes-" + classes.getName() + ".txt";
     }
 }
