@@ -9,8 +9,8 @@ class HashForClass implements Comparable<HashForClass> {
     private String className;
     private String hash;
 
-    static HashForClass create(Class<?> clazz, HashBuilder hashBuilder) {
-        return new HashForClass(clazz.getName(), hashBuilder.hashFor(clazz));
+    static HashForClass create(Class<?> clazz, HashCalculator hashCalculator) {
+        return new HashForClass(clazz.getName(), hashCalculator.hashFor(clazz));
     }
 
     static HashForClass fromLine(String line) {
@@ -20,7 +20,7 @@ class HashForClass implements Comparable<HashForClass> {
         return new HashForClass(className, hash);
     }
 
-    private HashForClass(String className, String hash) {
+    HashForClass(String className, String hash) {
         this.className = className;
         this.hash = hash;
     }

@@ -22,6 +22,7 @@ public class BackwardsCompatibilityChecker {
     private static final String UTF_8 = "UTF-8";
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final ClassesToBeChecked classes;
+    private HashCalculator hashCalculator = HashCalculator.defaultHashCalculator();
     private boolean writeToFileOnFailure = true;
     private File resultBaseFolder = new File("src/test/resources");
 
@@ -43,6 +44,11 @@ public class BackwardsCompatibilityChecker {
         return this;
     }
 
+    public BackwardsCompatibilityChecker checkedUsing(HashCalculator hashCalculator) {
+        this.hashCalculator = hashCalculator;
+        return this;
+    }
+
     public void isOk() {
         hashesOfAllClassesRemainedSame();
     }
@@ -60,9 +66,8 @@ public class BackwardsCompatibilityChecker {
     }
 
     private List<HashForClass> hashesFor(Collection<Class> classesToBeChecked) {
-        HashBuilder hashBuilder = new HashBuilder();
         return classesToBeChecked.stream()
-                .map(clazz -> HashForClass.create(clazz, hashBuilder))
+                .map(clazz -> HashForClass.create(clazz, hashCalculator))
                 .sorted()
                 .collect(Collectors.toList());
     }

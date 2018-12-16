@@ -8,9 +8,9 @@ import java.io.IOException;
 import static be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm.MD5;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BytecodeResolverTest {
+public class BytecodeOfClassTest {
 
-    private BytecodeResolver resolver = new BytecodeResolver();
+    private BytecodeOfClass resolver = new BytecodeOfClass();
 
     @Test
     public void getName() {
@@ -19,7 +19,7 @@ public class BytecodeResolverTest {
 
     @Test
     public void hash() throws IOException {
-        assertThat(resolver.resolveHashedInfo(Bla.class, MD5))
+        assertThat(resolver.getHashedData(Bla.class, MD5))
                 .isEqualTo("cf48b1e3b24840ef50e7e6cc9ce12a0a");
     }
 }

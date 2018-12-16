@@ -1,6 +1,6 @@
 package be.butskri.test.backwardscompatibility.inforesolver;
 
-import be.butskri.test.backwardscompatibility.HashBuilder;
+import be.butskri.test.backwardscompatibility.HashCalculator;
 import be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class BytecodeResolver implements ClassInfoResolver {
+public class BytecodeOfClass implements DataOfClass {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(HashBuilder.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(HashCalculator.class);
 
     @Override
-    public String resolveHashedInfo(Class<?> clazz, HashingAlgorithm hashingAlgorithm) throws IOException {
+    public String getHashedData(Class<?> clazz, HashingAlgorithm hashingAlgorithm) throws IOException {
         return hashingAlgorithm.hash(resourceAsStream(clazz));
     }
 

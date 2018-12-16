@@ -4,16 +4,16 @@ import be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm;
 
 import java.io.IOException;
 
-public interface ClassInfoResolver {
+public interface DataOfClass {
 
-    BytecodeResolver BYTECODE_RESOLVER = new BytecodeResolver();
+    BytecodeOfClass BYTECODE_OF_CLASS = new BytecodeOfClass();
 
     default String getName() {
         return getClass().getSimpleName()
-                .replaceAll("(Class)?(Info)?Resolver", "")
+                .replaceAll("(Of)?Class", "")
                 .toLowerCase();
     }
 
-    String resolveHashedInfo(Class<?> clazz, HashingAlgorithm hashingAlgorithm) throws IOException;
+    String getHashedData(Class<?> clazz, HashingAlgorithm hashingAlgorithm) throws IOException;
 
 }
