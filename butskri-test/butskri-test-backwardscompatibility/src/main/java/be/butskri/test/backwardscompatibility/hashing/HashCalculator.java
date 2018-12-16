@@ -14,5 +14,4 @@ public interface HashCalculator {
     }
 
     String hashFor(Class<?> clazz);
-
 }
