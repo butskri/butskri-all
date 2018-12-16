@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class Classes<T extends Classes<T>> {
+public abstract class Classes<T extends Classes<T>> implements ClassesToBeChecked {
 
     private String name;
     Predicate<Class> excludingPredicate = (clazz) -> false;
@@ -54,11 +54,13 @@ public abstract class Classes<T extends Classes<T>> {
         return (T) this;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
-    public Collection<Class> filteredClasses() {
+    @Override
+    public Collection<Class> getClasses() {
         return getAllClasses()
                 .stream()
                 .filter(this.excludingPredicate.negate())

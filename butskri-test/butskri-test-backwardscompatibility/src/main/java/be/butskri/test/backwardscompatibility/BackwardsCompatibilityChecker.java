@@ -1,6 +1,6 @@
 package be.butskri.test.backwardscompatibility;
 
-import be.butskri.test.backwardscompatibility.classes.Classes;
+import be.butskri.test.backwardscompatibility.classes.ClassesToBeChecked;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -21,15 +21,15 @@ public class BackwardsCompatibilityChecker {
 
     private static final String UTF_8 = "UTF-8";
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final Classes classes;
+    private final ClassesToBeChecked classes;
     private boolean writeToFileOnFailure = true;
     private File resultBaseFolder = new File("src/test/resources");
 
-    public static BackwardsCompatibilityChecker assertBackwardsCompatibilityOf(Classes classes) {
+    public static BackwardsCompatibilityChecker assertBackwardsCompatibilityOf(ClassesToBeChecked classes) {
         return new BackwardsCompatibilityChecker(classes);
     }
 
-    private BackwardsCompatibilityChecker(Classes classes) {
+    private BackwardsCompatibilityChecker(ClassesToBeChecked classes) {
         this.classes = classes;
     }
 
@@ -48,7 +48,7 @@ public class BackwardsCompatibilityChecker {
     }
 
     private void hashesOfAllClassesRemainedSame() {
-        List<HashForClass> hashesForClasses = hashesFor(classesToBeChecked());
+        List<HashForClass> hashesForClasses = hashesFor(classes.getClasses());
         try {
             assertThat(hashesForClasses).containsExactlyElementsOf(expectedHashes());
         } catch (Throwable t) {
@@ -65,10 +65,6 @@ public class BackwardsCompatibilityChecker {
                 .map(clazz -> HashForClass.create(clazz, hashBuilder))
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private Collection<Class> classesToBeChecked() {
-        return classes.filteredClasses();
     }
 
     private void writeResultsToFile(List<HashForClass> actualHashesForClasses) {

@@ -25,7 +25,7 @@ public class FieldTypes extends Classes<FieldTypes> {
     }
 
     private FieldTypes(Classes classes) {
-        this.classes = classes.filteredClasses();
+        this.classes = classes.getClasses();
         this.namedAs("fieldtypes-of-" + classes.getName());
     }
 

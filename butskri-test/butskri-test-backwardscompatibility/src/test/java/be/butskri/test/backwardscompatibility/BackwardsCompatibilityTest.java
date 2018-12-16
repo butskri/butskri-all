@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import javax.persistence.Entity;
 
-import static be.butskri.test.backwardscompatibility.classes.AnnotatedClasses.classesAnnotatedWith;
 import static be.butskri.test.backwardscompatibility.BackwardsCompatibilityChecker.assertBackwardsCompatibilityOf;
+import static be.butskri.test.backwardscompatibility.classes.AnnotatedClasses.classesAnnotatedWith;
 import static be.butskri.test.backwardscompatibility.classes.Classes.fieldTypesOf;
 import static be.butskri.test.backwardscompatibility.classes.Classes.subclassesOf;
 
