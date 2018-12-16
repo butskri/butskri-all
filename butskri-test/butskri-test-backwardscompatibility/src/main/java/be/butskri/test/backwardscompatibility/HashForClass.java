@@ -1,5 +1,6 @@
 package be.butskri.test.backwardscompatibility;
 
+import be.butskri.test.backwardscompatibility.hashing.HashCalculator;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

@@ -1,6 +1,5 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.hashing;
 
-import be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm;
 import be.butskri.test.backwardscompatibility.inforesolver.DataOfClass;
 import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
@@ -11,14 +10,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm.MD5;
-import static be.butskri.test.backwardscompatibility.inforesolver.DataOfClass.BYTECODE_OF_CLASS;
+import static be.butskri.test.backwardscompatibility.hashing.Md5HashingAlgorithm.md5Hash;
+import static be.butskri.test.backwardscompatibility.inforesolver.BytecodeOfClass.bytecode;
 
 public class HashCalculator {
     private static Logger LOGGER = LoggerFactory.getLogger(HashCalculator.class);
 
     public static HashCalculator defaultHashCalculator() {
-        return new HashCalculator(MD5, BYTECODE_OF_CLASS);
+        return new HashCalculator(md5Hash(), bytecode());
     }
 
     private List<DataOfClass> dataOfClass;

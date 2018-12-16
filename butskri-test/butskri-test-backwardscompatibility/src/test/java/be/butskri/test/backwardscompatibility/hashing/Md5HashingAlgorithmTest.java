@@ -7,11 +7,12 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.UUID;
 
+import static be.butskri.test.backwardscompatibility.hashing.Md5HashingAlgorithm.md5Hash;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Md5HashingAlgorithmTest {
 
-    private Md5HashingAlgorithm hashingAlgorithm = new Md5HashingAlgorithm();
+    private Md5HashingAlgorithm hashingAlgorithm = md5Hash();
 
     @Test
     public void getNameReturnsExpectedName() {

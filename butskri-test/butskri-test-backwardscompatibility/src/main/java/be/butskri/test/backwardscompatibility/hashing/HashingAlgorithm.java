@@ -6,8 +6,6 @@ import java.io.InputStream;
 
 public interface HashingAlgorithm {
 
-    HashingAlgorithm MD5 = new Md5HashingAlgorithm();
-
     default String getName() {
         return getClass().getSimpleName()
                 .replaceAll("(Hashing)?Algorithm", "-hash")
