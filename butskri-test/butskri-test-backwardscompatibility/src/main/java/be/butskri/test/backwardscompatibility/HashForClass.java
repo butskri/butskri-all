@@ -1,6 +1,5 @@
 package be.butskri.test.backwardscompatibility;
 
-import be.butskri.test.backwardscompatibility.hashing.HashCalculator;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -10,10 +9,6 @@ class HashForClass implements Comparable<HashForClass> {
     private String className;
     private String hash;
 
-    static HashForClass create(Class<?> clazz, HashCalculator hashCalculator) {
-        return new HashForClass(clazz.getName(), hashCalculator.hashFor(clazz));
-    }
-
     static HashForClass fromLine(String line) {
         String[] split = line.split(SEPARATOR);
         String className = split[0];
@@ -21,7 +16,11 @@ class HashForClass implements Comparable<HashForClass> {
         return new HashForClass(className, hash);
     }
 
-    HashForClass(String className, String hash) {
+    HashForClass(Class<?> clazz, String hash) {
+        this(clazz.getName(), hash);
+    }
+
+    private HashForClass(String className, String hash) {
         this.className = className;
         this.hash = hash;
     }

@@ -69,7 +69,7 @@ public class BackwardsCompatibilityChecker {
 
     private List<HashForClass> hashesFor(Collection<Class> classesToBeChecked) {
         return classesToBeChecked.stream()
-                .map(clazz -> HashForClass.create(clazz, hashCalculator))
+                .map(clazz -> new HashForClass(clazz, hashCalculator.hashFor(clazz)))
                 .sorted()
                 .collect(Collectors.toList());
     }
