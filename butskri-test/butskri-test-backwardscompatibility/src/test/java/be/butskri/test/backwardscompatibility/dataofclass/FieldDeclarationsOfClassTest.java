@@ -19,7 +19,6 @@ public class FieldDeclarationsOfClassTest {
         InputStream stream = fieldDeclarations.getDataAsStream(ClassWithThreeFields.class);
 
         List<String> lines = IOUtils.readLines(stream, "UTF-8");
-
         assertThat(lines).containsExactly(
                 "private int be.butskri.test.backwardscompatibility.dataofclass.ClassWithThreeFields.def",
                 "private java.lang.String be.butskri.test.backwardscompatibility.dataofclass.ClassWithThreeFields.abc",
