@@ -1,6 +1,5 @@
 package be.butskri.test.backwardscompatibility.inforesolver;
 
-import be.butskri.test.backwardscompatibility.hashing.HashCalculator;
 import be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +9,7 @@ import java.io.InputStream;
 
 public class BytecodeOfClass implements DataOfClass {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(HashCalculator.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(BytecodeOfClass.class);
 
     public static BytecodeOfClass bytecode() {
         return new BytecodeOfClass();

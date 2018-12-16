@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static be.butskri.test.backwardscompatibility.hashing.HashCalculator.defaultHashCalculator;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +24,7 @@ public class BackwardsCompatibilityChecker {
     private static final String UTF_8 = "UTF-8";
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final ClassesToBeChecked classes;
-    private HashCalculator hashCalculator = HashCalculator.defaultHashCalculator();
+    private HashCalculator hashCalculator = defaultHashCalculator();
     private boolean writeToFileOnFailure = true;
     private File resultBaseFolder = new File("src/test/resources");
 

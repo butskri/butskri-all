@@ -14,7 +14,7 @@ public class HashCalculatorBuilder {
         this.hashingAlgorithm = hashingAlgorithm;
     }
 
-    public HashCalculator from(DataOfClass... dataOfClass) {
-        return new HashCalculator(hashingAlgorithm, dataOfClass);
+    public HashCalculator on(DataOfClass... dataOfClass) {
+        return new SimpleHashCalculator(hashingAlgorithm, dataOfClass);
     }
 }
