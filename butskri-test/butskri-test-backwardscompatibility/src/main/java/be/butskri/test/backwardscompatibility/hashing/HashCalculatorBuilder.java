@@ -2,19 +2,8 @@ package be.butskri.test.backwardscompatibility.hashing;
 
 import be.butskri.test.backwardscompatibility.dataofclass.DataOfClass;
 
-public class HashCalculatorBuilder {
+public interface HashCalculatorBuilder {
 
-    private HashingAlgorithm hashingAlgorithm;
+    HashCalculator on(DataOfClass... dataOfClass);
 
-    public static HashCalculatorBuilder calculationOf(HashingAlgorithm hashingAlgorithm) {
-        return new HashCalculatorBuilder(hashingAlgorithm);
-    }
-
-    private HashCalculatorBuilder(HashingAlgorithm hashingAlgorithm) {
-        this.hashingAlgorithm = hashingAlgorithm;
-    }
-
-    public HashCalculator on(DataOfClass... dataOfClass) {
-        return new SimpleHashCalculator(hashingAlgorithm, dataOfClass);
-    }
 }
