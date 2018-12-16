@@ -1,4 +1,4 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.classes;
 
 import com.google.common.collect.Sets;
 
@@ -54,11 +54,11 @@ public abstract class Classes<T extends Classes<T>> {
         return (T) this;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    Collection<Class> filteredClasses() {
+    public Collection<Class> filteredClasses() {
         return getAllClasses()
                 .stream()
                 .filter(this.excludingPredicate.negate())

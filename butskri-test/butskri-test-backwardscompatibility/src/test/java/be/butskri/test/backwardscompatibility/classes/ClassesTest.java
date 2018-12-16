@@ -1,4 +1,4 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.classes;
 
 import be.butskri.test.backwardscompatibility.field.*;
 import com.google.common.collect.Sets;
@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static be.butskri.test.backwardscompatibility.Classes.classes;
+import static be.butskri.test.backwardscompatibility.classes.Classes.classes;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClassesTest {

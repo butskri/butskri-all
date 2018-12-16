@@ -1,4 +1,4 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.hashing;
 
 import org.springframework.util.DigestUtils;
 

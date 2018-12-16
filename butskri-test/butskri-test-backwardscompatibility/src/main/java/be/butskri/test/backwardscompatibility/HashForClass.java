@@ -3,7 +3,7 @@ package be.butskri.test.backwardscompatibility;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class HashForClass implements Comparable<HashForClass> {
+class HashForClass implements Comparable<HashForClass> {
 
     private static final String SEPARATOR = "=";
     private String className;

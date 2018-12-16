@@ -1,4 +1,4 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.classes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

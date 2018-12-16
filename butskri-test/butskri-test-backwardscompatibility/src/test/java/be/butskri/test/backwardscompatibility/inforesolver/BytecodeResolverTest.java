@@ -1,11 +1,11 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.inforesolver;
 
 import be.butskri.test.backwardscompatibility.subclasses.Bla;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static be.butskri.test.backwardscompatibility.HashingAlgorithm.MD5;
+import static be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm.MD5;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BytecodeResolverTest {

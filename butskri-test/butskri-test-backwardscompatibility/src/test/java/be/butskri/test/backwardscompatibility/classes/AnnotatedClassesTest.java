@@ -1,4 +1,4 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.classes;
 
 import be.butskri.test.backwardscompatibility.annotated.SomeEntity;
 import be.butskri.test.backwardscompatibility.annotated.SomeOtherEntity;

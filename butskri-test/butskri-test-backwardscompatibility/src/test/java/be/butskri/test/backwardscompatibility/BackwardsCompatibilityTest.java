@@ -1,15 +1,16 @@
-package be.butskri.test.backwardscompatibility.subclasses;
+package be.butskri.test.backwardscompatibility;
 
-import be.butskri.test.backwardscompatibility.AnnotatedClasses;
-import be.butskri.test.backwardscompatibility.Classes;
+import be.butskri.test.backwardscompatibility.classes.AnnotatedClasses;
+import be.butskri.test.backwardscompatibility.classes.Classes;
+import be.butskri.test.backwardscompatibility.subclasses.MyMarker;
 import org.junit.Test;
 
 import javax.persistence.Entity;
 
-import static be.butskri.test.backwardscompatibility.AnnotatedClasses.classesAnnotatedWith;
+import static be.butskri.test.backwardscompatibility.classes.AnnotatedClasses.classesAnnotatedWith;
 import static be.butskri.test.backwardscompatibility.BackwardsCompatibilityChecker.assertBackwardsCompatibilityOf;
-import static be.butskri.test.backwardscompatibility.Classes.fieldTypesOf;
-import static be.butskri.test.backwardscompatibility.Classes.subclassesOf;
+import static be.butskri.test.backwardscompatibility.classes.Classes.fieldTypesOf;
+import static be.butskri.test.backwardscompatibility.classes.Classes.subclassesOf;
 
 public class BackwardsCompatibilityTest {
 

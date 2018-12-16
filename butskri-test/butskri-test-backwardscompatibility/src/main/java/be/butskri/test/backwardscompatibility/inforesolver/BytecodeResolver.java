@@ -1,5 +1,7 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.inforesolver;
 
+import be.butskri.test.backwardscompatibility.HashBuilder;
+import be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

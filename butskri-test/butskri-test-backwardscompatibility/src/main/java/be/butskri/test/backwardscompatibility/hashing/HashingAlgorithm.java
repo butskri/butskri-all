@@ -1,4 +1,4 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.hashing;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

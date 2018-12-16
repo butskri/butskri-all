@@ -1,4 +1,6 @@
-package be.butskri.test.backwardscompatibility;
+package be.butskri.test.backwardscompatibility.inforesolver;
+
+import be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm;
 
 import java.io.IOException;
 
