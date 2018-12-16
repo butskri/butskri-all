@@ -5,6 +5,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 import static be.butskri.test.backwardscompatibility.hashing.Md5HashingAlgorithm.md5Hash;
@@ -23,7 +24,10 @@ public class Md5HashingAlgorithmTest {
     public void hashAlwaysReturnsStringOf32Characters() throws IOException {
         String stringToBeHashed = randomStringWithRandomLength();
 
-        assertThat(hashingAlgorithm.hash(stringToBeHashed)).hasSize(32);
+        try (InputStream stream = HashingAlgorithm.toInputStream(stringToBeHashed)) {
+            String hash = hashingAlgorithm.hash(stream);
+            assertThat(hash).hasSize(32);
+        }
     }
 
     @Test
@@ -31,7 +35,10 @@ public class Md5HashingAlgorithmTest {
         String stringToBeHashed = "this is the string that needs to be hashed. " +
                 "We can predict the result since it will always be the same for the same input.";
 
-        assertThat(hashingAlgorithm.hash(stringToBeHashed)).isEqualTo("a57301d0bd7bea8636d56a71359b134e");
+        try (InputStream stream = HashingAlgorithm.toInputStream(stringToBeHashed)) {
+            String hash = hashingAlgorithm.hash(stream);
+            assertThat(hash).isEqualTo("a57301d0bd7bea8636d56a71359b134e");
+        }
     }
 
     private String randomStringWithRandomLength() {

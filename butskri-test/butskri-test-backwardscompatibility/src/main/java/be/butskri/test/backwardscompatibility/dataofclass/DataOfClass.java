@@ -1,8 +1,7 @@
 package be.butskri.test.backwardscompatibility.dataofclass;
 
-import be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm;
-
 import java.io.IOException;
+import java.io.InputStream;
 
 public interface DataOfClass {
 
@@ -12,6 +11,6 @@ public interface DataOfClass {
                 .toLowerCase();
     }
 
-    String getHashedData(Class<?> clazz, HashingAlgorithm hashingAlgorithm) throws IOException;
+    InputStream getDataAsStream(Class<?> clazz) throws IOException;
 
 }

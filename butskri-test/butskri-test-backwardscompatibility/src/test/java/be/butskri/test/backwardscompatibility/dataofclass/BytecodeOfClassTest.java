@@ -19,7 +19,7 @@ public class BytecodeOfClassTest {
 
     @Test
     public void hash() throws IOException {
-        assertThat(resolver.getHashedData(Bla.class, md5Hash()))
+        assertThat(md5Hash().hash(resolver.getDataAsStream(Bla.class)))
                 .isEqualTo("cf48b1e3b24840ef50e7e6cc9ce12a0a");
     }
 }

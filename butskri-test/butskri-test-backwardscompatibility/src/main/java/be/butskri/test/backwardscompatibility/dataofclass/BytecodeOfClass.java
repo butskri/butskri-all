@@ -1,10 +1,8 @@
 package be.butskri.test.backwardscompatibility.dataofclass;
 
-import be.butskri.test.backwardscompatibility.hashing.HashingAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 public class BytecodeOfClass implements DataOfClass {
@@ -19,11 +17,7 @@ public class BytecodeOfClass implements DataOfClass {
     }
 
     @Override
-    public String getHashedData(Class<?> clazz, HashingAlgorithm hashingAlgorithm) throws IOException {
-        return hashingAlgorithm.hash(resourceAsStream(clazz));
-    }
-
-    private InputStream resourceAsStream(Class<?> clazz) {
+    public InputStream getDataAsStream(Class<?> clazz) {
         String resourceName = classResourceName(clazz);
         LOGGER.debug("getting resource {}", resourceName);
         return clazz.getResourceAsStream(resourceName);
