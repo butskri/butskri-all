@@ -1,6 +1,6 @@
 package be.butskri.test.backwardscompatibility.hashing;
 
-import be.butskri.test.backwardscompatibility.inforesolver.DataOfClass;
+import be.butskri.test.backwardscompatibility.dataofclass.DataOfClass;
 import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

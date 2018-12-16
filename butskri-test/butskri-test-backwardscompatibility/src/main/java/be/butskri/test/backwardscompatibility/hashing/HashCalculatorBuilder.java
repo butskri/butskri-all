@@ -1,6 +1,6 @@
 package be.butskri.test.backwardscompatibility.hashing;
 
-import be.butskri.test.backwardscompatibility.inforesolver.DataOfClass;
+import be.butskri.test.backwardscompatibility.dataofclass.DataOfClass;
 
 public class HashCalculatorBuilder {
 

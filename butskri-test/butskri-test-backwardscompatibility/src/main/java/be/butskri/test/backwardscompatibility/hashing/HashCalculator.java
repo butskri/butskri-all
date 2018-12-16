@@ -2,7 +2,7 @@ package be.butskri.test.backwardscompatibility.hashing;
 
 import static be.butskri.test.backwardscompatibility.hashing.HashCalculatorBuilder.calculationOf;
 import static be.butskri.test.backwardscompatibility.hashing.Md5HashingAlgorithm.md5Hash;
-import static be.butskri.test.backwardscompatibility.inforesolver.BytecodeOfClass.bytecode;
+import static be.butskri.test.backwardscompatibility.dataofclass.BytecodeOfClass.bytecode;
 
 public interface HashCalculator {
 

@@ -1,4 +1,4 @@
-package be.butskri.test.backwardscompatibility.inforesolver;
+package be.butskri.test.backwardscompatibility.dataofclass;
 
 import be.butskri.test.backwardscompatibility.subclasses.Bla;
 import org.junit.Test;
