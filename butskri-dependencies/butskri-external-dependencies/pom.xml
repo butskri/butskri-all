@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>be.butskri</groupId>
     <artifactId>butskri-external-dependencies</artifactId>
-    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <properties>
         <commons-io.version>2.6</commons-io.version>
         <reflections.version>0.9.11</reflections.version>

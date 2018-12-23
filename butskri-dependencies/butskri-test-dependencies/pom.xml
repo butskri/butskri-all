@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>be.butskri</groupId>
     <artifactId>butskri-test-dependencies</artifactId>
-    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <properties>
-        <butskri.test.version>0.0.1-SNAPSHOT</butskri.test.version>
-        <butskri.external-dependencies.version>0.0.1-SNAPSHOT</butskri.external-dependencies.version>
+        <butskri.test.version>${project.version}</butskri.test.version>
+        <butskri.external-dependencies.version>${project.version}</butskri.external-dependencies.version>
     </properties>
     <dependencyManagement>
         <dependencies>
