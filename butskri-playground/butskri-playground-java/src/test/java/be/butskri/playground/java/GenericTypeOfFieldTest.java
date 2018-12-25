@@ -12,12 +12,10 @@ import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// acronyms used:
-// gtofda = genericTypeOfFieldDeclaredAs
-public class MyTypeTest {
+public class GenericTypeOfFieldTest {
 
     @Test
-    public void gtofdaPrimitive_is_primitiveClass() throws NoSuchFieldException {
+    public void typeOfPrimitive_is_primitiveClass() throws NoSuchFieldException {
         Field field = InnerClass.class.getDeclaredField("myPrimitive");
 
         Type type = field.getGenericType();
@@ -31,7 +29,7 @@ public class MyTypeTest {
     }
 
     @Test
-    public void gtofdaSimpleType_is_theSimpleClassItself() throws NoSuchFieldException {
+    public void typeOfSimpleType_is_theSimpleClassItself() throws NoSuchFieldException {
         Field field = InnerClass.class.getDeclaredField("mySimpleType");
 
         Type type = field.getGenericType();
@@ -45,7 +43,7 @@ public class MyTypeTest {
     }
 
     @Test
-    public void gtofdaArray_is_arrayClassWithComponentType() throws NoSuchFieldException {
+    public void typeOfArray_is_arrayClassWithComponentType() throws NoSuchFieldException {
         Field field = InnerClass.class.getDeclaredField("myArray");
 
         Type type = field.getGenericType();
@@ -58,7 +56,7 @@ public class MyTypeTest {
     }
 
     @Test
-    public void gtofdaArrayWithTypeDeclaredInClass_is_genericArrayTypeWithGenericComponentType_ofType_TypeVariable() throws NoSuchFieldException {
+    public void typeOfArrayWithTypeDeclaredInClass_is_genericArrayTypeWithGenericComponentTypeVariable() throws NoSuchFieldException {
         Field field = InnerClass.class.getDeclaredField("myGenerifiedArray");
 
         Type type = field.getGenericType();
@@ -73,7 +71,7 @@ public class MyTypeTest {
     }
 
     @Test
-    public void gtofdaCollectionWithGenericTypeDeclaredInClass_is_parameterizedTypeWithTypeArguments_ofType_TypeVariable() throws NoSuchFieldException {
+    public void typeOfCollectionWithGenericTypeDeclaredInClass_is_parameterizedTypeWithTypeArgumentsTypeVariable() throws NoSuchFieldException {
         Field field = InnerClass.class.getDeclaredField("myGenerifiedCollection");
 
         Type type = field.getGenericType();
@@ -91,7 +89,7 @@ public class MyTypeTest {
     }
 
     @Test
-    public void gtofdaCollectionWithDeclaredGenericType_is_parameterizedTypeWithTypeArgumentsTheDeclaredGenericType() throws NoSuchFieldException {
+    public void typeOfCollectionWithDeclaredGenericType_is_parameterizedTypeWithTypeArgumentsTheDeclaredGenericType() throws NoSuchFieldException {
         Field field = InnerClass.class.getDeclaredField("myCollection");
         Type type = field.getGenericType();
 
@@ -104,7 +102,7 @@ public class MyTypeTest {
     }
 
     @Test
-    public void gtofdaCollectionWithGenericTypeDeclaredWithExtends_is_parameterizedTypeWithTypeArguments_ofType_WildcardType() throws NoSuchFieldException {
+    public void typeOfCollectionWithGenericTypeDeclaredWithExtends_is_parameterizedTypeWithTypeArgumentsWildcardType() throws NoSuchFieldException {
         Field field = InnerClass.class.getDeclaredField("myExtendedCollection");
         Type type = field.getGenericType();
 
@@ -121,7 +119,7 @@ public class MyTypeTest {
     }
 
     @Test
-    public void gtofdaCollectionWithGenericTypeDeclaredWithSuper_is_parameterizedTypeWithTypeArguments_ofType_WildcardType() throws NoSuchFieldException {
+    public void typeOfCollectionWithGenericTypeDeclaredWithSuper_is_parameterizedTypeWithTypeArgumentsWildcardType() throws NoSuchFieldException {
         Field field = InnerClass.class.getDeclaredField("mySuperCollection");
         Type type = field.getGenericType();
 
@@ -138,7 +136,41 @@ public class MyTypeTest {
         assertThat(wildcardType.getUpperBounds()[0]).isEqualTo(Object.class);
     }
 
-    private static class InnerClass<T extends MySimpleType> {
+    @Test
+    public void typeOfCustomTypeWithRecurringGenerics_is_parameterizedTypeWithRecurringTypeVariable() throws NoSuchFieldException {
+        Field field = InnerClass.class.getDeclaredField("myGenericType");
+        Type type = field.getGenericType();
+
+        assertThat(type).isInstanceOf(ParameterizedType.class);
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        assertThat(parameterizedType.getRawType()).isEqualTo(MyGenericType.class);
+        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+        assertThat(actualTypeArguments).hasSize(1);
+        assertThat(actualTypeArguments[0]).isInstanceOf(TypeVariable.class);
+
+        TypeVariable typeVariable = (TypeVariable) actualTypeArguments[0];
+        assertThat(typeVariable.getBounds()).hasSize(1);
+        assertThat(typeVariable.getBounds()[0]).isInstanceOf(ParameterizedType.class);
+        ParameterizedType parameterizedType2 = (ParameterizedType) typeVariable.getBounds()[0];
+        assertThat(parameterizedType2.getRawType()).isEqualTo(Comparable.class);
+        assertThat(parameterizedType2.getActualTypeArguments()).hasSize(1);
+        assertThat(parameterizedType2.getActualTypeArguments()[0]).isEqualTo(typeVariable);
+    }
+
+    @Test
+    public void typeOfCustomTypeWithGenericType_is_parameterizedTypeWithTypeArgumentClass() throws NoSuchFieldException {
+        Field field = InnerClass.class.getDeclaredField("myGenericTypeWithInteger");
+        Type type = field.getGenericType();
+
+        assertThat(type).isInstanceOf(ParameterizedType.class);
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        assertThat(parameterizedType.getRawType()).isEqualTo(MyGenericType.class);
+        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+        assertThat(actualTypeArguments).hasSize(1);
+        assertThat(actualTypeArguments[0]).isEqualTo(Integer.class);
+    }
+
+    private static class InnerClass<T extends MySimpleType, C extends Comparable<C>> {
         private int myPrimitive;
         private MySimpleType mySimpleType;
         private MySimpleType[] myArray;
@@ -147,9 +179,15 @@ public class MyTypeTest {
         private Collection<MySimpleType> myCollection;
         private Collection<? extends MySimpleType> myExtendedCollection;
         private Collection<? super MySimpleType> mySuperCollection;
+        private MyGenericType<C> myGenericType;
+        private MyGenericType<Integer> myGenericTypeWithInteger;
     }
 
     private static class MySimpleType {
 
+    }
+
+    private static class MyGenericType<T extends Comparable<T>> {
+        private T someVariable;
     }
 }
