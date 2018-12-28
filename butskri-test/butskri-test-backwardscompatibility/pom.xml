@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>be.butskri</groupId>
+        <artifactId>butskri-base-java</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
     <groupId>be.butskri</groupId>
     <artifactId>butskri-test-backwardscompatibility</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -44,31 +46,5 @@
             <artifactId>javax.persistence-api</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>be.butskri</groupId>
-                <artifactId>butskri-test-dependencies</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

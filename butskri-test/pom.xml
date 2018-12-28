@@ -7,5 +7,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>./butskri-test-backwardscompatibility</module>
+        <module>./butskri-test-springboot</module>
     </modules>
 </project>
