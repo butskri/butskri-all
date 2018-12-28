@@ -8,6 +8,7 @@
     <packaging>pom</packaging>
     <properties>
         <commons-io.version>2.6</commons-io.version>
+        <commons-csv.version>1.6</commons-csv.version>
         <reflections.version>0.9.11</reflections.version>
         <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
     </properties>
@@ -17,6 +18,11 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>${commons-csv.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.reflections</groupId>
@@ -36,6 +42,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>

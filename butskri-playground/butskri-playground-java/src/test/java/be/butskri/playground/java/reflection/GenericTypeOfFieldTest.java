@@ -1,4 +1,4 @@
-package be.butskri.playground.java;
+package be.butskri.playground.java.reflection;
 
 import org.junit.Test;
 

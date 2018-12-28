@@ -8,5 +8,6 @@
     <name>${project.artifactId}</name>
     <modules>
         <module>./butskri-playground-java</module>
+        <module>./butskri-playground-csv</module>
     </modules>
 </project>
