@@ -2,7 +2,7 @@ package be.butskri.test.springboot.applicationcontext.autoconfiguretest;
 
 class RegexBuilder {
 
-    private static RegexBuilder ANYTHING = new RegexBuilder("[\\s\\S]*");
+    private static RegexBuilder ANYTHING = new RegexBuilder("(?s:.*)");
     private final String regex;
 
     static String regex(RegexBuilder regexBuilder) {
