@@ -1,0 +1,25 @@
+{
+  "someString" : "WqPtIbIgUyrRzikULsWaUe",
+  "someInt" : 1648150237,
+  "someInteger" : 1648150237,
+  "someUuid" : "623cc6dc-9670-7354-7349-25b5cb3c6dea",
+  "someListOfStrings" : [ "tUdzCTfPCPTaxnxqchdbrzXRA", "vIVVEzyBKePCcIfEAVUGrSEFvAalTQmknElk" ],
+  "nestedBean" : {
+    "something" : "qUEeJPWUtnNrsYOIoNuCNQfXyQngMWbfPSfPuMejaJmgSPiB"
+  },
+  "superBeans" : [ {
+    "_type" : "SUB_BEAN_TWO",
+    "superProperty" : "cGzvuUDOiwueTWBW",
+    "subPropertyTwo" : "OSYxibOQDiwPxfdqoCEkZluTvUheQPPgifVKcSj"
+  }, {
+    "_type" : "SUB_BEAN_TWO",
+    "superProperty" : "VzdZZeFEz",
+    "subPropertyTwo" : "flLHOEwpYfyyyJMrScmmYPKnBD"
+  } ],
+  "inss" : {
+    "value" : "ccgOlnquzNecBccDZWcwyUqjBJphicXOkXiAhYKPne"
+  },
+  "localDateTime" : "2017-09-04T09:12:34",
+  "localDate" : "2017-09-04",
+  "yearMonth" : "2017-7"
+}

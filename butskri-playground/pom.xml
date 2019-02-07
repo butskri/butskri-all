@@ -10,5 +10,6 @@
         <module>./butskri-playground-csv</module>
         <module>./butskri-playground-java</module>
         <module>./butskri-playground-jpa</module>
+        <module>./butskri-playground-randombeans</module>
     </modules>
 </project>

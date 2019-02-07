@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+>
     <modelVersion>4.0.0</modelVersion>
     <groupId>be.butskri</groupId>
     <artifactId>butskri-external-dependencies</artifactId>
@@ -9,11 +9,17 @@
     <properties>
         <commons-io.version>2.6</commons-io.version>
         <commons-csv.version>1.6</commons-csv.version>
+        <jackson.version>2.9.7</jackson.version>
         <reflections.version>0.9.11</reflections.version>
         <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
