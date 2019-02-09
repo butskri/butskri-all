@@ -1,12 +1,16 @@
 package be.butskri.playground.randombeans;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,10 +18,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static be.butskri.playground.randombeans.DeepAssertions.assertDeepNoNullValues;
 import static java.nio.charset.Charset.forName;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class JsonBackwardsCompatibilityTest {
+
+    @Rule
+    public ErrorCollector errorCollector = new ErrorCollector();
 
     private EnhancedRandom enhancedRandom;
     private ObjectMapper objectMapper;
@@ -31,6 +40,7 @@ public class JsonBackwardsCompatibilityTest {
         objectMapper.registerModules(new DateTimeSerializationModule(), new CustomTypesModule());
         objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     @Test
@@ -45,7 +55,7 @@ public class JsonBackwardsCompatibilityTest {
     protected void assertJsonIsBackwardsCompatibleFor(String type, List<Class<?>> classes) {
         classes.stream()
                 .map(clazz -> new JsonBackwardsCompatibilityAsserter(type, clazz))
-                .forEach(JsonBackwardsCompatibilityAsserter::assertBackwardsCompatibility);
+                .forEach(asserter -> errorCollector.checkSucceeds(asserter::assertBackwardsCompatibility));
     }
 
     protected ObjectMapper getObjectMapper() {
@@ -94,33 +104,54 @@ public class JsonBackwardsCompatibilityTest {
             this.clazz = clazz;
         }
 
-        void assertBackwardsCompatibility() {
+        JsonBackwardsCompatibilityAsserter assertBackwardsCompatibility() {
             generateJsonWhenNecessary();
-            deserializeAndThenSerializeGivesSameObject();
+            deserializeAndThenSerializeObject();
+            assertActualAndExpectedJsonsAreTheSame();
+            assertActualObjectDoesNotContainNullValues();
+            return this;
         }
 
         private void generateJsonWhenNecessary() {
             if (!expectedFile().exists()) {
                 Object randmobBean = enhancedRandom.nextObject(clazz);
-                writeValueToFile(expectedFile(), randmobBean);
+                writeObjectToFile(randmobBean, expectedFile());
             }
         }
 
-        private void deserializeAndThenSerializeGivesSameObject() {
-            Object object = null;
-            try {
-                object = objectMapper.readValue(expectedFile(), clazz);
-                String foundValue = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-                String expectedValue = org.apache.commons.io.FileUtils.readFileToString(expectedFile(), "UTF-8");
-                assertThat(foundValue)
-                        .describedAs("json for clazz %s not deserialized/serialized correctly", clazz)
-                        .isEqualTo(expectedValue);
-            } catch (Error | RuntimeException throwable) {
-                writeValueToFile(actualFile(), object);
-                throw throwable;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        private void deserializeAndThenSerializeObject() {
+            Object expectedObject = loadExpectedObject();
+            writeObjectToFile(expectedObject, actualFile());
+        }
+
+        private void assertActualAndExpectedJsonsAreTheSame() {
+            String expectedJson = loadExpectedJson();
+            String actualJson = loadActualJson();
+
+            assertThat(actualJson)
+                    .describedAs("json for clazz %s not deserialized/serialized correctly", clazz)
+                    .isEqualTo(expectedJson);
+        }
+
+        private void assertActualObjectDoesNotContainNullValues() {
+            Object actualObject = loadActualObject();
+            assertDeepNoNullValues(actualObject);
+        }
+
+        private Object loadExpectedObject() {
+            return loadObject(expectedFile());
+        }
+
+        private Object loadActualObject() {
+            return loadObject(actualFile());
+        }
+
+        private String loadExpectedJson() {
+            return loadJson(expectedFile());
+        }
+
+        private String loadActualJson() {
+            return loadJson(actualFile());
         }
 
         private File actualFile() {
@@ -135,12 +166,35 @@ public class JsonBackwardsCompatibilityTest {
             return new File(folder, clazz.getSimpleName() + ".json");
         }
 
-        private void writeValueToFile(File file, Object object) {
+        private Object loadObject(File file) {
+            if (!file.exists()) {
+                return null;
+            }
             try {
-                file.getParentFile().mkdirs();
+                return objectMapper.readValue(file, clazz);
+            } catch (IOException e) {
+                fail(String.format("Problem loading object of type %s. Could not read json from file %s", clazz, file), e);
+                return null;
+            }
+        }
+
+        private String loadJson(File file) {
+            if (!file.exists()) {
+                return null;
+            }
+            try {
+                return FileUtils.readFileToString(file, "UTF-8");
+            } catch (IOException e) {
+                fail(String.format("Problem reading file %s", file), e);
+                return null;
+            }
+        }
+
+        private void writeObjectToFile(Object object, File file) {
+            try {
                 objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, object);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                fail(String.format("Problem writing object of type %s. Could not write json to file %s", clazz, file), e);
             }
         }
     }
