@@ -108,7 +108,8 @@ public class JsonBackwardsCompatibilityTest {
             generateJsonWhenNecessary();
             deserializeAndThenSerializeObject();
             assertActualAndExpectedJsonsAreTheSame();
-            assertActualObjectDoesNotContainNullValues();
+            cleanupActualFile();
+            assertObjectDoesNotContainNullValues();
             return this;
         }
 
@@ -133,9 +134,13 @@ public class JsonBackwardsCompatibilityTest {
                     .isEqualTo(expectedJson);
         }
 
-        private void assertActualObjectDoesNotContainNullValues() {
-            Object actualObject = loadActualObject();
-            assertDeepNoNullValues(actualObject);
+        private void assertObjectDoesNotContainNullValues() {
+            Object object = loadExpectedObject();
+            assertDeepNoNullValues(object);
+        }
+
+        private void cleanupActualFile() {
+            actualFile().delete();
         }
 
         private Object loadExpectedObject() {
