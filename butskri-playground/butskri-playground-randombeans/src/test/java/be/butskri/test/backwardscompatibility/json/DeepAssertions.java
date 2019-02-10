@@ -1,4 +1,4 @@
-package be.butskri.playground.randombeans;
+package be.butskri.test.backwardscompatibility.json;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
