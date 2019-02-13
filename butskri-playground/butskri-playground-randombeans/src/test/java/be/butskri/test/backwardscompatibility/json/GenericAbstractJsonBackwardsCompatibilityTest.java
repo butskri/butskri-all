@@ -10,8 +10,11 @@ import org.junit.rules.ErrorCollector;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static be.butskri.test.backwardscompatibility.json.DeepAssertions.assertDeepNoNullValues;
 import static java.nio.charset.Charset.forName;
@@ -42,6 +45,38 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
         classes.stream()
                 .map(clazz -> new JsonBackwardsCompatibilityAsserter(baseFolder, clazz))
                 .forEach(asserter -> errorCollector.checkSucceeds(asserter::assertBackwardsCompatibility));
+        errorCollector.checkSucceeds(() -> assertAllExpectedJsonFilesAreCoveredBy(baseFolder, classes));
+    }
+
+    private GenericAbstractJsonBackwardsCompatibilityTest assertAllExpectedJsonFilesAreCoveredBy(File baseFolder, List<Class<?>> classes) {
+        File expectedFilesFolder = new File(baseFolder, "expected");
+        List<String> jsonFilesInFolder = jsonFilesInFolder(expectedFilesFolder);
+        List<String> filenamesForClasses = filenamesForClasses(classes);
+        assertThat(subtract(jsonFilesInFolder, filenamesForClasses))
+                .describedAs("Files found in folder %s without matching class", expectedFilesFolder)
+                .isEmpty();
+        return this;
+    }
+
+    private List<String> subtract(List<String> collection, List<String> toBeRemoved) {
+        List<String> result = new ArrayList<>(collection);
+        result.removeAll(toBeRemoved);
+        return result;
+    }
+
+    private List<String> jsonFilesInFolder(File expectedFilesFolder) {
+        return Stream.of(expectedFilesFolder.listFiles((file) -> file.getName().endsWith(".json")))
+                .map(file -> file.getName())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private List<String> filenamesForClasses(List<Class<?>> classes) {
+        return classes.stream()
+                .map(Class::getSimpleName)
+                .map(classname -> classname + ".json")
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private EnhancedRandomBuilder baseEnhancedRandomBuilder() {
