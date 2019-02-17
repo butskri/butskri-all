@@ -1,0 +1,4 @@
+{
+  "personalDataFields" : [ "anotherPrivatePart", "privatePart" ],
+  "deepPersonalDataFields" : [ ]
+}
