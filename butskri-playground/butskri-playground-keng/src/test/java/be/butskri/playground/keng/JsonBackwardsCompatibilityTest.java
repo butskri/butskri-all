@@ -1,4 +1,4 @@
-package be.butskri.playground.randombeans;
+package be.butskri.playground.keng;
 
 import be.butskri.test.backwardscompatibility.json.GenericAbstractJsonBackwardsCompatibilityTest;
 import com.fasterxml.jackson.annotation.JsonInclude;

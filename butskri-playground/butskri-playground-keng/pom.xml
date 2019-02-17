@@ -6,7 +6,7 @@
         <artifactId>butskri-base-java</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>butskri-playground-randombeans</artifactId>
+    <artifactId>butskri-playground-keng</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <dependencies>

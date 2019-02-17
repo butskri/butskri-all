@@ -1,4 +1,4 @@
-package be.butskri.playground.randombeans;
+package be.butskri.playground.keng;
 
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;

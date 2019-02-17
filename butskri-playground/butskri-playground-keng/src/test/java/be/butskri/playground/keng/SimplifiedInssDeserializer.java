@@ -1,4 +1,4 @@
-package be.butskri.playground.randombeans;
+package be.butskri.playground.keng;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

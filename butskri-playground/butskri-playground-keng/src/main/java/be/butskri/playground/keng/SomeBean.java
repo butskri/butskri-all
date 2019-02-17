@@ -1,4 +1,4 @@
-package be.butskri.playground.randombeans;
+package be.butskri.playground.keng;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
