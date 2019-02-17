@@ -1,5 +1,6 @@
 package be.butskri.playground.keng;
 
+import be.butskri.playground.keng.myservice.beans.*;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.Before;

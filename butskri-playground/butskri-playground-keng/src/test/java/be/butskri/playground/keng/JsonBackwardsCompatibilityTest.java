@@ -1,6 +1,10 @@
 package be.butskri.playground.keng;
 
-import be.butskri.test.backwardscompatibility.json.GenericAbstractJsonBackwardsCompatibilityTest;
+import be.butskri.playground.keng.commons.test.json.GenericAbstractJsonBackwardsCompatibilityTest;
+import be.butskri.playground.keng.myservice.beans.*;
+import be.butskri.playground.keng.myservice.configuration.CustomTypesModule;
+import be.butskri.playground.keng.myservice.configuration.DateTimeSerializationModule;
+import be.butskri.playground.keng.myservice.configuration.SuperBeanMixin;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
