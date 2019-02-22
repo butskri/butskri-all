@@ -1,7 +1,8 @@
 package be.butskri.playground.keng;
 
 import be.butskri.playground.keng.commons.test.json.GenericAbstractJsonBackwardsCompatibilityTest;
-import be.butskri.playground.keng.myservice.beans.*;
+import be.butskri.playground.keng.myservice.beans.SimplifiedInss;
+import be.butskri.playground.keng.myservice.beans.SuperBean;
 import be.butskri.playground.keng.myservice.configuration.CustomTypesModule;
 import be.butskri.playground.keng.myservice.configuration.DateTimeSerializationModule;
 import be.butskri.playground.keng.myservice.configuration.SuperBeanMixin;
@@ -11,15 +12,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
-import org.junit.Test;
 
-import java.io.File;
 import java.util.function.Supplier;
 
 public class JsonBackwardsCompatibilityTest extends GenericAbstractJsonBackwardsCompatibilityTest {
 
     private ObjectMapper objectMapper;
-    private File resultBaseFolder = new File("src/test/resources/backwardscompatibility/json");
 
     @Before
     public void configureObjectMapper() {
@@ -31,9 +29,9 @@ public class JsonBackwardsCompatibilityTest extends GenericAbstractJsonBackwards
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
-    @Test
-    public void jsonIsBackwardsCompatible() {
-        assertJsonIsBackwardsCompatibleFor(new File(resultBaseFolder, "sample"), SomeBean.class, SubBeanOne.class, SubBeanTwo.class);
+    @Override
+    protected String getBasePackage() {
+        return "be.butskri";
     }
 
     @Override

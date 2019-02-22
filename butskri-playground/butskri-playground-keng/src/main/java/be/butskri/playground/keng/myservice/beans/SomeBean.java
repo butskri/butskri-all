@@ -1,5 +1,7 @@
 package be.butskri.playground.keng.myservice.beans;
 
+import be.butskri.playground.keng.commons.domain.ViewObject;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -7,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-public class SomeBean {
+public class SomeBean extends ViewObject {
 
     private String someString;
     private int someInt;

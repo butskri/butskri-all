@@ -1,17 +1,23 @@
 package be.butskri.playground.keng.commons.test.json;
 
+import be.butskri.playground.keng.commons.domain.ViewObject;
+import be.butskri.playground.keng.commons.events.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+import org.reflections.Reflections;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,32 +29,65 @@ import static org.assertj.core.api.Assertions.fail;
 
 public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
 
+    private File resultBaseFolder = new File("src/test/resources/backwardscompatibility/json");
+
     @Rule
     public ErrorCollector errorCollector = new ErrorCollector();
 
+    private Reflections reflections;
     private EnhancedRandom enhancedRandom;
 
     @Before
+    public void setUpReflections() {
+        this.reflections = new Reflections(getBasePackage());
+    }
+
+    @Before
     public void setUpRandomizer() {
-        enhancedRandom = enhance(baseEnhancedRandomBuilder()).build();
+        EnhancedRandomBuilder baseEnhancedRandomBuilder = baseEnhancedRandomBuilder();
+        enhancedRandom = enhance(baseEnhancedRandomBuilder).build();
+    }
+
+    @Test
+    public void eventsAreBackwardsCompatible() {
+        assertSubclassesAreBackwardsCompatible("events", Event.class);
+    }
+
+    @Test
+    public void jsonIsBackwardsCompatible() {
+        assertSubclassesAreBackwardsCompatible("sample", ViewObject.class);
+    }
+
+    <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) {
+        Collection<Class<? extends T>> subclasses = findAllSubclassesOf(baseClass);
+        assertJsonIsBackwardsCompatibleForColl(new File(resultBaseFolder, folderName), subclasses);
+    }
+
+    protected abstract String getBasePackage();
+
+    <T> Collection<Class<? extends T>> findAllSubclassesOf(Class<T> baseClass) {
+        return reflections.getSubTypesOf(baseClass)
+                .stream()
+                .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
+                .collect(Collectors.toSet());
     }
 
     protected abstract ObjectMapper getObjectMapper();
 
     protected abstract EnhancedRandomBuilder enhance(EnhancedRandomBuilder baseEnhancedRandomBuilder);
 
-    protected void assertJsonIsBackwardsCompatibleFor(File baseFolder, Class<?>... classes) {
-        assertJsonIsBackwardsCompatibleFor(baseFolder, Arrays.asList(classes));
+    protected <T> void assertJsonIsBackwardsCompatibleFor(File baseFolder, Class<T>... classes) {
+        assertJsonIsBackwardsCompatibleForColl(baseFolder, Arrays.asList(classes));
     }
 
-    protected void assertJsonIsBackwardsCompatibleFor(File baseFolder, List<Class<?>> classes) {
+    protected <T> void assertJsonIsBackwardsCompatibleForColl(File baseFolder, Collection<Class<? extends T>> classes) {
         classes.stream()
                 .map(clazz -> new JsonBackwardsCompatibilityAsserter(baseFolder, clazz))
                 .forEach(asserter -> errorCollector.checkSucceeds(asserter::assertBackwardsCompatibility));
         errorCollector.checkSucceeds(() -> assertAllExpectedJsonFilesAreCoveredBy(baseFolder, classes));
     }
 
-    private GenericAbstractJsonBackwardsCompatibilityTest assertAllExpectedJsonFilesAreCoveredBy(File baseFolder, List<Class<?>> classes) {
+    private <T> GenericAbstractJsonBackwardsCompatibilityTest assertAllExpectedJsonFilesAreCoveredBy(File baseFolder, Collection<Class<? extends T>> classes) {
         File expectedFilesFolder = new File(baseFolder, "expected");
         List<String> jsonFilesInFolder = jsonFilesInFolder(expectedFilesFolder);
         List<String> filenamesForClasses = filenamesForClasses(classes);
@@ -71,7 +110,7 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
                 .collect(Collectors.toList());
     }
 
-    private List<String> filenamesForClasses(List<Class<?>> classes) {
+    private <T> List<String> filenamesForClasses(Collection<Class<? extends T>> classes) {
         return classes.stream()
                 .map(Class::getSimpleName)
                 .map(classname -> classname + ".json")
@@ -81,7 +120,7 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
 
     private EnhancedRandomBuilder baseEnhancedRandomBuilder() {
         return EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
-                .randomizationDepth(3)
+                .randomizationDepth(5)
                 .charset(forName("UTF-8"))
                 .stringLengthRange(5, 50)
                 .collectionSizeRange(2, 2)
@@ -200,6 +239,12 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
 
         private void writeObjectToFile(Object object, File file) {
             try {
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
                 getObjectMapper().writerWithDefaultPrettyPrinter().writeValue(file, object);
             } catch (IOException e) {
                 fail(String.format("Problem writing object of type %s. Could not write json to file %s", clazz, file), e);

@@ -12,6 +12,8 @@ public class SomeEvent extends Event {
     @DataSubjectId
     private UUID myId;
 
+    private SomeId someId;
+    private SomeOtherId someOtherId;
     @PersonalData
     private String somePersonalData;
     private String someNonPersonalData;
@@ -22,6 +24,14 @@ public class SomeEvent extends Event {
 
     public UUID getMyId() {
         return myId;
+    }
+
+    public SomeId getSomeId() {
+        return someId;
+    }
+
+    public SomeOtherId getSomeOtherId() {
+        return someOtherId;
     }
 
     public String getSomePersonalData() {

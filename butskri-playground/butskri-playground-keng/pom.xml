@@ -15,6 +15,10 @@
             <artifactId>random-beans</artifactId>
             <version>3.8.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
