@@ -55,7 +55,7 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
 
     @Test
     public void jsonIsBackwardsCompatible() {
-        assertSubclassesAreBackwardsCompatible("sample", ViewObject.class);
+        assertSubclassesAreBackwardsCompatible("view-objects", ViewObject.class);
     }
 
     <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) {
