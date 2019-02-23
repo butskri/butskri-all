@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,12 +46,12 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest extends Abst
 
     <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) {
         Collection<Class<?>> subclasses = findAllNonAbstractSubclassesOf(baseClass);
-        assertJsonIsBackwardsCompatibleForColl(new File(resultBaseFolder, folderName), subclasses);
+        assertJsonIsBackwardsCompatibleFor(new File(resultBaseFolder, folderName), subclasses);
     }
 
     protected abstract EnhancedRandomBuilder enhance(EnhancedRandomBuilder baseEnhancedRandomBuilder);
 
-    protected <T> void assertJsonIsBackwardsCompatibleForColl(File baseFolder, Collection<Class<? extends T>> classes) {
+    protected <T> void assertJsonIsBackwardsCompatibleFor(File baseFolder, Collection<Class<? extends T>> classes) {
         classes.stream()
                 .map(clazz -> new JsonBackwardsCompatibilityAsserter(baseFolder, clazz))
                 .forEach(asserter -> errorCollector.checkSucceeds(asserter::assertBackwardsCompatibility));
