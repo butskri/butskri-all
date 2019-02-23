@@ -5,36 +5,27 @@ import be.butskri.playground.keng.axon.DeepPersonalData;
 import be.butskri.playground.keng.axon.PersonalData;
 import be.butskri.playground.keng.commons.annotations.CorrelationId;
 import be.butskri.playground.keng.commons.events.IntegrationEvent;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import be.butskri.playground.keng.commons.test.AbstractJsonTest;
+import be.butskri.playground.keng.myservice.events.SomeEvent;
+import be.butskri.playground.keng.myservice.events.SomeIntegrationEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class AbstractEventMetadataBackwardsCompatibilityTest {
+import static org.assertj.core.util.Lists.newArrayList;
+
+public abstract class AbstractEventMetadataBackwardsCompatibilityTest extends AbstractJsonTest {
 
     private File resultBaseFolder = new File("src/test/resources/backwardscompatibility/metadata");
-    private ObjectMapper objectMapper;
-
-    @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
-
-    @Before
-    public void setUpObjectMapper() {
-        objectMapper = new ObjectMapper();
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
 
     @Test
     public void eventAnnotationsShouldBeBackwardsCompatible() {
@@ -42,14 +33,9 @@ public abstract class AbstractEventMetadataBackwardsCompatibilityTest {
         assertAnnotationsForEvents(resultBaseFolder, findEventsToBeChecked());
     }
 
-    protected abstract Collection<Class<?>> findEventsToBeChecked();
-
-    protected ObjectMapper objectMapper() {
-        return objectMapper;
-    }
-
-    protected void assertAnnotationsForEvents(File parentFolder, Class<?>... classes) {
-        assertAnnotationsForEvents(parentFolder, Arrays.asList(classes));
+    protected Collection<Class<?>> findEventsToBeChecked() {
+        // TODO make this less specific
+        return newArrayList(SomeEvent.class, SomeIntegrationEvent.class);
     }
 
     protected void assertAnnotationsForEvents(File parentFolder, Collection<Class<?>> classes) {
@@ -64,7 +50,7 @@ public abstract class AbstractEventMetadataBackwardsCompatibilityTest {
 
     private Collection<ClassMetaDataAsserter> annotationAssertersFor(File parentFolder, Collection<Class<?>> classes) {
         return classes.stream()
-                .map(clazz -> new ClassMetaDataAsserter(clazz, objectMapper(), parentFolder))
+                .map(clazz -> new ClassMetaDataAsserter(clazz, getObjectMapper(), parentFolder))
                 .collect(Collectors.toList());
     }
 
@@ -176,18 +162,6 @@ public abstract class AbstractEventMetadataBackwardsCompatibilityTest {
             if (file.exists()) {
                 try {
                     return FileUtils.readFileToString(file, "UTF-8");
-                } catch (IOException e) {
-                    Assertions.fail(String.format("Problem reading file %s", file), e);
-                }
-            }
-            return null;
-        }
-
-        private ClassMetadata readClassMetadata() {
-            File file = expectedFile();
-            if (file.exists()) {
-                try {
-                    return objectMapper.readValue(file, ClassMetadata.class);
                 } catch (IOException e) {
                     Assertions.fail(String.format("Problem reading file %s", file), e);
                 }

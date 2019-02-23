@@ -1,5 +1,7 @@
 package be.butskri.playground.keng.commons.test.metadata;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,7 +14,11 @@ import java.util.stream.Collectors;
 
 public class ClassMetadata {
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String correlationId;
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String dataSubjectId;
     private List<String> personalDataFields;
     private List<String> deepPersonalDataFields;

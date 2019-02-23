@@ -2,21 +2,17 @@ package be.butskri.playground.keng.commons.test.json;
 
 import be.butskri.playground.keng.commons.domain.ViewObject;
 import be.butskri.playground.keng.commons.events.Event;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import be.butskri.playground.keng.commons.test.AbstractJsonTest;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
-import org.reflections.Reflections;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,20 +23,11 @@ import static java.nio.charset.Charset.forName;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
+public abstract class GenericAbstractJsonBackwardsCompatibilityTest extends AbstractJsonTest {
 
     private File resultBaseFolder = new File("src/test/resources/backwardscompatibility/json");
 
-    @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
-
-    private Reflections reflections;
     private EnhancedRandom enhancedRandom;
-
-    @Before
-    public void setUpReflections() {
-        this.reflections = new Reflections(getBasePackage());
-    }
 
     @Before
     public void setUpRandomizer() {
@@ -63,8 +50,6 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
         assertJsonIsBackwardsCompatibleForColl(new File(resultBaseFolder, folderName), subclasses);
     }
 
-    protected abstract String getBasePackage();
-
     <T> Collection<Class<? extends T>> findAllSubclassesOf(Class<T> baseClass) {
         return reflections.getSubTypesOf(baseClass)
                 .stream()
@@ -72,13 +57,7 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
                 .collect(Collectors.toSet());
     }
 
-    protected abstract ObjectMapper getObjectMapper();
-
     protected abstract EnhancedRandomBuilder enhance(EnhancedRandomBuilder baseEnhancedRandomBuilder);
-
-    protected <T> void assertJsonIsBackwardsCompatibleFor(File baseFolder, Class<T>... classes) {
-        assertJsonIsBackwardsCompatibleForColl(baseFolder, Arrays.asList(classes));
-    }
 
     protected <T> void assertJsonIsBackwardsCompatibleForColl(File baseFolder, Collection<Class<? extends T>> classes) {
         classes.stream()
@@ -179,10 +158,6 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest {
 
         private Object loadExpectedObject() {
             return loadObject(expectedFile());
-        }
-
-        private Object loadActualObject() {
-            return loadObject(actualFile());
         }
 
         private String loadExpectedJson() {
