@@ -4,10 +4,9 @@ import be.butskri.playground.keng.axon.DataSubjectId;
 import be.butskri.playground.keng.axon.DeepPersonalData;
 import be.butskri.playground.keng.axon.PersonalData;
 import be.butskri.playground.keng.commons.annotations.CorrelationId;
+import be.butskri.playground.keng.commons.events.Event;
 import be.butskri.playground.keng.commons.events.IntegrationEvent;
 import be.butskri.playground.keng.commons.test.AbstractJsonTest;
-import be.butskri.playground.keng.myservice.events.SomeEvent;
-import be.butskri.playground.keng.myservice.events.SomeIntegrationEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
@@ -21,8 +20,6 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.util.Lists.newArrayList;
-
 public abstract class AbstractEventMetadataBackwardsCompatibilityTest extends AbstractJsonTest {
 
     private File resultBaseFolder = new File("src/test/resources/backwardscompatibility/metadata");
@@ -34,8 +31,7 @@ public abstract class AbstractEventMetadataBackwardsCompatibilityTest extends Ab
     }
 
     protected Collection<Class<?>> findEventsToBeChecked() {
-        // TODO make this less specific
-        return newArrayList(SomeEvent.class, SomeIntegrationEvent.class);
+        return findAllNonAbstractSubclassesOf(Event.class);
     }
 
     protected void assertAnnotationsForEvents(File parentFolder, Collection<Class<?>> classes) {

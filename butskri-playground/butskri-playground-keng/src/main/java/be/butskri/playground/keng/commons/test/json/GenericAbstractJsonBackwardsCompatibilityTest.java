@@ -46,15 +46,8 @@ public abstract class GenericAbstractJsonBackwardsCompatibilityTest extends Abst
     }
 
     <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) {
-        Collection<Class<? extends T>> subclasses = findAllSubclassesOf(baseClass);
+        Collection<Class<?>> subclasses = findAllNonAbstractSubclassesOf(baseClass);
         assertJsonIsBackwardsCompatibleForColl(new File(resultBaseFolder, folderName), subclasses);
-    }
-
-    <T> Collection<Class<? extends T>> findAllSubclassesOf(Class<T> baseClass) {
-        return reflections.getSubTypesOf(baseClass)
-                .stream()
-                .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
-                .collect(Collectors.toSet());
     }
 
     protected abstract EnhancedRandomBuilder enhance(EnhancedRandomBuilder baseEnhancedRandomBuilder);
