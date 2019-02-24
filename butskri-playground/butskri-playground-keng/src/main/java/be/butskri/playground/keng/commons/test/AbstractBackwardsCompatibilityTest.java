@@ -1,8 +1,8 @@
-package be.butskri.playground.keng.commons.test.json;
+package be.butskri.playground.keng.commons.test;
 
 import be.butskri.playground.keng.commons.domain.ViewObject;
 import be.butskri.playground.keng.commons.events.Event;
-import be.butskri.playground.keng.commons.test.AbstractJsonTest;
+import be.butskri.playground.keng.commons.test.json.JsonBackwardsCompatibilityAsserter;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.Test;
@@ -12,23 +12,23 @@ import java.util.Collection;
 
 import static java.nio.charset.Charset.forName;
 
-public abstract class GenericAbstractJsonBackwardsCompatibilityTest extends AbstractJsonTest {
+public abstract class AbstractBackwardsCompatibilityTest extends AbstractJsonTest {
 
-    private File resultBaseFolder = new File("src/test/resources/backwardscompatibility/json");
+    private File baseFolder = new File("src/test/resources/backwardscompatibility");
 
     @Test
     public void eventsAreBackwardsCompatible() throws Throwable {
-        assertSubclassesAreBackwardsCompatible("events", Event.class);
+        assertSubclassesAreBackwardsCompatible("json/events", Event.class);
     }
 
     @Test
     public void jsonIsBackwardsCompatible() throws Throwable {
-        assertSubclassesAreBackwardsCompatible("view-objects", ViewObject.class);
+        assertSubclassesAreBackwardsCompatible("json/view-objects", ViewObject.class);
     }
 
     <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) throws Throwable {
         Collection<Class<?>> subclasses = findAllNonAbstractSubclassesOf(baseClass);
-        jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(resultBaseFolder, folderName), subclasses);
+        jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(baseFolder, folderName), subclasses);
     }
 
     private JsonBackwardsCompatibilityAsserter jsonBackwardsCompatibilityAsserter() {

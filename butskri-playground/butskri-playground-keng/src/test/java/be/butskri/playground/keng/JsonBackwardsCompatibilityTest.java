@@ -1,6 +1,6 @@
 package be.butskri.playground.keng;
 
-import be.butskri.playground.keng.commons.test.json.GenericAbstractJsonBackwardsCompatibilityTest;
+import be.butskri.playground.keng.commons.test.AbstractBackwardsCompatibilityTest;
 import be.butskri.playground.keng.myservice.beans.SimplifiedInss;
 import be.butskri.playground.keng.myservice.beans.SuperBean;
 import be.butskri.playground.keng.myservice.configuration.CustomTypesModule;
@@ -15,7 +15,7 @@ import org.junit.Before;
 
 import java.util.function.Supplier;
 
-public class JsonBackwardsCompatibilityTest extends GenericAbstractJsonBackwardsCompatibilityTest {
+public class JsonBackwardsCompatibilityTest extends AbstractBackwardsCompatibilityTest {
 
     private ObjectMapper objectMapper;
 
