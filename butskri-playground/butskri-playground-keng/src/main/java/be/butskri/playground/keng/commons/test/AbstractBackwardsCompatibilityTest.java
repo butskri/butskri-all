@@ -3,11 +3,15 @@ package be.butskri.playground.keng.commons.test;
 import be.butskri.playground.keng.commons.domain.ViewObject;
 import be.butskri.playground.keng.commons.events.Event;
 import be.butskri.playground.keng.commons.test.json.JsonBackwardsCompatibilityAsserter;
+import be.butskri.playground.keng.commons.test.metadata.EventMetadataBackwardsCompatibilityAsserter;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
+import org.apache.commons.io.FileUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import static java.nio.charset.Charset.forName;
@@ -26,6 +30,14 @@ public abstract class AbstractBackwardsCompatibilityTest extends AbstractJsonTes
         assertSubclassesAreBackwardsCompatible("json/view-objects", ViewObject.class);
     }
 
+    @Test
+    public void eventAnnotationsShouldBeBackwardsCompatible() {
+        File resultBaseFolder = new File(baseFolder, "metadata");
+        clearDirectory(new File(resultBaseFolder, "actual"));
+        Collection<Class<?>> eventsToBeChecked = findAllNonAbstractSubclassesOf(Event.class);
+        eventMetadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(resultBaseFolder, eventsToBeChecked);
+    }
+
     <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) throws Throwable {
         Collection<Class<?>> subclasses = findAllNonAbstractSubclassesOf(baseClass);
         jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(baseFolder, folderName), subclasses);
@@ -33,6 +45,18 @@ public abstract class AbstractBackwardsCompatibilityTest extends AbstractJsonTes
 
     private JsonBackwardsCompatibilityAsserter jsonBackwardsCompatibilityAsserter() {
         return new JsonBackwardsCompatibilityAsserter(getObjectMapper(), randomizer());
+    }
+
+    private EventMetadataBackwardsCompatibilityAsserter eventMetadataBackwardsCompatibilityAsserter() {
+        return new EventMetadataBackwardsCompatibilityAsserter(getObjectMapper());
+    }
+
+    private void clearDirectory(File directory) {
+        try {
+            FileUtils.cleanDirectory(directory);
+        } catch (IOException e) {
+            Assertions.fail(String.format("Could not clean directory %s", directory), e);
+        }
     }
 
     private EnhancedRandom randomizer() {
