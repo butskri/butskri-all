@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static be.butskri.playground.keng.commons.test.json.DeepAssertions.assertDeepNoNullValues;
+import static be.butskri.playground.keng.commons.test.json.DeepAssertions.assertNoDeepNullValues;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -108,7 +108,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
 
         private void assertObjectDoesNotContainNullValues() {
             Object object = loadExpectedObject();
-            assertDeepNoNullValues(object);
+            assertNoDeepNullValues(object);
         }
 
         private void cleanupActualFile() {

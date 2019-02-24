@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeepAssertions {
 
-    public static void assertDeepNoNullValues(Object actualObject) {
+    public static void assertNoDeepNullValues(Object actualObject) {
         assertThat(actualObject).isNotNull();
         List<PropertyPath> nullFields = findDeepNullFields(actualObject);
 
