@@ -8,14 +8,18 @@ import be.butskri.playground.keng.commons.events.IntegrationEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.rules.ErrorCollector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
@@ -67,6 +71,8 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
 
     static class ClassMetaDataAsserter {
 
+        private static final Logger LOGGER = LoggerFactory.getLogger(ClassMetaDataAsserter.class);
+
         private ObjectMapper objectMapper;
         private File parentFolder;
         private Class<?> clazz;
@@ -80,7 +86,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
 
         public ClassMetaDataAsserter assertSubjectIdPresentWhenPersonalDataAnnotationsPresent() {
             if (hasPersonalDataFields()) {
-                Assertions.assertThat(classInfo().findFieldInfoCollectionByAnnotation(DataSubjectId.class))
+                assertThat(classInfo().findFieldInfoCollectionByAnnotation(DataSubjectId.class))
                         .describedAs("clazz %s containing personal data should have @DataSubjectId", clazz)
                         .hasSize(1);
             }
@@ -89,7 +95,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
 
         public ClassMetaDataAsserter assertExactlyOneCorrelationIdPresentForIntegrationEvent() {
             if (clazz.isAssignableFrom(IntegrationEvent.class))
-                Assertions.assertThat(classInfo().findFieldInfoCollectionByAnnotation(CorrelationId.class))
+                assertThat(classInfo().findFieldInfoCollectionByAnnotation(CorrelationId.class))
                         .describedAs("%s should have exactly one @CorrelationId", clazz)
                         .hasSize(1);
             return this;
@@ -103,21 +109,21 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
         }
 
         private ClassMetaDataAsserter assertAtMost1DataSubjectId() {
-            Assertions.assertThat(classInfo().findFieldInfoCollectionByAnnotation(DataSubjectId.class).size())
+            assertThat(classInfo().findFieldInfoCollectionByAnnotation(DataSubjectId.class).size())
                     .describedAs("class %s should have maximum 1 field annotated with @DatasubjectId", clazz)
                     .isLessThanOrEqualTo(1);
             return this;
         }
 
         private ClassMetaDataAsserter assertPersonalDataFields() {
-            Assertions.assertThat(classInfo().findFieldInfoCollectionByAnnotation(PersonalData.class).stream().filter(not(FieldInfo::canBeAnnotatedWithPersonalData)))
+            assertThat(classInfo().findFieldInfoCollectionByAnnotation(PersonalData.class).stream().filter(not(FieldInfo::canBeAnnotatedWithPersonalData)))
                     .describedAs("Fields in class %s annotated with @PersonalData that shouldn't", clazz)
                     .isEmpty();
             return this;
         }
 
         private ClassMetaDataAsserter assertDeepPersonalDataFields() {
-            Assertions.assertThat(classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class).stream().filter(not(FieldInfo::canBeAnnotatedWithDeepPersonalData)))
+            assertThat(classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class).stream().filter(not(FieldInfo::canBeAnnotatedWithDeepPersonalData)))
                     .describedAs("Fields in class %s annotated with @DeepPersonalData that shouldn't", clazz)
                     .isEmpty();
             return this;
@@ -130,7 +136,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
                 writeClassMetadata(classMetadata, expectedFile());
             } else {
                 try {
-                    Assertions.assertThat(jsonFor(classMetadata))
+                    assertThat(jsonFor(classMetadata))
                             .describedAs("metadata for class %s should remain the same", clazz)
                             .isEqualTo(readJson);
                 } catch (AssertionError error) {
@@ -146,17 +152,19 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
             try {
                 return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
             } catch (JsonProcessingException e) {
-                Assertions.fail(String.format("Problem converting object to json %s", object), e);
+                fail(String.format("Problem converting object to json %s", object), e);
                 return null;
             }
         }
 
         private void writeClassMetadata(ClassMetadata classMetadata, File file) {
             try {
-                file.getParentFile().mkdirs();
+                if (file.getParentFile().mkdirs()) {
+                    LOGGER.debug("folder {} is created", file.getParentFile());
+                }
                 objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, classMetadata);
             } catch (IOException e) {
-                Assertions.fail(String.format("Problem writing class metadata. Could not write json to file %s", file), e);
+                fail(String.format("Problem writing class metadata. Could not write json to file %s", file), e);
             }
         }
 
@@ -179,7 +187,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
                 try {
                     return FileUtils.readFileToString(file, "UTF-8");
                 } catch (IOException e) {
-                    Assertions.fail(String.format("Problem reading file %s", file), e);
+                    fail(String.format("Problem reading file %s", file), e);
                 }
             }
             return null;
