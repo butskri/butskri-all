@@ -29,7 +29,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
         this.objectMapper = objectMapper;
     }
 
-    public void assertAnnotationsForEvents(File parentFolder, Collection<Class<?>> classes) {
+    public void assertAnnotationsForEvents(File parentFolder, Collection<Class<?>> classes) throws Throwable {
         Collection<ClassMetaDataAsserter> asserters = annotationAssertersFor(parentFolder, classes);
         assertGdprAnnotationsUsedCorrectly(asserters);
         assertSubjectIdPresentWhenPersonalDataAnnotationsPresent(asserters);
@@ -37,6 +37,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
 
         Collection<Class<?>> nestedDeepPersonalDataClasses = allNestedDeepPersonalDataClasses(asserters);
         assertGdprAnnotationsUsedCorrectly(annotationAssertersFor(parentFolder, nestedDeepPersonalDataClasses));
+        verify();
     }
 
     private Collection<ClassMetaDataAsserter> annotationAssertersFor(File parentFolder, Collection<Class<?>> classes) {

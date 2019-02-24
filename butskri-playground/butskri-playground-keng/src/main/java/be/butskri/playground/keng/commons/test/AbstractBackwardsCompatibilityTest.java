@@ -43,7 +43,7 @@ public abstract class AbstractBackwardsCompatibilityTest {
     }
 
     @Test
-    public void eventAnnotationsAreBackwardsCompatible() {
+    public void eventAnnotationsAreBackwardsCompatible() throws Throwable {
         File baseFolder = new File(rootFolder, "metadata");
         clearDirectory(new File(baseFolder, "actual"));
         Collection<Class<?>> eventsSubclasses = findAllNonAbstractSubclassesOf(Event.class);
