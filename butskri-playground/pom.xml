@@ -11,5 +11,6 @@
         <module>./butskri-playground-java</module>
         <module>./butskri-playground-jpa</module>
         <module>./butskri-playground-keng</module>
+        <module>./butskri-playground-springboot</module>
     </modules>
 </project>
