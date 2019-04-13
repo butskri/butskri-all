@@ -1,5 +1,6 @@
 package be.butskri.playground.keng.commons.test;
 
+import be.butskri.playground.keng.commons.domain.ProcessManager;
 import be.butskri.playground.keng.commons.domain.ViewObject;
 import be.butskri.playground.keng.commons.events.Event;
 import be.butskri.playground.keng.commons.test.json.JsonBackwardsCompatibilityAsserter;
@@ -23,13 +24,21 @@ import static java.nio.charset.Charset.forName;
 
 public abstract class AbstractBackwardsCompatibilityTest {
 
-    private File rootFolder = new File("src/test/resources/backwardscompatibility");
+    private static final int DEFAULT_MIN_COLLECTION_SIZE = 2;
+    private static final int DEFAULT_MAX_COLLECTION_SIZE = 2;
+    private static final int RANDOMIZATION_DEPTH = 5;
+    private File DEFAULT_ROOT_FOLDER = new File("src/test/resources/backwardscompatibility");
 
     private Reflections reflections;
 
     @Before
     public void setUpReflections() {
         this.reflections = new Reflections(getBasePackage());
+    }
+
+    @Test
+    public void sagasAreBackwardsCompatible() throws Throwable {
+        assertSubclassesAreBackwardsCompatible("json/sagas", ProcessManager.class);
     }
 
     @Test
@@ -44,10 +53,14 @@ public abstract class AbstractBackwardsCompatibilityTest {
 
     @Test
     public void eventAnnotationsAreBackwardsCompatible() throws Throwable {
-        File baseFolder = new File(rootFolder, "metadata");
+        File baseFolder = new File(getRootFolder(), "metadata");
         clearDirectory(new File(baseFolder, "actual"));
         Collection<Class<?>> eventsSubclasses = findAllNonAbstractSubclassesOf(Event.class);
         eventMetadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, eventsSubclasses);
+    }
+
+    protected File getRootFolder() {
+        return DEFAULT_ROOT_FOLDER;
     }
 
     protected abstract EnhancedRandomBuilder enhance(EnhancedRandomBuilder baseEnhancedRandomBuilder);
@@ -58,7 +71,7 @@ public abstract class AbstractBackwardsCompatibilityTest {
 
     <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) throws Throwable {
         Collection<Class<?>> subclasses = findAllNonAbstractSubclassesOf(baseClass);
-        jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(rootFolder, folderName), subclasses);
+        jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(getRootFolder(), folderName), subclasses);
     }
 
     private JsonBackwardsCompatibilityAsserter jsonBackwardsCompatibilityAsserter() {
@@ -91,10 +104,10 @@ public abstract class AbstractBackwardsCompatibilityTest {
 
     private EnhancedRandomBuilder baseEnhancedRandomBuilder() {
         return EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
-                .randomizationDepth(5)
+                .randomizationDepth(RANDOMIZATION_DEPTH)
                 .charset(forName("UTF-8"))
                 .stringLengthRange(5, 50)
-                .collectionSizeRange(2, 2)
+                .collectionSizeRange(DEFAULT_MIN_COLLECTION_SIZE, DEFAULT_MAX_COLLECTION_SIZE)
                 .scanClasspathForConcreteTypes(true)
                 .overrideDefaultInitialization(true);
     }

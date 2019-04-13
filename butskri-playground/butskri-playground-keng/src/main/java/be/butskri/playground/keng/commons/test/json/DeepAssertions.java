@@ -50,7 +50,7 @@ public class DeepAssertions {
     }
 
     private static List deepNullFieldsForObject(Object object, PropertyPath path) {
-        List<Field> fields = getAllFields(object.getClass());
+        List<Field> fields = getAllNonTransientInstanceFields(object.getClass());
         return fields.stream()
                 .map(field -> findDeepNullFields(getValue(object, field), path.hop(field)))
                 .flatMap(Collection::stream)
@@ -80,20 +80,25 @@ public class DeepAssertions {
         return object.getClass().isArray();
     }
 
-    private static List<Field> getAllFields(Class<?> clazz) {
+    private static List<Field> getAllNonTransientInstanceFields(Class<?> clazz) {
         if (Object.class.equals(clazz)) {
             return Collections.emptyList();
         }
         List<Field> result = new ArrayList<>();
         result.addAll(Arrays.asList(clazz.getDeclaredFields()));
-        result.addAll(getAllFields(clazz.getSuperclass()));
+        result.addAll(getAllNonTransientInstanceFields(clazz.getSuperclass()));
         return result.stream()
                 .filter(DeepAssertions::isNonStatic)
+                .filter(DeepAssertions::isNonTransient)
                 .collect(Collectors.toList());
     }
 
     private static boolean isNonStatic(Field field) {
         return !Modifier.isStatic(field.getModifiers());
+    }
+
+    private static boolean isNonTransient(Field field) {
+        return !Modifier.isTransient(field.getModifiers());
     }
 
     private static boolean isCollectionLike(Object object) {

@@ -52,6 +52,9 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
     }
 
     private List<String> jsonFilesInFolder(File folder) {
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
         return Stream.of(folder.listFiles((file) -> file.getName().endsWith(".json")))
                 .map(file -> file.getName())
                 .sorted()
