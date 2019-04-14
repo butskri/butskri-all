@@ -1,10 +1,10 @@
-package be.butskri.playground.keng.commons.test;
+package be.butskri.playground.keng.commons.backwardscompatibility.json;
 
+import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
+import be.butskri.playground.keng.commons.backwardscompatibility.json.metadata.EventMetadataBackwardsCompatibilityAsserter;
 import be.butskri.playground.keng.commons.domain.ProcessManager;
 import be.butskri.playground.keng.commons.domain.ViewObject;
 import be.butskri.playground.keng.commons.events.Event;
-import be.butskri.playground.keng.commons.test.json.JsonBackwardsCompatibilityAsserter;
-import be.butskri.playground.keng.commons.test.metadata.EventMetadataBackwardsCompatibilityAsserter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
@@ -22,8 +22,10 @@ import java.util.stream.Collectors;
 
 import static java.nio.charset.Charset.forName;
 
-public abstract class AbstractBackwardsCompatibilityTest {
+public abstract class AbstractJsonBackwardsCompatibilityTest {
 
+    private static final int DEFAULT_MIN_STRING_LENGTH = 5;
+    private static final int DEFAULT_MAX_STRING_LENGTH = 50;
     private static final int DEFAULT_MIN_COLLECTION_SIZE = 2;
     private static final int DEFAULT_MAX_COLLECTION_SIZE = 2;
     private static final int RANDOMIZATION_DEPTH = 5;
@@ -106,7 +108,7 @@ public abstract class AbstractBackwardsCompatibilityTest {
         return EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
                 .randomizationDepth(RANDOMIZATION_DEPTH)
                 .charset(forName("UTF-8"))
-                .stringLengthRange(5, 50)
+                .stringLengthRange(DEFAULT_MIN_STRING_LENGTH, DEFAULT_MAX_STRING_LENGTH)
                 .collectionSizeRange(DEFAULT_MIN_COLLECTION_SIZE, DEFAULT_MAX_COLLECTION_SIZE)
                 .scanClasspathForConcreteTypes(true)
                 .overrideDefaultInitialization(true);

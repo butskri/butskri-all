@@ -1,4 +1,4 @@
-package be.butskri.playground.keng.commons.test.json;
+package be.butskri.playground.keng.commons.backwardscompatibility.json.assertions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.api.EnhancedRandom;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static be.butskri.playground.keng.commons.test.json.DeepAssertions.assertNoDeepNullValues;
+import static be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.DeepAssertions.assertNoDeepNullValues;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -63,10 +63,13 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
 
     private <T> List<String> filenamesForClasses(Collection<Class<? extends T>> classes) {
         return classes.stream()
-                .map(Class::getSimpleName)
-                .map(classname -> classname + ".json")
+                .map(JsonBackwardsCompatibilityAsserter::fileNameFor)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private static String fileNameFor(Class<?> clazz) {
+        return clazz.getSimpleName() + ".json";
     }
 
     private class SingleJsonBackwardsCompatibilityAsserter {
@@ -139,7 +142,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private File file(File folder) {
-            return new File(folder, clazz.getSimpleName() + ".json");
+            return new File(folder, fileNameFor(clazz));
         }
 
         private File actualFolder() {

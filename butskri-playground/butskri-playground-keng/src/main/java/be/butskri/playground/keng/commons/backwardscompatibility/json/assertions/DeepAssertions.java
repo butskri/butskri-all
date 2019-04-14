@@ -1,4 +1,4 @@
-package be.butskri.playground.keng.commons.test.json;
+package be.butskri.playground.keng.commons.backwardscompatibility.json.assertions;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

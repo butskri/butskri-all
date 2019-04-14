@@ -1,4 +1,4 @@
-package be.butskri.playground.keng.commons.test.metadata;
+package be.butskri.playground.keng.commons.backwardscompatibility.json.metadata;
 
 import be.butskri.playground.keng.axon.DataSubjectId;
 import be.butskri.playground.keng.axon.DeepPersonalData;

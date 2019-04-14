@@ -1,4 +1,4 @@
-package be.butskri.playground.keng.commons.test.metadata;
+package be.butskri.playground.keng.commons.backwardscompatibility.json.metadata;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
