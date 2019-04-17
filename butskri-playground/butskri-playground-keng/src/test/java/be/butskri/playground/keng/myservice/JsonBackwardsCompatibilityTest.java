@@ -1,4 +1,4 @@
-package be.butskri.playground.keng;
+package be.butskri.playground.keng.myservice;
 
 import be.butskri.playground.keng.commons.backwardscompatibility.json.AbstractJsonBackwardsCompatibilityTest;
 import be.butskri.playground.keng.myservice.beans.SimplifiedInss;
@@ -36,7 +36,7 @@ public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompati
 
     @Override
     protected String getBasePackage() {
-        return "be.butskri";
+        return "be.butskri.playground.keng.myservice";
     }
 
     @Override
@@ -45,8 +45,8 @@ public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompati
     }
 
     @Override
-    protected EnhancedRandomBuilder enhance(EnhancedRandomBuilder baseEnhancedRandomBuilder) {
-        return baseEnhancedRandomBuilder
+    protected EnhancedRandomBuilder enhancedRandomBuilder() {
+        return super.enhancedRandomBuilder()
                 .randomize(SimplifiedInss.class, (Supplier<SimplifiedInss>) this::generateRandomInss);
     }
 

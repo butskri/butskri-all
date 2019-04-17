@@ -65,8 +65,6 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         return DEFAULT_ROOT_FOLDER;
     }
 
-    protected abstract EnhancedRandomBuilder enhance(EnhancedRandomBuilder baseEnhancedRandomBuilder);
-
     protected abstract ObjectMapper getObjectMapper();
 
     protected abstract String getBasePackage();
@@ -100,11 +98,10 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     }
 
     private EnhancedRandom randomizer() {
-        EnhancedRandomBuilder baseEnhancedRandomBuilder = baseEnhancedRandomBuilder();
-        return enhance(baseEnhancedRandomBuilder).build();
+        return enhancedRandomBuilder().build();
     }
 
-    private EnhancedRandomBuilder baseEnhancedRandomBuilder() {
+    protected EnhancedRandomBuilder enhancedRandomBuilder() {
         return EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
                 .randomizationDepth(RANDOMIZATION_DEPTH)
                 .charset(forName("UTF-8"))
