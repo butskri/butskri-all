@@ -28,7 +28,6 @@ public class JsonBackwardsCompatibilityAsserterTest {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-    private JsonBackwardsCompatibilityAsserter asserter;
     private File rootFolder;
     private File actualFolder;
     private File expectedFolder;
@@ -40,14 +39,9 @@ public class JsonBackwardsCompatibilityAsserterTest {
         expectedFolder = createFolder("expected");
     }
 
-    @Before
-    public void setUp() {
-        asserter = new JsonBackwardsCompatibilityAsserter(objectMapperForTests(), enhancedRandomBuilder());
-    }
-
     @Test
     public void assertionSucceedsWhenJsonIsGeneratedAndMatchesPerfectlyWithClass() throws Throwable {
-        asserter.assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class, MyIntegrationEvent.class));
+        asserter().assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class, MyIntegrationEvent.class));
 
         assertFolderIsEmpty(actualFolder);
         assertFolderContainsOnlyJsonFor(expectedFolder, MyEvent.class, MyIntegrationEvent.class);
@@ -58,7 +52,7 @@ public class JsonBackwardsCompatibilityAsserterTest {
         setUpExpectedJson("MyEventFullyMatching.json", MyEvent.class);
         setUpExpectedJson("MyIntegrationEventFullyMatching.json", MyIntegrationEvent.class);
 
-        asserter.assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class, MyIntegrationEvent.class));
+        asserter().assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class, MyIntegrationEvent.class));
         assertFolderIsEmpty(actualFolder);
     }
 
@@ -67,8 +61,8 @@ public class JsonBackwardsCompatibilityAsserterTest {
         setUpExpectedJson("MyEventTooManyFields.json", MyEvent.class);
 
         try {
-            asserter.assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class));
-            fail("exception should have bean thrown");
+            asserter().assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class));
+            fail("AssertionError should have been thrown!");
         } catch (ComparisonFailure expected) {
             assertThat(expected.getMessage())
                     .contains("json for clazz class be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.MyEvent not deserialized/serialized correctly");
@@ -87,8 +81,8 @@ public class JsonBackwardsCompatibilityAsserterTest {
         setUpExpectedJson("MyEventNotAllFields.json", MyEvent.class);
 
         try {
-            asserter.assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class));
-            fail("exception should have been thrown!");
+            asserter().assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class));
+            fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
             assertThat(expected.getMessage())
                     .contains(String.format("object of type %s should not have null values", MyEvent.class));
@@ -97,8 +91,29 @@ public class JsonBackwardsCompatibilityAsserterTest {
     }
 
     @Test
-    public void assertionFailsWhenNewUnknownClassAndAsserterConfiguredToFailOnNewBeanGeneration() {
-        // TODO implement this
+    public void assertionFailsWhenNewUnknownClassAndAsserterConfiguredToFailOnNewBeanGeneration() throws Throwable {
+        try {
+            asserter(backwardsCompatibilityAsserterConfiguration().withFailOnMissingJsonEnabled(true))
+                    .assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class));
+            fail("AssertionError should have been thrown!");
+        } catch (AssertionError expected) {
+            assertThat(expected.getMessage())
+                    .contains(String.format("No json found for %s", MyEvent.class));
+        }
+    }
+
+    private JsonBackwardsCompatibilityAsserter asserter() {
+        return asserter(backwardsCompatibilityAsserterConfiguration());
+    }
+
+    private JsonBackwardsCompatibilityAsserter asserter(BackwardsCompatibilityAsserterConfiguration configuration) {
+        return new JsonBackwardsCompatibilityAsserter(configuration);
+    }
+
+    private BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
+        return new BackwardsCompatibilityAsserterConfiguration()
+                .withObjectMapper(objectMapperForTests())
+                .withEnhancedRandom(enhancedRandomBuilder());
     }
 
     private EnhancedRandom enhancedRandomBuilder() {

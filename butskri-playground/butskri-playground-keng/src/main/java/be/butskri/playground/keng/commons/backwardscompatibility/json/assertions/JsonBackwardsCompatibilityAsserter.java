@@ -19,12 +19,10 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
 
-    private ObjectMapper objectMapper;
-    private EnhancedRandom enhancedRandom;
+    private BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration;
 
-    public JsonBackwardsCompatibilityAsserter(ObjectMapper objectMapper, EnhancedRandom enhancedRandom) {
-        this.objectMapper = objectMapper;
-        this.enhancedRandom = enhancedRandom;
+    public JsonBackwardsCompatibilityAsserter(BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration) {
+        this.backwardsCompatibilityAsserterConfiguration = backwardsCompatibilityAsserterConfiguration;
     }
 
     public <T> void assertJsonIsBackwardsCompatibleFor(File baseFolder, Collection<Class<? extends T>> classes) throws Throwable {
@@ -68,6 +66,14 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
                 .collect(Collectors.toList());
     }
 
+    private ObjectMapper objectMapper() {
+        return backwardsCompatibilityAsserterConfiguration.getObjectMapper();
+    }
+
+    private EnhancedRandom enhancedRandom() {
+        return backwardsCompatibilityAsserterConfiguration.getEnhancedRandom();
+    }
+
     public static String fileNameFor(Class<?> clazz) {
         return clazz.getSimpleName() + ".json";
     }
@@ -92,9 +98,12 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private void generateJsonWhenNecessary() {
+            if (!expectedFile().exists() && backwardsCompatibilityAsserterConfiguration.isFailOnMissingJsonEnabled()) {
+                fail(String.format("No json found for %s in folder %s", clazz, expectedFolder()));
+            }
             if (!expectedFile().exists()) {
-                Object randmobBean = enhancedRandom.nextObject(clazz);
-                writeObjectToFile(randmobBean, expectedFile());
+                Object randomBean = enhancedRandom().nextObject(clazz);
+                writeObjectToFile(randomBean, expectedFile());
             }
         }
 
@@ -158,7 +167,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
                 return null;
             }
             try {
-                return objectMapper.readValue(file, clazz);
+                return objectMapper().readValue(file, clazz);
             } catch (IOException e) {
                 fail(String.format("Problem loading object of type %s. Could not read json from file %s", clazz, file), e);
                 return null;
@@ -185,7 +194,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
                 if (!file.exists()) {
                     file.createNewFile();
                 }
-                objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, object);
+                objectMapper().writerWithDefaultPrettyPrinter().writeValue(file, object);
             } catch (IOException e) {
                 fail(String.format("Problem writing object of type %s. Could not write json to file %s", clazz, file), e);
             }

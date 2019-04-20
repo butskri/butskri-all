@@ -1,5 +1,6 @@
 package be.butskri.playground.keng.commons.backwardscompatibility.json;
 
+import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.BackwardsCompatibilityAsserterConfiguration;
 import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.butskri.playground.keng.commons.backwardscompatibility.json.metadata.EventMetadataBackwardsCompatibilityAsserter;
 import be.butskri.playground.keng.commons.backwardscompatibility.random.RandomizationTestConstants;
@@ -8,7 +9,6 @@ import be.butskri.playground.keng.commons.domain.ViewObject;
 import be.butskri.playground.keng.commons.events.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
-import io.github.benas.randombeans.api.EnhancedRandom;
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -68,8 +68,18 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(getRootFolder(), folderName), subclasses);
     }
 
+    protected BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
+        return new BackwardsCompatibilityAsserterConfiguration()
+                .withObjectMapper(getObjectMapper())
+                .withEnhancedRandom(enhancedRandomBuilder().build());
+    }
+
+    protected EnhancedRandomBuilder enhancedRandomBuilder() {
+        return RandomizationTestConstants.baseEnhancedRandomBuilder();
+    }
+
     private JsonBackwardsCompatibilityAsserter jsonBackwardsCompatibilityAsserter() {
-        return new JsonBackwardsCompatibilityAsserter(getObjectMapper(), randomizer());
+        return new JsonBackwardsCompatibilityAsserter(backwardsCompatibilityAsserterConfiguration());
     }
 
     private EventMetadataBackwardsCompatibilityAsserter eventMetadataBackwardsCompatibilityAsserter() {
@@ -89,13 +99,5 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         } catch (IOException e) {
             Assertions.fail(String.format("Could not clean directory %s", directory), e);
         }
-    }
-
-    private EnhancedRandom randomizer() {
-        return enhancedRandomBuilder().build();
-    }
-
-    protected EnhancedRandomBuilder enhancedRandomBuilder() {
-        return RandomizationTestConstants.baseEnhancedRandomBuilder();
     }
 }
