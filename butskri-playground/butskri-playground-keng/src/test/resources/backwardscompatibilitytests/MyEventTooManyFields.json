@@ -1,0 +1,5 @@
+{
+  "myString" : "hahaha",
+  "myInt" : 512,
+  "superfluousField": "superfluousValue"
+}

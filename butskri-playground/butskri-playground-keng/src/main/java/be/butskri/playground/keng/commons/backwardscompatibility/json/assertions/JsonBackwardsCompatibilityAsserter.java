@@ -68,7 +68,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
                 .collect(Collectors.toList());
     }
 
-    private static String fileNameFor(Class<?> clazz) {
+    public static String fileNameFor(Class<?> clazz) {
         return clazz.getSimpleName() + ".json";
     }
 
@@ -86,8 +86,8 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
             generateJsonWhenNecessary();
             deserializeAndThenSerializeObject();
             assertActualAndExpectedJsonsAreTheSame();
-            cleanupActualFile();
             assertObjectDoesNotContainNullValues();
+            cleanupActualFile();
             return this;
         }
 

@@ -1,38 +1,15 @@
 package be.butskri.playground.keng.myservice;
 
 import be.butskri.playground.keng.commons.backwardscompatibility.json.AbstractJsonBackwardsCompatibilityTest;
+import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.ObjectMapperTestConstants;
 import be.butskri.playground.keng.myservice.beans.SimplifiedInss;
-import be.butskri.playground.keng.myservice.beans.SuperBean;
-import be.butskri.playground.keng.myservice.configuration.CustomTypesModule;
-import be.butskri.playground.keng.myservice.configuration.DateTimeSerializationModule;
-import be.butskri.playground.keng.myservice.configuration.SuperBeanMixin;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
 
 import java.util.function.Supplier;
 
 public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompatibilityTest {
-
-    private ObjectMapper objectMapper;
-
-    @Before
-    public void configureObjectMapper() {
-        objectMapper = new ObjectMapper();
-        objectMapper.addMixIn(SuperBean.class, SuperBeanMixin.class);
-        objectMapper.registerModules(new DateTimeSerializationModule(), new CustomTypesModule());
-        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-    }
 
     @Override
     protected String getBasePackage() {
@@ -41,7 +18,7 @@ public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompati
 
     @Override
     protected ObjectMapper getObjectMapper() {
-        return objectMapper;
+        return ObjectMapperTestConstants.objectMapperForTests();
     }
 
     @Override

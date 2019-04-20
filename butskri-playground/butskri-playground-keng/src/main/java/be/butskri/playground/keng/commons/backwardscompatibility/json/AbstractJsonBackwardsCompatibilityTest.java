@@ -2,6 +2,7 @@ package be.butskri.playground.keng.commons.backwardscompatibility.json;
 
 import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.butskri.playground.keng.commons.backwardscompatibility.json.metadata.EventMetadataBackwardsCompatibilityAsserter;
+import be.butskri.playground.keng.commons.backwardscompatibility.random.RandomizationTestConstants;
 import be.butskri.playground.keng.commons.domain.ProcessManager;
 import be.butskri.playground.keng.commons.domain.ViewObject;
 import be.butskri.playground.keng.commons.events.Event;
@@ -20,15 +21,8 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static java.nio.charset.Charset.forName;
-
 public abstract class AbstractJsonBackwardsCompatibilityTest {
 
-    private static final int DEFAULT_MIN_STRING_LENGTH = 5;
-    private static final int DEFAULT_MAX_STRING_LENGTH = 50;
-    private static final int DEFAULT_MIN_COLLECTION_SIZE = 2;
-    private static final int DEFAULT_MAX_COLLECTION_SIZE = 2;
-    private static final int RANDOMIZATION_DEPTH = 5;
     private File DEFAULT_ROOT_FOLDER = new File("src/test/resources/backwardscompatibility");
 
     private Reflections reflections;
@@ -102,12 +96,6 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     }
 
     protected EnhancedRandomBuilder enhancedRandomBuilder() {
-        return EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
-                .randomizationDepth(RANDOMIZATION_DEPTH)
-                .charset(forName("UTF-8"))
-                .stringLengthRange(DEFAULT_MIN_STRING_LENGTH, DEFAULT_MAX_STRING_LENGTH)
-                .collectionSizeRange(DEFAULT_MIN_COLLECTION_SIZE, DEFAULT_MAX_COLLECTION_SIZE)
-                .scanClasspathForConcreteTypes(true)
-                .overrideDefaultInitialization(true);
+        return RandomizationTestConstants.baseEnhancedRandomBuilder();
     }
 }
