@@ -1,9 +1,12 @@
-package be.butskri.playground.keng.commons.backwardscompatibility.json.metadata;
+package be.butskri.playground.keng.commons.backwardscompatibility.json.assertions;
 
 import be.butskri.playground.keng.axon.DataSubjectId;
 import be.butskri.playground.keng.axon.DeepPersonalData;
 import be.butskri.playground.keng.axon.PersonalData;
 import be.butskri.playground.keng.commons.annotations.CorrelationId;
+import be.butskri.playground.keng.commons.backwardscompatibility.json.metadata.ClassInfo;
+import be.butskri.playground.keng.commons.backwardscompatibility.json.metadata.ClassMetadata;
+import be.butskri.playground.keng.commons.backwardscompatibility.json.metadata.FieldInfo;
 import be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils;
 import be.butskri.playground.keng.commons.events.IntegrationEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
