@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.JsonAssertions.assertJsonEqual;
 import static be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils.loadJson;
 import static be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils.writeJsonToFile;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -132,12 +133,15 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
             String readJson = readJson();
             ClassMetadata classMetadata = classMetadata();
             if (readJson == null) {
+                // TODO throw exception when not allowed to generate json
                 writeClassMetadata(classMetadata, expectedFile());
             } else {
                 try {
-                    assertThat(jsonFor(classMetadata))
-                            .describedAs("metadata for class %s should remain the same", clazz)
-                            .isEqualTo(readJson);
+                    assertJsonEqual(
+                            String.format("metadata for class %s should remain the same", clazz),
+                            readJson,
+                            jsonFor(classMetadata)
+                    );
                 } catch (AssertionError error) {
                     writeClassMetadata(classMetadata, actualFile());
                     throw error;

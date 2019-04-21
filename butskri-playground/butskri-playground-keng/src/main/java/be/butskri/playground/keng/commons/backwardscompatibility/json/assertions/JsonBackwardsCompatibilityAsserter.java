@@ -114,7 +114,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private void assertActualAndExpectedJsonsAreTheSame() {
-            JsonAssertions.assertJsonSame(
+            JsonAssertions.assertJsonEqual(
                     String.format("json for clazz %s not deserialized/serialized correctly", clazz),
                     loadExpectedJson(),
                     loadActualJson());

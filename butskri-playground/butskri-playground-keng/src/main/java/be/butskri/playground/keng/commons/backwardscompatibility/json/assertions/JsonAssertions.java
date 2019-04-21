@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JsonAssertions {
 
-    public static void assertJsonSame(String description, String expectedJson, String actualJson) {
+    public static void assertJsonEqual(String description, String expectedJson, String actualJson) {
         try {
             JSONAssert.assertEquals(expectedJson, actualJson, true);
         } catch (JSONException e) {
