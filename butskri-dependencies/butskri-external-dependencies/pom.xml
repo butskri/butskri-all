@@ -13,6 +13,7 @@
         <reflections.version>0.9.11</reflections.version>
         <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
         <jsonassert.version>1.5.0</jsonassert.version>
+        <randombeans.version>3.8.0</randombeans.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -53,6 +54,11 @@
                 <groupId>org.skyscreamer</groupId>
                 <artifactId>jsonassert</artifactId>
                 <version>${jsonassert.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.benas</groupId>
+                <artifactId>random-beans</artifactId>
+                <version>${randombeans.version}</version>
             </dependency>
 
         </dependencies>

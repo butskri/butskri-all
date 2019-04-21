@@ -13,7 +13,6 @@
         <dependency>
             <groupId>io.github.benas</groupId>
             <artifactId>random-beans</artifactId>
-            <version>3.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
