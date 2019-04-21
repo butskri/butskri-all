@@ -57,6 +57,14 @@ public class JsonBackwardsCompatibilityAsserterTest {
     }
 
     @Test
+    public void assertionSucceedsWhenJsonFormattedDifferentlyButContentsMatches() throws Throwable {
+        setUpExpectedJson("MyEventFormattedDifferently.json", MyEvent.class);
+
+        asserter().assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class));
+        assertFolderIsEmpty(actualFolder);
+    }
+
+    @Test
     public void assertionFailsWhenJsonContainsAdditionalField() throws Throwable {
         setUpExpectedJson("MyEventTooManyFields.json", MyEvent.class);
 

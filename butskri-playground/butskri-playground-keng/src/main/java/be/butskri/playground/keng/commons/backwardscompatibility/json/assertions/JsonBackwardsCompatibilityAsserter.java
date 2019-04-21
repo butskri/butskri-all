@@ -2,7 +2,6 @@ package be.butskri.playground.keng.commons.backwardscompatibility.json.assertion
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.api.EnhancedRandom;
-import org.apache.commons.io.FileUtils;
 import org.junit.rules.ErrorCollector;
 
 import java.io.File;
@@ -14,6 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.DeepAssertions.assertNoDeepNullValues;
+import static be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils.loadJson;
+import static be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils.writeJsonToFile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -113,12 +114,10 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private void assertActualAndExpectedJsonsAreTheSame() {
-            String expectedJson = loadExpectedJson();
-            String actualJson = loadActualJson();
-
-            assertThat(actualJson)
-                    .describedAs("json for clazz %s not deserialized/serialized correctly", clazz)
-                    .isEqualTo(expectedJson);
+            JsonAssertions.assertJsonSame(
+                    String.format("json for clazz %s not deserialized/serialized correctly", clazz),
+                    loadExpectedJson(),
+                    loadActualJson());
         }
 
         private void assertObjectDoesNotContainNullValues() {
@@ -174,30 +173,8 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
             }
         }
 
-        private String loadJson(File file) {
-            if (!file.exists()) {
-                return null;
-            }
-            try {
-                return FileUtils.readFileToString(file, "UTF-8");
-            } catch (IOException e) {
-                fail(String.format("Problem reading file %s", file), e);
-                return null;
-            }
-        }
-
         private void writeObjectToFile(Object object, File file) {
-            try {
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
-                objectMapper().writerWithDefaultPrettyPrinter().writeValue(file, object);
-            } catch (IOException e) {
-                fail(String.format("Problem writing object of type %s. Could not write json to file %s", clazz, file), e);
-            }
+            writeJsonToFile(object, file, objectMapper());
         }
     }
 }

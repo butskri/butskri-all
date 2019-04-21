@@ -4,22 +4,19 @@ import be.butskri.playground.keng.axon.DataSubjectId;
 import be.butskri.playground.keng.axon.DeepPersonalData;
 import be.butskri.playground.keng.axon.PersonalData;
 import be.butskri.playground.keng.commons.annotations.CorrelationId;
+import be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils;
 import be.butskri.playground.keng.commons.events.IntegrationEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
 import org.junit.rules.ErrorCollector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils.loadJson;
+import static be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils.writeJsonToFile;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
@@ -71,8 +68,6 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
     }
 
     static class ClassMetaDataAsserter {
-
-        private static final Logger LOGGER = LoggerFactory.getLogger(ClassMetaDataAsserter.class);
 
         private ObjectMapper objectMapper;
         private File parentFolder;
@@ -150,23 +145,11 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
         }
 
         private String jsonFor(Object object) {
-            try {
-                return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-            } catch (JsonProcessingException e) {
-                fail(String.format("Problem converting object to json %s", object), e);
-                return null;
-            }
+            return JsonUtils.jsonFor(object, objectMapper);
         }
 
         private void writeClassMetadata(ClassMetadata classMetadata, File file) {
-            try {
-                if (file.getParentFile().mkdirs()) {
-                    LOGGER.debug("folder {} is created", file.getParentFile());
-                }
-                objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, classMetadata);
-            } catch (IOException e) {
-                fail(String.format("Problem writing class metadata. Could not write json to file %s", file), e);
-            }
+            writeJsonToFile(classMetadata, file, objectMapper);
         }
 
         private File actualFile() {
@@ -183,15 +166,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
         }
 
         private String readJson() {
-            File file = expectedFile();
-            if (file.exists()) {
-                try {
-                    return FileUtils.readFileToString(file, "UTF-8");
-                } catch (IOException e) {
-                    fail(String.format("Problem reading file %s", file), e);
-                }
-            }
-            return null;
+            return loadJson(expectedFile());
         }
 
         private ClassMetadata classMetadata() {
