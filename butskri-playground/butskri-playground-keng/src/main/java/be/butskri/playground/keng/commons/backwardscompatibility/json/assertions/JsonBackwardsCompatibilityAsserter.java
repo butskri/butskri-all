@@ -99,7 +99,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private void generateJsonWhenNecessary() {
-            if (!expectedFile().exists() && backwardsCompatibilityAsserterConfiguration.isFailOnMissingJsonEnabled()) {
+            if (!expectedFile().exists() && backwardsCompatibilityAsserterConfiguration.isFailOnMissingExpectedFile()) {
                 fail(String.format("No json found for %s in folder %s", clazz, expectedFolder()));
             }
             if (!expectedFile().exists()) {

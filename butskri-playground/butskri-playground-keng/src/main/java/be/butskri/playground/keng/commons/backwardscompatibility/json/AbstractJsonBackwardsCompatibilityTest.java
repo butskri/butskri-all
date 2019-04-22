@@ -1,8 +1,8 @@
 package be.butskri.playground.keng.commons.backwardscompatibility.json;
 
 import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.BackwardsCompatibilityAsserterConfiguration;
-import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.EventMetadataBackwardsCompatibilityAsserter;
+import be.butskri.playground.keng.commons.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.butskri.playground.keng.commons.backwardscompatibility.random.RandomizationTestConstants;
 import be.butskri.playground.keng.commons.domain.ProcessManager;
 import be.butskri.playground.keng.commons.domain.ViewObject;
@@ -83,7 +83,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     }
 
     private EventMetadataBackwardsCompatibilityAsserter eventMetadataBackwardsCompatibilityAsserter() {
-        return new EventMetadataBackwardsCompatibilityAsserter(getObjectMapper());
+        return new EventMetadataBackwardsCompatibilityAsserter(backwardsCompatibilityAsserterConfiguration());
     }
 
     private <T> Collection<Class<?>> findAllNonAbstractSubclassesOf(Class<T> baseClass) {

@@ -21,13 +21,14 @@ import static be.butskri.playground.keng.commons.backwardscompatibility.json.ass
 import static be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils.loadJson;
 import static be.butskri.playground.keng.commons.backwardscompatibility.json.util.JsonUtils.writeJsonToFile;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
-    private ObjectMapper objectMapper;
+    private BackwardsCompatibilityAsserterConfiguration configuration;
 
-    public EventMetadataBackwardsCompatibilityAsserter(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public EventMetadataBackwardsCompatibilityAsserter(BackwardsCompatibilityAsserterConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     public void assertAnnotationsForEvents(File parentFolder, Collection<Class<?>> classes) throws Throwable {
@@ -43,7 +44,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
 
     private Collection<ClassMetaDataAsserter> annotationAssertersFor(File parentFolder, Collection<Class<?>> classes) {
         return classes.stream()
-                .map(clazz -> new ClassMetaDataAsserter(clazz, objectMapper, parentFolder))
+                .map(clazz -> new ClassMetaDataAsserter(clazz, parentFolder))
                 .collect(Collectors.toList());
     }
 
@@ -71,16 +72,22 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
         return predicate.negate();
     }
 
-    static class ClassMetaDataAsserter {
+    private ObjectMapper objectMapper() {
+        return configuration.getObjectMapper();
+    }
 
-        private ObjectMapper objectMapper;
+    public static String fileNameFor(Class<?> clazz) {
+        return clazz.getSimpleName() + ".metadata";
+    }
+
+    class ClassMetaDataAsserter {
+
         private File parentFolder;
         private Class<?> clazz;
         private ClassInfo classInfo;
 
-        public ClassMetaDataAsserter(Class<?> clazz, ObjectMapper objectMapper, File parentFolder) {
+        public ClassMetaDataAsserter(Class<?> clazz, File parentFolder) {
             this.clazz = clazz;
-            this.objectMapper = objectMapper;
             this.parentFolder = parentFolder;
         }
 
@@ -131,14 +138,20 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
 
         private ClassMetaDataAsserter assertClassMetadataRemainsSame() {
             String readJson = readJson();
+            if (readJson == null && configuration.isFailOnMissingExpectedFile()) {
+                fail(String.format("Expected metadata file missing for %s. " +
+                                "Probably you created a new event or added a new @DeepPersonalData field. " +
+                                "You can generate the expected file using failOnMissingExpectedFile=false",
+                        clazz));
+            }
+
             ClassMetadata classMetadata = classMetadata();
             if (readJson == null) {
-                // TODO throw exception when not allowed to generate json
                 writeClassMetadata(classMetadata, expectedFile());
             } else {
                 try {
                     assertJsonEqual(
-                            String.format("metadata for class %s should remain the same", clazz),
+                            String.format("metadata for %s should remain the same", clazz),
                             readJson,
                             jsonFor(classMetadata)
                     );
@@ -152,11 +165,11 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
         }
 
         private String jsonFor(Object object) {
-            return JsonUtils.jsonFor(object, objectMapper);
+            return JsonUtils.jsonFor(object, objectMapper());
         }
 
         private void writeClassMetadata(ClassMetadata classMetadata, File file) {
-            writeJsonToFile(classMetadata, file, objectMapper);
+            writeJsonToFile(classMetadata, file, objectMapper());
         }
 
         private File actualFile() {
@@ -169,7 +182,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
 
         private File file(String subfolder) {
             File folder = new File(this.parentFolder, subfolder);
-            return new File(folder, clazz.getSimpleName() + ".metadata");
+            return new File(folder, fileNameFor(clazz));
         }
 
         private String readJson() {

@@ -7,10 +7,10 @@ public class BackwardsCompatibilityAsserterConfiguration {
 
     private ObjectMapper objectMapper;
     private EnhancedRandom enhancedRandom;
-    private boolean failOnMissingJsonEnabled = false;
+    private boolean failOnMissingExpectedFile = false;
 
-    public BackwardsCompatibilityAsserterConfiguration withFailOnMissingJsonEnabled(boolean failOnMissingJsonEnabled) {
-        this.failOnMissingJsonEnabled = failOnMissingJsonEnabled;
+    public BackwardsCompatibilityAsserterConfiguration withFailOnMissingExpectedFile(boolean failOnMissingExpectedFile) {
+        this.failOnMissingExpectedFile = failOnMissingExpectedFile;
         return this;
     }
 
@@ -24,8 +24,8 @@ public class BackwardsCompatibilityAsserterConfiguration {
         return this;
     }
 
-    boolean isFailOnMissingJsonEnabled() {
-        return failOnMissingJsonEnabled;
+    boolean isFailOnMissingExpectedFile() {
+        return failOnMissingExpectedFile;
     }
 
     ObjectMapper getObjectMapper() {

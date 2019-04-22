@@ -101,7 +101,7 @@ public class JsonBackwardsCompatibilityAsserterTest {
     @Test
     public void assertionFailsWhenNewUnknownClassAndAsserterConfiguredToFailOnNewBeanGeneration() throws Throwable {
         try {
-            asserter(backwardsCompatibilityAsserterConfiguration().withFailOnMissingJsonEnabled(true))
+            asserter(backwardsCompatibilityAsserterConfiguration().withFailOnMissingExpectedFile(true))
                     .assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class));
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
@@ -138,7 +138,8 @@ public class JsonBackwardsCompatibilityAsserterTest {
     private void setUpExpectedJson(String resourcePath, Class<?> clazz) throws IOException {
         File file = new File(expectedFolder, fileNameFor(clazz));
         if (file.createNewFile()) {
-            InputStream resource = getClass().getResourceAsStream("/backwardscompatibilitytests/" + resourcePath);
+            InputStream resource = getClass()
+                    .getResourceAsStream("/backwardscompatibilitytests/json/" + resourcePath);
             FileUtils.write(file, IOUtils.toString(resource, "UTF-8"), "UTF-8");
         }
     }
