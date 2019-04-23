@@ -137,31 +137,32 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
         }
 
         private ClassMetaDataAsserter assertClassMetadataRemainsSame() {
-            String readJson = readJson();
-            if (readJson == null && configuration.isFailOnMissingExpectedFile()) {
-                fail(String.format("Expected metadata file missing for %s. " +
+            generateJsonWhenNecessary();
+            ClassMetadata classMetadata = classMetadata();
+            try {
+                assertJsonEqual(
+                        String.format("metadata for %s should remain the same", clazz),
+                        loadJson(expectedFile()),
+                        jsonFor(classMetadata)
+                );
+            } catch (AssertionError error) {
+                writeClassMetadata(classMetadata, actualFile());
+                throw error;
+            }
+            return this;
+        }
+
+        private void generateJsonWhenNecessary() {
+            if (!expectedFile().exists() && configuration.isFailOnMissingExpectedFile()) {
+                fail(String.format("Metadata file %s missing for %s. " +
                                 "Probably you created a new event or added a new @DeepPersonalData field. " +
-                                "You can generate the expected file using failOnMissingExpectedFile=false",
+                                "You can generate the expected file using BackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile(false)",
+                        expectedFile(),
                         clazz));
             }
-
-            ClassMetadata classMetadata = classMetadata();
-            if (readJson == null) {
-                writeClassMetadata(classMetadata, expectedFile());
-            } else {
-                try {
-                    assertJsonEqual(
-                            String.format("metadata for %s should remain the same", clazz),
-                            readJson,
-                            jsonFor(classMetadata)
-                    );
-                } catch (AssertionError error) {
-                    writeClassMetadata(classMetadata, actualFile());
-                    throw error;
-                }
+            if (!expectedFile().exists()) {
+                writeClassMetadata(classMetadata(), expectedFile());
             }
-
-            return this;
         }
 
         private String jsonFor(Object object) {
@@ -183,10 +184,6 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
         private File file(String subfolder) {
             File folder = new File(this.parentFolder, subfolder);
             return new File(folder, fileNameFor(clazz));
-        }
-
-        private String readJson() {
-            return loadJson(expectedFile());
         }
 
         private ClassMetadata classMetadata() {

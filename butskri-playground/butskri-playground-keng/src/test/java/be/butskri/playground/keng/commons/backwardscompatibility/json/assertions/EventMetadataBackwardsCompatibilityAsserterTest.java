@@ -87,10 +87,11 @@ public class EventMetadataBackwardsCompatibilityAsserterTest {
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
             assertThat(expected.getMessage())
-                    .contains(
-                            String.format("Expected metadata file missing for %s. " +
+                    .matches(
+                            String.format("Metadata file .* missing for %s. " +
                                             "Probably you created a new event or added a new @DeepPersonalData field. " +
-                                            "You can generate the expected file using failOnMissingExpectedFile=false",
+                                            "You can generate the expected file using " +
+                                            "BackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile\\(false\\)",
                                     MyIntegrationEvent.class));
         }
     }
