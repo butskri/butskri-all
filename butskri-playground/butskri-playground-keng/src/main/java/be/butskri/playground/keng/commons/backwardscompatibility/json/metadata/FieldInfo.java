@@ -3,10 +3,8 @@ package be.butskri.playground.keng.commons.backwardscompatibility.json.metadata;
 import org.assertj.core.util.Sets;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -16,7 +14,8 @@ import java.util.UUID;
 public class FieldInfo {
 
     static final Set<Class<?>> PERSONAL_DATA_COMPLIANT_TYPES = Sets.newLinkedHashSet(
-            String.class, LocalDate.class, LocalDateTime.class, UUID.class, Integer.class, Long.class
+            String.class, LocalDate.class, LocalDateTime.class, UUID.class,
+            Number.class, Integer.class, Long.class, BigDecimal.class, Double.class, Float.class
     );
     private Field field;
 
@@ -59,11 +58,21 @@ public class FieldInfo {
         } else if (isCollection()) {
             ParameterizedType type = (ParameterizedType) field.getGenericType();
             Type[] actualTypeArguments = type.getActualTypeArguments();
-            TypeVariable typeVariable = (TypeVariable) actualTypeArguments[0];
-            Type[] bounds = typeVariable.getBounds();
-            return (Class<?>) bounds[0];
+            return underlyingType(actualTypeArguments[0]);
         }
         return this.field.getType();
+    }
+
+    public Class<?> underlyingType(Type type) {
+        if (type instanceof Class) {
+            return (Class<?>) type;
+        } else if (type instanceof WildcardType) {
+            WildcardType wildcardType = (WildcardType) type;
+            return underlyingType(((WildcardType) type).getUpperBounds()[0]);
+        }
+        TypeVariable typeVariable = (TypeVariable) type;
+        Type[] bounds = typeVariable.getBounds();
+        return (Class<?>) bounds[0];
     }
 
     @Override
