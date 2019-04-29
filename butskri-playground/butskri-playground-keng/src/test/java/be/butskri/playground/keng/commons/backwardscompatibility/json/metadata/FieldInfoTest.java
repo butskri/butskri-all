@@ -143,6 +143,13 @@ public class FieldInfoTest {
         assertCanNotBeAnnotatedWithPersonalData(fieldInfo);
     }
 
+    @Test
+    public void collectionOfParameterizedParameterizedStringExtensionsCanBeAnnotatedWithPersonalData() {
+        FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionOfParameterizedParameterizedStringExtensions");
+
+        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+    }
+
     private void assertCanNotBeAnnotatedWithPersonalData(FieldInfo fieldInfo) {
         assertThat(fieldInfo.canBeAnnotatedWithPersonalData()).isFalse();
         assertThat(fieldInfo.canBeAnnotatedWithDeepPersonalData()).isTrue();
@@ -161,7 +168,7 @@ public class FieldInfoTest {
         }
     }
 
-    private static class SomeTestClass<T extends SomeOtherClass, S extends String> {
+    private static class SomeTestClass<T extends SomeOtherClass, S extends String, U extends S> {
         private UUID uuid;
         private String stringField;
         private int intField;
@@ -181,6 +188,7 @@ public class FieldInfoTest {
         private float primitiveFloatField;
         private Float floatField;
         private Collection<? super S> collectionOfParameterizedStringSupers;
+        private Collection<? extends U> collectionOfParameterizedParameterizedStringExtensions;
 
     }
 

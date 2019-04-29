@@ -56,23 +56,25 @@ public class FieldInfo {
         if (isArray()) {
             return field.getType().getComponentType();
         } else if (isCollection()) {
-            ParameterizedType type = (ParameterizedType) field.getGenericType();
-            Type[] actualTypeArguments = type.getActualTypeArguments();
-            return underlyingType(actualTypeArguments[0]);
+            return underlyingType(field.getGenericType());
         }
         return this.field.getType();
     }
 
     public Class<?> underlyingType(Type type) {
-        if (type instanceof Class) {
-            return (Class<?>) type;
-        } else if (type instanceof WildcardType) {
+        if (type instanceof WildcardType) {
             WildcardType wildcardType = (WildcardType) type;
             return underlyingType(((WildcardType) type).getUpperBounds()[0]);
+        } else if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            return underlyingType(actualTypeArguments[0]);
+        } else if (type instanceof TypeVariable) {
+            TypeVariable typeVariable = (TypeVariable) type;
+            Type[] bounds = typeVariable.getBounds();
+            return underlyingType(bounds[0]);
         }
-        TypeVariable typeVariable = (TypeVariable) type;
-        Type[] bounds = typeVariable.getBounds();
-        return (Class<?>) bounds[0];
+        return (Class<?>) type;
     }
 
     @Override
