@@ -6,6 +6,9 @@ import org.assertj.core.api.Assertions;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.fail;
 
@@ -57,5 +60,13 @@ public class MyFileUtils {
             fail(String.format("Problem loading object of type %s. Could not read json from file %s", clazz, file), e);
             return null;
         }
+    }
+
+    public static Collection<String> allFileNamesIn(File folder) {
+        return Arrays.stream(folder.listFiles())
+                .filter(File::isFile)
+                .map(File::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

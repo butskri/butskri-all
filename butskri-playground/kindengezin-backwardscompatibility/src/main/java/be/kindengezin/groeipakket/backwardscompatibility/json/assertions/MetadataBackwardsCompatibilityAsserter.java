@@ -31,19 +31,40 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
     }
 
     public void assertAnnotationsForEvents(File baseFolder, Collection<Class<?>> classes) throws Throwable {
-        cleanDirectory(new File(baseFolder, "actual"));
+        cleanDirectory(actualFolder(baseFolder));
         Collection<ClassMetaDataAsserter> asserters = annotationAssertersFor(baseFolder, classes);
         assertGdprAnnotationsUsedCorrectly(asserters);
         assertSubjectIdPresentWhenPersonalDataAnnotationsPresent(asserters);
         assertCorrelationIdPresentForIntegrationEvent(asserters);
         verify();
+        assertAllExpectedFilesExist(baseFolder, classes);
     }
 
     public void assertGdprAnnotations(File baseFolder, Collection<Class<?>> classes) throws Throwable {
-        cleanDirectory(new File(baseFolder, "actual"));
+        cleanDirectory(actualFolder(baseFolder));
         Collection<ClassMetaDataAsserter> asserters = annotationAssertersFor(baseFolder, classes);
         assertGdprAnnotationsUsedCorrectly(asserters);
         verify();
+        assertAllExpectedFilesExist(baseFolder, classes);
+    }
+
+    private void assertAllExpectedFilesExist(File baseFolder, Collection<Class<?>> classes) {
+        assertThat(allFileNamesIn(expectedFolder(baseFolder))).containsExactlyElementsOf(filesFor(classes));
+    }
+
+    private Collection<String> filesFor(Collection<Class<?>> classes) {
+        return classes.stream()
+                .map(MetadataBackwardsCompatibilityAsserter::fileNameFor)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private File expectedFolder(File baseFolder) {
+        return new File(baseFolder, "expected");
+    }
+
+    private File actualFolder(File baseFolder) {
+        return new File(baseFolder, "actual");
     }
 
     private Collection<ClassMetaDataAsserter> annotationAssertersFor(File parentFolder, Collection<Class<?>> classes) {
