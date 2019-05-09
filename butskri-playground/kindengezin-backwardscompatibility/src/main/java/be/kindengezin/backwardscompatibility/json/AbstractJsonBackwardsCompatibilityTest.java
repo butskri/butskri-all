@@ -50,7 +50,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     }
 
     @Test
-    public void eventAnnotationsAreBackwardsCompatible() throws Throwable {
+    public void eventMetadataIsBackwardsCompatible() throws Throwable {
         File baseFolder = new File(getRootFolder(), "metadata/events");
         clearDirectory(new File(baseFolder, "actual"));
         Collection<Class<?>> eventsSubclasses = findAllNonAbstractSubclassesOf(Event.class);
