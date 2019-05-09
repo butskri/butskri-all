@@ -1,7 +1,7 @@
 package be.kindengezin.myservice;
 
 import be.kindengezin.groeipakket.backwardscompatibility.json.AbstractJsonBackwardsCompatibilityTest;
-import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserterConfiguration;
+import be.kindengezin.groeipakket.backwardscompatibility.json.JsonBackwardsCompatibilityTestConfiguration;
 import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.ObjectMapperTestConstants;
 import be.kindengezin.myservice.beans.SimplifiedInss;
 import be.kindengezin.myservice.events.SomeDeepPersonalData;
@@ -34,7 +34,7 @@ public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompati
     }
 
     @Override
-    protected JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
+    protected JsonBackwardsCompatibilityTestConfiguration backwardsCompatibilityAsserterConfiguration() {
         return super.backwardsCompatibilityAsserterConfiguration()
                 .withDeepPersonalDataClasses(DEEP_PERSONAL_DATA_CLASSES);
     }

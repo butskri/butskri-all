@@ -1,5 +1,6 @@
 package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
+import be.kindengezin.groeipakket.backwardscompatibility.json.JsonBackwardsCompatibilityTestConfiguration;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -93,7 +94,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
                             String.format("Metadata file .* missing for %s. " +
                                             "Probably you created a new event or added a new @DeepPersonalData field. " +
                                             "You can generate the expected file using " +
-                                            "JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile\\(false\\)",
+                                            "JsonBackwardsCompatibilityTestConfiguration.withFailOnMissingExpectedFile\\(false\\)",
                                     MyIntegrationEvent.class));
         }
     }
@@ -102,12 +103,12 @@ public class MetadataBackwardsCompatibilityAsserterTest {
         return asserter(backwardsCompatibilityAsserterConfiguration());
     }
 
-    private MetadataBackwardsCompatibilityAsserter asserter(JsonBackwardsCompatibilityAsserterConfiguration configuration) {
+    private MetadataBackwardsCompatibilityAsserter asserter(JsonBackwardsCompatibilityTestConfiguration configuration) {
         return new MetadataBackwardsCompatibilityAsserter(configuration);
     }
 
-    private JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
-        return new JsonBackwardsCompatibilityAsserterConfiguration()
+    private JsonBackwardsCompatibilityTestConfiguration backwardsCompatibilityAsserterConfiguration() {
+        return new JsonBackwardsCompatibilityTestConfiguration()
                 .withObjectMapper(objectMapperForTests())
                 .withEnhancedRandom(enhancedRandomBuilder());
     }

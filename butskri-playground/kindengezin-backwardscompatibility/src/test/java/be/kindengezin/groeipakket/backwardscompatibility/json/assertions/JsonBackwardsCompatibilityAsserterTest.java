@@ -1,5 +1,6 @@
 package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
+import be.kindengezin.groeipakket.backwardscompatibility.json.JsonBackwardsCompatibilityTestConfiguration;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -114,12 +115,12 @@ public class JsonBackwardsCompatibilityAsserterTest {
         return asserter(backwardsCompatibilityAsserterConfiguration());
     }
 
-    private JsonBackwardsCompatibilityAsserter asserter(JsonBackwardsCompatibilityAsserterConfiguration configuration) {
+    private JsonBackwardsCompatibilityAsserter asserter(JsonBackwardsCompatibilityTestConfiguration configuration) {
         return new JsonBackwardsCompatibilityAsserter(configuration);
     }
 
-    private JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
-        return new JsonBackwardsCompatibilityAsserterConfiguration()
+    private JsonBackwardsCompatibilityTestConfiguration backwardsCompatibilityAsserterConfiguration() {
+        return new JsonBackwardsCompatibilityTestConfiguration()
                 .withObjectMapper(objectMapperForTests())
                 .withEnhancedRandom(enhancedRandomBuilder());
     }

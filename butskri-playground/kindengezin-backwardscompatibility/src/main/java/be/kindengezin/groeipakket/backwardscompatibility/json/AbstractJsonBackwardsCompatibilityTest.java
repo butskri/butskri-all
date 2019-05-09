@@ -1,7 +1,6 @@
 package be.kindengezin.groeipakket.backwardscompatibility.json;
 
 import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
-import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserterConfiguration;
 import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter;
 import be.kindengezin.groeipakket.backwardscompatibility.json.random.RandomizationTestConstants;
 import be.kindengezin.groeipakket.commons.domain.event.Event;
@@ -81,8 +80,8 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(getRootFolder(), folderName), subclasses);
     }
 
-    protected JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
-        return new JsonBackwardsCompatibilityAsserterConfiguration()
+    protected JsonBackwardsCompatibilityTestConfiguration backwardsCompatibilityAsserterConfiguration() {
+        return new JsonBackwardsCompatibilityTestConfiguration()
                 .withObjectMapper(getObjectMapper())
                 .withEnhancedRandom(enhancedRandomBuilder().build());
     }

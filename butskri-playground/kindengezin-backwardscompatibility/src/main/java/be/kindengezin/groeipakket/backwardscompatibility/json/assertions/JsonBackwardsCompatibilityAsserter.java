@@ -1,11 +1,11 @@
 package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
+import be.kindengezin.groeipakket.backwardscompatibility.json.util.MyFileUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.rules.ErrorCollector;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
 
-    private JsonBackwardsCompatibilityAsserterConfiguration jsonBackwardsCompatibilityAsserterConfiguration;
+    private JsonBackwardsCompatibilityAsserterConfiguration configuration;
 
-    public JsonBackwardsCompatibilityAsserter(JsonBackwardsCompatibilityAsserterConfiguration jsonBackwardsCompatibilityAsserterConfiguration) {
-        this.jsonBackwardsCompatibilityAsserterConfiguration = jsonBackwardsCompatibilityAsserterConfiguration;
+    public JsonBackwardsCompatibilityAsserter(JsonBackwardsCompatibilityAsserterConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     public <T> void assertJsonIsBackwardsCompatibleFor(File baseFolder, Collection<Class<? extends T>> classes) throws Throwable {
@@ -68,11 +68,11 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
     }
 
     private ObjectMapper objectMapper() {
-        return jsonBackwardsCompatibilityAsserterConfiguration.getObjectMapper();
+        return configuration.getObjectMapper();
     }
 
     private EnhancedRandom enhancedRandom() {
-        return jsonBackwardsCompatibilityAsserterConfiguration.getEnhancedRandom();
+        return configuration.getEnhancedRandom();
     }
 
     public static String fileNameFor(Class<?> clazz) {
@@ -99,7 +99,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private void generateJsonWhenNecessary() {
-            if (!expectedFile().exists() && jsonBackwardsCompatibilityAsserterConfiguration.isFailOnMissingExpectedFile()) {
+            if (!expectedFile().exists() && configuration.isFailOnMissingExpectedFile()) {
                 fail(String.format("No json found for %s in folder %s", clazz, expectedFolder()));
             }
             if (!expectedFile().exists()) {
@@ -162,15 +162,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private Object loadObject(File file) {
-            if (!file.exists()) {
-                return null;
-            }
-            try {
-                return objectMapper().readValue(file, clazz);
-            } catch (IOException e) {
-                fail(String.format("Problem loading object of type %s. Could not read json from file %s", clazz, file), e);
-                return null;
-            }
+            return MyFileUtils.loadObject(file, objectMapper(), clazz);
         }
 
         private void writeObjectToFile(Object object, File file) {

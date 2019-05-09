@@ -47,4 +47,15 @@ public class MyFileUtils {
         }
     }
 
+    public static Object loadObject(File file, ObjectMapper objectMapper, Class<?> clazz) {
+        if (!file.exists()) {
+            return null;
+        }
+        try {
+            return objectMapper.readValue(file, clazz);
+        } catch (IOException e) {
+            fail(String.format("Problem loading object of type %s. Could not read json from file %s", clazz, file), e);
+            return null;
+        }
+    }
 }
