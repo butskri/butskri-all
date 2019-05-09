@@ -1,4 +1,4 @@
-package be.kindengezin.groeipakket.backwardscompatibility.json.metadata;
+package be.kindengezin.groeipakket.backwardscompatibility.json.reflection;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

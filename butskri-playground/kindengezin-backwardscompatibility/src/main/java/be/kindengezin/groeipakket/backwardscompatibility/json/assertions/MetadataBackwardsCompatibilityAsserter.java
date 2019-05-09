@@ -1,8 +1,8 @@
 package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
-import be.kindengezin.groeipakket.backwardscompatibility.json.metadata.ClassInfo;
-import be.kindengezin.groeipakket.backwardscompatibility.json.metadata.ClassMetadata;
-import be.kindengezin.groeipakket.backwardscompatibility.json.metadata.FieldInfo;
+import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.ClassInfo;
+import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.ClassMetadata;
+import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.FieldInfo;
 import be.kindengezin.groeipakket.backwardscompatibility.json.util.JsonUtils;
 import be.kindengezin.groeipakket.commons.domain.event.IntegrationEvent;
 import be.kindengezin.groeipakket.commons.integration.annotations.producer.CorrelationId;

@@ -1,4 +1,4 @@
-package be.kindengezin.groeipakket.backwardscompatibility.json.metadata;
+package be.kindengezin.groeipakket.backwardscompatibility.json.reflection;
 
 import org.junit.Test;
 
