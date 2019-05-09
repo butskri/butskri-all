@@ -23,28 +23,28 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     @Test
     public void sagasAreBackwardsCompatible() throws Throwable {
-        assertAnnotatedClassesAreBackwardsCompatible("json/sagas", Saga.class);
+        assertAnnotatedClassesAreBackwardsCompatible("sagas/json", Saga.class);
     }
 
     @Test
     public void eventsAreBackwardsCompatible() throws Throwable {
-        assertSubclassesAreBackwardsCompatible("json/events", Event.class);
+        assertSubclassesAreBackwardsCompatible("events/json", Event.class);
     }
 
     @Test
     public void viewObjectsAreBackwardsCompatible() throws Throwable {
-        assertSubclassesAreBackwardsCompatible("json/view-objects", ViewObject.class);
+        assertSubclassesAreBackwardsCompatible("view-objects/json", ViewObject.class);
     }
 
     @Test
     public void eventMetadataIsBackwardsCompatible() throws Throwable {
-        File baseFolder = folder("metadata/events");
+        File baseFolder = folder("events/metadata");
         metadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, classFinder().findAllNonAbstractSubclassesOf(Event.class));
     }
 
     @Test
     public void deepPersonalDataMetadataIsBackwardsCompatible() throws Throwable {
-        File baseFolder = folder("metadata/deeppersonaldata");
+        File baseFolder = folder("deeppersonaldata/metadata");
         metadataBackwardsCompatibilityAsserter()
                 .assertGdprAnnotations(baseFolder, cachedTestConfiguration().getDeepPersonalDataClasses());
     }

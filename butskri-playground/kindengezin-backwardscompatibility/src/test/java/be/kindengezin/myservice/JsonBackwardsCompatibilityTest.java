@@ -27,6 +27,7 @@ public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompati
     protected JsonBackwardsCompatibilityTestConfiguration testConfiguration() {
         return super.testConfiguration()
                 .withBasePackage("be.kindengezin.myservice")
+                .withFailOnMissingExpectedFileEnabled(true)
                 .withDeepPersonalDataClasses(DEEP_PERSONAL_DATA_CLASSES)
                 .withObjectMapper(objectMapperForTests());
     }
