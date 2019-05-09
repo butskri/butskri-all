@@ -1,4 +1,4 @@
-package be.kindengezin.backwardscompatibility.json.metadata;
+package be.kindengezin.groeipakket.backwardscompatibility.json.metadata;
 
 import org.assertj.core.util.Sets;
 

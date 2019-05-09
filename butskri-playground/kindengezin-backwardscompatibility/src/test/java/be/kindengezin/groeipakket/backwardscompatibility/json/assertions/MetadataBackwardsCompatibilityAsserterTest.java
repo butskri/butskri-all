@@ -1,4 +1,4 @@
-package be.kindengezin.backwardscompatibility.json.assertions;
+package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.apache.commons.io.FileUtils;
@@ -17,9 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static be.kindengezin.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter.fileNameFor;
-import static be.kindengezin.backwardscompatibility.json.assertions.ObjectMapperTestConstants.objectMapperForTests;
-import static be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants.baseEnhancedRandomBuilder;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter.fileNameFor;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.ObjectMapperTestConstants.objectMapperForTests;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.random.RandomizationTestConstants.baseEnhancedRandomBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -45,8 +45,8 @@ public class MetadataBackwardsCompatibilityAsserterTest {
 
         assertFolderIsEmpty(actualFolder);
         assertFolderContainsOnlyMetadataFor(
-            expectedFolder,
-            MyEvent.class, MyIntegrationEvent.class);
+                expectedFolder,
+                MyEvent.class, MyIntegrationEvent.class);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
             fail("AssertionError should have been thrown!");
         } catch (ComparisonFailure expected) {
             assertThat(expected.getMessage())
-                .contains(String.format("metadata for %s should remain the same", MyEvent.class));
+                    .contains(String.format("metadata for %s should remain the same", MyEvent.class));
         }
         assertFolderContainsOnlyMetadataFor(actualFolder, MyEvent.class);
     }
@@ -83,18 +83,18 @@ public class MetadataBackwardsCompatibilityAsserterTest {
     public void assertAnnotationsForEventsFailsWhenNewUnknownClassAndAsserterConfiguredToFailOnMissingExpectedFile() throws Throwable {
         try {
             asserter(
-                backwardsCompatibilityAsserterConfiguration()
-                    .withFailOnMissingExpectedFile(true))
-                .assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyIntegrationEvent.class));
+                    backwardsCompatibilityAsserterConfiguration()
+                            .withFailOnMissingExpectedFile(true))
+                    .assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyIntegrationEvent.class));
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
             assertThat(expected.getMessage())
-                .matches(
-                    String.format("Metadata file .* missing for %s. " +
-                            "Probably you created a new event or added a new @DeepPersonalData field. " +
-                            "You can generate the expected file using " +
-                            "JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile\\(false\\)",
-                        MyIntegrationEvent.class));
+                    .matches(
+                            String.format("Metadata file .* missing for %s. " +
+                                            "Probably you created a new event or added a new @DeepPersonalData field. " +
+                                            "You can generate the expected file using " +
+                                            "JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile\\(false\\)",
+                                    MyIntegrationEvent.class));
         }
     }
 
@@ -108,8 +108,8 @@ public class MetadataBackwardsCompatibilityAsserterTest {
 
     private JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
         return new JsonBackwardsCompatibilityAsserterConfiguration()
-            .withObjectMapper(objectMapperForTests())
-            .withEnhancedRandom(enhancedRandomBuilder());
+                .withObjectMapper(objectMapperForTests())
+                .withEnhancedRandom(enhancedRandomBuilder());
     }
 
     private EnhancedRandom enhancedRandomBuilder() {
@@ -118,8 +118,8 @@ public class MetadataBackwardsCompatibilityAsserterTest {
 
     private void assertFolderContainsOnlyMetadataFor(File folder, Class<?>... classes) {
         List<String> expectedFileNames = Arrays.stream(classes)
-            .map(MetadataBackwardsCompatibilityAsserter::fileNameFor)
-            .collect(Collectors.toList());
+                .map(MetadataBackwardsCompatibilityAsserter::fileNameFor)
+                .collect(Collectors.toList());
         assertThat(folder.listFiles()).extracting(File::getName).containsOnlyElementsOf(expectedFileNames);
     }
 
@@ -127,7 +127,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
         File file = new File(expectedFolder, fileNameFor(clazz));
         if (file.createNewFile()) {
             InputStream resource = getClass()
-                .getResourceAsStream("/backwardscompatibilitytests/metadata/" + resourcePath);
+                    .getResourceAsStream("/backwardscompatibilitytests/metadata/" + resourcePath);
             FileUtils.write(file, IOUtils.toString(resource, "UTF-8"), "UTF-8");
         }
     }

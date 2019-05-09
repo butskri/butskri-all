@@ -1,4 +1,4 @@
-package be.kindengezin.backwardscompatibility.json.assertions;
+package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
 import org.json.JSONException;
 import org.skyscreamer.jsonassert.JSONAssert;

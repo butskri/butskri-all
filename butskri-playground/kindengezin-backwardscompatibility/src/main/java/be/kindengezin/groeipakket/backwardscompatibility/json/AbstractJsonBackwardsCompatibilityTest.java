@@ -1,9 +1,9 @@
-package be.kindengezin.backwardscompatibility.json;
+package be.kindengezin.groeipakket.backwardscompatibility.json;
 
-import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
-import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserterConfiguration;
-import be.kindengezin.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter;
-import be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants;
+import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
+import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserterConfiguration;
+import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter;
+import be.kindengezin.groeipakket.backwardscompatibility.json.random.RandomizationTestConstants;
 import be.kindengezin.groeipakket.commons.domain.event.Event;
 import be.kindengezin.groeipakket.domain.read.ViewObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.cleanDirectory;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.util.MyFileUtils.cleanDirectory;
 
 public abstract class AbstractJsonBackwardsCompatibilityTest {
 
@@ -60,7 +60,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         File baseFolder = new File(getRootFolder(), "metadata/deeppersonaldata");
         cleanDirectory(new File(baseFolder, "actual"));
         metadataBackwardsCompatibilityAsserter()
-            .assertGdprAnnotations(baseFolder, backwardsCompatibilityAsserterConfiguration().getDeepPersonalDataClasses());
+                .assertGdprAnnotations(baseFolder, backwardsCompatibilityAsserterConfiguration().getDeepPersonalDataClasses());
     }
 
     protected File getRootFolder() {
@@ -83,8 +83,8 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     protected JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
         return new JsonBackwardsCompatibilityAsserterConfiguration()
-            .withObjectMapper(getObjectMapper())
-            .withEnhancedRandom(enhancedRandomBuilder().build());
+                .withObjectMapper(getObjectMapper())
+                .withEnhancedRandom(enhancedRandomBuilder().build());
     }
 
     protected EnhancedRandomBuilder enhancedRandomBuilder() {
@@ -101,16 +101,16 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     private <T> Collection<Class<?>> findAllNonAbstractSubclassesOf(Class<T> baseClass) {
         return reflections.getSubTypesOf(baseClass)
-            .stream()
-            .filter(nonAbstractClasses())
-            .collect(Collectors.toSet());
+                .stream()
+                .filter(nonAbstractClasses())
+                .collect(Collectors.toSet());
     }
 
     private <T extends Annotation> Collection<Class<?>> findAllNonAbstractClassesAnnotatedWith(Class<T> baseClass) {
         return reflections.getTypesAnnotatedWith(baseClass)
-            .stream()
-            .filter(nonAbstractClasses())
-            .collect(Collectors.toSet());
+                .stream()
+                .filter(nonAbstractClasses())
+                .collect(Collectors.toSet());
     }
 
     private <T> Predicate<Class<? extends T>> nonAbstractClasses() {

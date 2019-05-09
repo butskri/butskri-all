@@ -1,4 +1,4 @@
-package be.kindengezin.backwardscompatibility.json.assertions;
+package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
 import be.kindengezin.groeipakket.commons.domain.event.Event;
 

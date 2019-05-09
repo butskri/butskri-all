@@ -1,4 +1,4 @@
-package be.kindengezin.backwardscompatibility.json.assertions;
+package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
 import be.kindengezin.myservice.beans.SuperBean;
 import be.kindengezin.myservice.configuration.CustomTypesModule;

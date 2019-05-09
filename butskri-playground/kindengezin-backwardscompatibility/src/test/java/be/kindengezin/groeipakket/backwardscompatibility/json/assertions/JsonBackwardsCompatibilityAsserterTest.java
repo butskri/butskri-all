@@ -1,4 +1,4 @@
-package be.kindengezin.backwardscompatibility.json.assertions;
+package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.apache.commons.io.FileUtils;
@@ -17,9 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter.fileNameFor;
-import static be.kindengezin.backwardscompatibility.json.assertions.ObjectMapperTestConstants.objectMapperForTests;
-import static be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants.baseEnhancedRandomBuilder;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter.fileNameFor;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.ObjectMapperTestConstants.objectMapperForTests;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.random.RandomizationTestConstants.baseEnhancedRandomBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -73,7 +73,7 @@ public class JsonBackwardsCompatibilityAsserterTest {
             fail("AssertionError should have been thrown!");
         } catch (ComparisonFailure expected) {
             assertThat(expected.getMessage())
-                    .contains("json for clazz class be.kindengezin.backwardscompatibility.json.assertions.MyEvent not deserialized/serialized correctly");
+                    .contains("json for clazz class be.kindengezin.groeipakket.backwardscompatibility.json.assertions.MyEvent not deserialized/serialized correctly");
             assertThat(expected.getExpected())
                     .contains("hahaha")
                     .contains("superfluousValue");

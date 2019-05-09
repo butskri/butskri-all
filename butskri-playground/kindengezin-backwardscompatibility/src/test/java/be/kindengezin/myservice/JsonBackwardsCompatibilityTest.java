@@ -1,8 +1,8 @@
 package be.kindengezin.myservice;
 
-import be.kindengezin.backwardscompatibility.json.AbstractJsonBackwardsCompatibilityTest;
-import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserterConfiguration;
-import be.kindengezin.backwardscompatibility.json.assertions.ObjectMapperTestConstants;
+import be.kindengezin.groeipakket.backwardscompatibility.json.AbstractJsonBackwardsCompatibilityTest;
+import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserterConfiguration;
+import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.ObjectMapperTestConstants;
 import be.kindengezin.myservice.beans.SimplifiedInss;
 import be.kindengezin.myservice.events.SomeDeepPersonalData;
 import be.kindengezin.myservice.events.SomeDeeperPersonalData;
@@ -18,9 +18,9 @@ import java.util.function.Supplier;
 public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompatibilityTest {
 
     private static final Collection<Class<?>> DEEP_PERSONAL_DATA_CLASSES = Arrays.asList(
-        SomeDeepPersonalData.class,
-        SomeDeeperPersonalData.class,
-        SomeDeepestPersonalData.class
+            SomeDeepPersonalData.class,
+            SomeDeeperPersonalData.class,
+            SomeDeepestPersonalData.class
     );
 
     @Override
@@ -36,13 +36,13 @@ public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompati
     @Override
     protected JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
         return super.backwardsCompatibilityAsserterConfiguration()
-            .withDeepPersonalDataClasses(DEEP_PERSONAL_DATA_CLASSES);
+                .withDeepPersonalDataClasses(DEEP_PERSONAL_DATA_CLASSES);
     }
 
     @Override
     protected EnhancedRandomBuilder enhancedRandomBuilder() {
         return super.enhancedRandomBuilder()
-            .randomize(SimplifiedInss.class, (Supplier<SimplifiedInss>) this::generateRandomInss);
+                .randomize(SimplifiedInss.class, (Supplier<SimplifiedInss>) this::generateRandomInss);
     }
 
     private SimplifiedInss generateRandomInss() {

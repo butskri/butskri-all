@@ -1,4 +1,4 @@
-package be.kindengezin.backwardscompatibility.json.random;
+package be.kindengezin.groeipakket.backwardscompatibility.json.random;
 
 import be.kindengezin.myservice.beans.*;
 import io.github.benas.randombeans.EnhancedRandomBuilder;

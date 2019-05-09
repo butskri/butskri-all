@@ -1,4 +1,4 @@
-package be.kindengezin.backwardscompatibility.json.assertions;
+package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.api.EnhancedRandom;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static be.kindengezin.backwardscompatibility.json.assertions.DeepAssertions.assertNoDeepNullValues;
-import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.loadJson;
-import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.writeJsonToFile;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.DeepAssertions.assertNoDeepNullValues;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.util.MyFileUtils.loadJson;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.util.MyFileUtils.writeJsonToFile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
