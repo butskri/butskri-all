@@ -1,6 +1,6 @@
 package be.kindengezin.backwardscompatibility.json.assertions;
 
-import be.butskri.playground.keng.commons.events.Event;
+import be.kindengezin.groeipakket.commons.domain.event.Event;
 
 public class MyIntegrationEvent extends Event {
 

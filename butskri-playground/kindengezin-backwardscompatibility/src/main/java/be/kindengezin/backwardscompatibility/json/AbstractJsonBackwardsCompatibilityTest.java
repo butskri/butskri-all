@@ -2,8 +2,8 @@ package be.kindengezin.backwardscompatibility.json;
 
 import be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants;
 import be.butskri.playground.keng.commons.domain.ProcessManager;
-import be.butskri.playground.keng.commons.domain.ViewObject;
-import be.butskri.playground.keng.commons.events.Event;
+import be.kindengezin.groeipakket.domain.read.ViewObject;
+import be.kindengezin.groeipakket.commons.domain.event.Event;
 import be.kindengezin.backwardscompatibility.json.assertions.BackwardsCompatibilityAsserterConfiguration;
 import be.kindengezin.backwardscompatibility.json.assertions.EventMetadataBackwardsCompatibilityAsserter;
 import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;

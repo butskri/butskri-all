@@ -1,4 +1,4 @@
-package be.butskri.playground.keng.commons.events;
+package be.kindengezin.groeipakket.commons.domain.event;
 
 public abstract class IntegrationEvent extends Event {
 }

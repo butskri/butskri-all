@@ -1,6 +1,6 @@
 package be.kindengezin.myservice.beans;
 
-import be.butskri.playground.keng.commons.domain.ViewObject;
+import be.kindengezin.groeipakket.domain.read.ViewObject;
 
 public abstract class SuperBean extends ViewObject {
 

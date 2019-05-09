@@ -1,6 +1,6 @@
 package be.kindengezin.myservice.configuration;
 
-import be.butskri.playground.keng.commons.ids.EntityId;
+import be.kindengezin.groeipakket.commons.domain.EntityId;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

@@ -1,4 +1,4 @@
-package be.butskri.playground.keng.commons.ids;
+package be.kindengezin.groeipakket.commons.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

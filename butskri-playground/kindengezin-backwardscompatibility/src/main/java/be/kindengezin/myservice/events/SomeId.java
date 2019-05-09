@@ -1,6 +1,6 @@
 package be.kindengezin.myservice.events;
 
-import be.butskri.playground.keng.commons.ids.EntityId;
+import be.kindengezin.groeipakket.commons.domain.EntityId;
 
 import java.util.UUID;
 
