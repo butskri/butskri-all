@@ -11,153 +11,143 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FieldInfoTest {
 
     @Test
-    public void uuidFieldCanBeAnnotatedWithPersonalData() {
+    public void uuidFieldHasUnderlyingTypeUuid() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "uuid");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(UUID.class);
     }
 
     @Test
-    public void stringFieldCanBeAnnotatedWithPersonalData() {
+    public void stringFieldHasUnderlyingTypeString() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "stringField");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(String.class);
     }
 
     @Test
-    public void intFieldCanBeAnnotatedWithPersonalData() {
+    public void intFieldHasUnderlyingTypeInt() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "intField");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(int.class);
     }
 
     @Test
-    public void integerFieldCanBeAnnotatedWithPersonalData() {
+    public void integerFieldHasUnderlyingTypeInteger() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "integerField");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(Integer.class);
     }
 
     @Test
-    public void arrayOfStringsFieldCanBeAnnotatedWithPersonalData() {
+    public void arrayOfStringsFieldHasUnderlyingTypeString() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "arrayOfStrings");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(String.class);
     }
 
     @Test
-    public void collectionOfStringsFieldCanBeAnnotatedWithPersonalData() {
+    public void collectionOfStringsFieldHasUnderlyingTypeString() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionOfStrings");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(String.class);
     }
 
     @Test
-    public void collectionOfStringExtensionsFieldCanBeAnnotatedWithPersonalData() {
+    public void collectionOfStringExtensionsFieldHasUnderlyingTypeString() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionOfStringExtensions");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(String.class);
     }
 
     @Test
-    public void collectionOfStringSupersFieldCanNotBeAnnotatedWithPersonalData() {
+    public void collectionOfStringSupersFieldHasUnderlyingTypeObject() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionOfStringSupers");
 
-        assertCanNotBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(Object.class);
     }
 
     @Test
-    public void collectionOfParameterizedExtensionsOfOtherClassesCanNotBeAnnotatedWithPersonalData() {
+    public void collectionOfParameterizedExtensionsOfOtherClassesHasUnderlyingTypeSomeOtherClass() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionParameterizedOtherClasses");
 
-        assertCanNotBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(SomeOtherClass.class);
     }
 
     @Test
-    public void collectionOfParameterizedExtensionsOfStringsCanBeAnnotatedWithPersonalData() {
+    public void collectionOfParameterizedExtensionsOfStringsHasUnderlyingTypeString() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionParameterizedStringExtensions");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(String.class);
     }
 
     @Test
-    public void arrayOfIntsCanBeAnnotatedWithPersonalData() {
+    public void arrayOfIntsHasUnderlyingTypeInt() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "arrayOfInts");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(int.class);
     }
 
     @Test
-    public void collectionOfNumbersCanBeAnnotatedWithPersonalData() {
+    public void collectionOfNumbersHasUnderlyingTypeNumber() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionOfNumbers");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(Number.class);
     }
 
     @Test
-    public void collectionOfNumberExtensionsCanBeAnnotatedWithPersonalData() {
+    public void collectionOfNumberExtensionsHasUnderlyingTypeNumber() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionOfNumberExtensions");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(Number.class);
     }
 
     @Test
-    public void bigDecimalFieldCanBeAnnotatedWithPersonalData() {
+    public void bigDecimalFieldHasUnderlyingTypeBigDecimal() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "bigDecimalField");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(BigDecimal.class);
     }
 
     @Test
-    public void floatFieldCanBeAnnotatedWithPersonalData() {
+    public void floatFieldHasUnderlyingTypeFloat() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "floatField");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(Float.class);
     }
 
     @Test
-    public void primitiveFloatFieldCanBeAnnotatedWithPersonalData() {
+    public void primitiveFloatFieldHasUnderlyingTypeFloat() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "primitiveFloatField");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(float.class);
     }
 
     @Test
-    public void doubleFieldCanBeAnnotatedWithPersonalData() {
+    public void doubleFieldHasUnderlyingTypeDouble() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "doubleField");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(Double.class);
     }
 
     @Test
-    public void primitiveDoubleFieldCanBeAnnotatedWithPersonalData() {
+    public void primitiveDoubleFieldHasUnderlyingTypeDouble() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "primitiveDoubleField");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(double.class);
     }
 
     @Test
-    public void collectionOfParameterizedStringSupersCanNotBeAnnotatedWithPersonalData() {
+    public void collectionOfParameterizedStringSupersHasUnderlyingTypeObject() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionOfParameterizedStringSupers");
 
-        assertCanNotBeAnnotatedWithPersonalData(fieldInfo);
+        assertThat(fieldInfo.underlyingType()).isEqualTo(Object.class);
     }
 
     @Test
-    public void collectionOfParameterizedParameterizedStringExtensionsCanBeAnnotatedWithPersonalData() {
+    public void collectionOfParameterizedParameterizedStringExtensionsHasUnderlyingTypeString() {
         FieldInfo fieldInfo = fieldInfo(SomeTestClass.class, "collectionOfParameterizedParameterizedStringExtensions");
 
-        assertCanBeAnnotatedWithPersonalData(fieldInfo);
-    }
-
-    private void assertCanNotBeAnnotatedWithPersonalData(FieldInfo fieldInfo) {
-        assertThat(fieldInfo.canBeAnnotatedWithPersonalData()).isFalse();
-        assertThat(fieldInfo.canBeAnnotatedWithDeepPersonalData()).isTrue();
-    }
-
-    private void assertCanBeAnnotatedWithPersonalData(FieldInfo fieldInfo) {
-        assertThat(fieldInfo.canBeAnnotatedWithPersonalData()).isTrue();
-        assertThat(fieldInfo.canBeAnnotatedWithDeepPersonalData()).isFalse();
+        assertThat(fieldInfo.underlyingType()).isEqualTo(String.class);
     }
 
     private FieldInfo fieldInfo(Class<?> clazz, String fieldName) {

@@ -1,9 +1,10 @@
 package be.kindengezin.groeipakket.backwardscompatibility.json.reflection;
 
-import io.axoniq.gdpr.api.DeepPersonalData;
-
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,7 +42,7 @@ public class ClassInfo {
     }
 
     private List<FieldInfo> getAllInstanceFieldInfos() {
-        return getAllInstanceFieldInfos(clazz);
+        return getAllInstanceFieldInfos(getClazz());
     }
 
     private List<FieldInfo> getAllInstanceFieldInfos(Class<?> theClazz) {
@@ -55,17 +56,5 @@ public class ClassInfo {
             result.addAll(getAllInstanceFieldInfos(theClazz.getSuperclass()));
             return result;
         }
-    }
-
-    public Collection<Class<?>> getNestedDeepPersonalDataClasses() {
-        Collection<Class<?>> result = new HashSet<>();
-        findFieldInfoCollectionByAnnotation(DeepPersonalData.class)
-                .stream()
-                .map(FieldInfo::underlyingType)
-                .forEach(clazz -> {
-                    result.add(clazz);
-                    result.addAll(new ClassInfo(clazz).getNestedDeepPersonalDataClasses());
-                });
-        return result;
     }
 }

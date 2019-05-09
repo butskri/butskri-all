@@ -1,22 +1,11 @@
 package be.kindengezin.groeipakket.backwardscompatibility.json.reflection;
 
-import org.assertj.core.util.Sets;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
 
 public class FieldInfo {
 
-    static final Set<Class<?>> PERSONAL_DATA_COMPLIANT_TYPES = Sets.newLinkedHashSet(
-            String.class, LocalDate.class, LocalDateTime.class, UUID.class,
-            Number.class, Integer.class, Long.class, BigDecimal.class, Double.class, Float.class
-    );
     private Field field;
 
     public FieldInfo(Field field) {
@@ -31,25 +20,12 @@ public class FieldInfo {
         return field.getAnnotation(annotation) != null;
     }
 
-    public boolean canBeAnnotatedWithPersonalData() {
-        return isPersonalDataCompliantType();
-    }
-
-    public boolean canBeAnnotatedWithDeepPersonalData() {
-        return !canBeAnnotatedWithPersonalData();
-    }
-
     public boolean isArray() {
         return field.getType().isArray();
     }
 
     public boolean isCollection() {
         return isCollection(field.getType());
-    }
-
-    private boolean isPersonalDataCompliantType() {
-        Class<?> underlyingType = underlyingType();
-        return (underlyingType.isPrimitive() || PERSONAL_DATA_COMPLIANT_TYPES.contains(underlyingType));
     }
 
     public Class<?> getType() {
