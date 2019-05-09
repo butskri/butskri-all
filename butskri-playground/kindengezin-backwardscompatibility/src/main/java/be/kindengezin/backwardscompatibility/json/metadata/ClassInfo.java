@@ -1,6 +1,6 @@
 package be.kindengezin.backwardscompatibility.json.metadata;
 
-import be.butskri.playground.keng.axon.DeepPersonalData;
+import io.axoniq.gdpr.api.DeepPersonalData;
 
 import java.lang.annotation.Annotation;
 import java.util.*;

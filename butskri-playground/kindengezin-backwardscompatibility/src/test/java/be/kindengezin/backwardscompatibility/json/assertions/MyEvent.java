@@ -1,9 +1,9 @@
 package be.kindengezin.backwardscompatibility.json.assertions;
 
-import be.butskri.playground.keng.axon.DataSubjectId;
-import be.butskri.playground.keng.axon.DeepPersonalData;
-import be.butskri.playground.keng.axon.PersonalData;
-import be.butskri.playground.keng.commons.events.Event;
+import io.axoniq.gdpr.api.DataSubjectId;
+import io.axoniq.gdpr.api.DeepPersonalData;
+import io.axoniq.gdpr.api.PersonalData;
+import be.kindengezin.groeipakket.commons.domain.event.Event;
 
 import java.util.UUID;
 

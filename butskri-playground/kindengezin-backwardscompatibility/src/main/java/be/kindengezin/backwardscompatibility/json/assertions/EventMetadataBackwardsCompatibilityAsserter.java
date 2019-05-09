@@ -1,14 +1,14 @@
 package be.kindengezin.backwardscompatibility.json.assertions;
 
-import be.butskri.playground.keng.axon.DataSubjectId;
-import be.butskri.playground.keng.axon.DeepPersonalData;
-import be.butskri.playground.keng.axon.PersonalData;
-import be.butskri.playground.keng.commons.annotations.CorrelationId;
+import io.axoniq.gdpr.api.DataSubjectId;
+import io.axoniq.gdpr.api.DeepPersonalData;
+import io.axoniq.gdpr.api.PersonalData;
+import be.kindengezin.groeipakket.commons.integration.annotations.producer.CorrelationId;
 import be.kindengezin.backwardscompatibility.json.metadata.ClassInfo;
 import be.kindengezin.backwardscompatibility.json.metadata.ClassMetadata;
 import be.kindengezin.backwardscompatibility.json.metadata.FieldInfo;
 import be.kindengezin.backwardscompatibility.json.util.JsonUtils;
-import be.butskri.playground.keng.commons.events.IntegrationEvent;
+import be.kindengezin.groeipakket.commons.domain.event.IntegrationEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.rules.ErrorCollector;
 

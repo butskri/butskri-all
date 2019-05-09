@@ -1,4 +1,4 @@
-package be.butskri.playground.keng.axon;
+package io.axoniq.gdpr.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DeepPersonalData {
+public @interface PersonalData {
 }

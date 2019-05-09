@@ -1,6 +1,6 @@
 package be.kindengezin.myservice.events;
 
-import be.butskri.playground.keng.axon.PersonalData;
+import io.axoniq.gdpr.api.PersonalData;
 
 public class SomeDeepestPersonalData {
 

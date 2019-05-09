@@ -1,4 +1,4 @@
-package be.butskri.playground.keng.axon;
+package io.axoniq.gdpr.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
