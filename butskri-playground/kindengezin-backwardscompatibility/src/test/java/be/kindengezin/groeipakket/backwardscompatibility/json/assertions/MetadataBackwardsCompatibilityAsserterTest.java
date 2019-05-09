@@ -145,7 +145,8 @@ public class MetadataBackwardsCompatibilityAsserterTest {
     private JsonBackwardsCompatibilityTestConfiguration backwardsCompatibilityAsserterConfiguration() {
         return new JsonBackwardsCompatibilityTestConfiguration()
                 .withObjectMapper(objectMapperForTests())
-                .withEnhancedRandom(enhancedRandomBuilder());
+                .withEnhancedRandom(enhancedRandomBuilder())
+                .withDeepPersonalDataClasses(Arrays.asList(SomeDeepPersonalData.class));
     }
 
     private EnhancedRandom enhancedRandomBuilder() {

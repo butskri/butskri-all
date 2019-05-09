@@ -77,6 +77,7 @@ public class JsonBackwardsCompatibilityTestConfiguration
         return enhancedRandom;
     }
 
+    @Override
     public Collection<Class<?>> getDeepPersonalDataClasses() {
         return deepPersonalDataClasses;
     }

@@ -2,7 +2,6 @@ package be.kindengezin.groeipakket.backwardscompatibility.json.assertions;
 
 import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.ClassInfo;
 import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.ClassMetadata;
-import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.FieldInfo;
 import be.kindengezin.groeipakket.backwardscompatibility.json.util.JsonUtils;
 import be.kindengezin.groeipakket.commons.domain.event.IntegrationEvent;
 import be.kindengezin.groeipakket.commons.integration.annotations.producer.CorrelationId;
@@ -77,14 +76,6 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
         asserters.forEach(asserter -> asserter.assertGdprAnnotationsUsedCorrectly(this));
     }
 
-    private Collection<Class<?>> allNestedDeepPersonalDataClasses(Collection<ClassMetaDataAsserter> asserters) {
-        return asserters.stream()
-                .map(ClassMetaDataAsserter::classInfo)
-                .map(ClassInfo::getNestedDeepPersonalDataClasses)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
-    }
-
     private void assertSubjectIdPresentWhenPersonalDataAnnotationsPresent(Collection<ClassMetaDataAsserter> asserters) {
         asserters.forEach(asserter -> checkSucceeds(asserter::assertSubjectIdPresentWhenPersonalDataAnnotationsPresent));
     }
@@ -136,7 +127,6 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
         public void assertGdprAnnotationsUsedCorrectly(ErrorCollector errorCollector) {
             errorCollector.checkSucceeds(this::assertAtMost1DataSubjectId);
-            errorCollector.checkSucceeds(this::assertPersonalDataFields);
             errorCollector.checkSucceeds(this::assertDeepPersonalDataFields);
             errorCollector.checkSucceeds(this::assertClassMetadataRemainsSame);
         }
@@ -148,15 +138,9 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
             return this;
         }
 
-        private ClassMetaDataAsserter assertPersonalDataFields() {
-            assertThat(classInfo().findFieldInfoCollectionByAnnotation(PersonalData.class).stream().filter(not(FieldInfo::canBeAnnotatedWithPersonalData)))
-                    .describedAs("Fields in class %s annotated with @PersonalData that shouldn't", clazz)
-                    .isEmpty();
-            return this;
-        }
-
         private ClassMetaDataAsserter assertDeepPersonalDataFields() {
-            assertThat(classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class).stream().filter(not(FieldInfo::canBeAnnotatedWithDeepPersonalData)))
+            assertThat(classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class).stream()
+                    .filter(fieldInfo -> !configuration.getDeepPersonalDataClasses().contains(fieldInfo.getType())))
                     .describedAs("Fields in class %s annotated with @DeepPersonalData that shouldn't", clazz)
                     .isEmpty();
             return this;

@@ -52,6 +52,10 @@ public class FieldInfo {
         return (underlyingType.isPrimitive() || PERSONAL_DATA_COMPLIANT_TYPES.contains(underlyingType));
     }
 
+    public Class<?> getType() {
+        return field.getType();
+    }
+
     public Class<?> underlyingType() {
         if (isArray()) {
             return field.getType().getComponentType();
