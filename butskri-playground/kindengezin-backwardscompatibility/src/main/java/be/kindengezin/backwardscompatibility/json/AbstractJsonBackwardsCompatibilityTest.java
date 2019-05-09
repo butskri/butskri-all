@@ -1,6 +1,5 @@
 package be.kindengezin.backwardscompatibility.json;
 
-import be.butskri.playground.keng.commons.domain.ProcessManager;
 import be.kindengezin.backwardscompatibility.json.assertions.BackwardsCompatibilityAsserterConfiguration;
 import be.kindengezin.backwardscompatibility.json.assertions.EventMetadataBackwardsCompatibilityAsserter;
 import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
@@ -11,14 +10,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.Assertions;
+import org.axonframework.spring.stereotype.Saga;
 import org.junit.Before;
 import org.junit.Test;
 import org.reflections.Reflections;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public abstract class AbstractJsonBackwardsCompatibilityTest {
@@ -34,7 +36,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     @Test
     public void sagasAreBackwardsCompatible() throws Throwable {
-        assertSubclassesAreBackwardsCompatible("json/sagas", ProcessManager.class);
+        assertAnnotatedClassesAreBackwardsCompatible("json/sagas", Saga.class);
     }
 
     @Test
@@ -68,6 +70,11 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(getRootFolder(), folderName), subclasses);
     }
 
+    <T extends Annotation> void assertAnnotatedClassesAreBackwardsCompatible(String folderName, Class<T> baseAnnotation) throws Throwable {
+        Collection<Class<?>> subclasses = findAllNonAbstractClassesAnnotatedWith(baseAnnotation);
+        jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(getRootFolder(), folderName), subclasses);
+    }
+
     protected BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
         return new BackwardsCompatibilityAsserterConfiguration()
             .withObjectMapper(getObjectMapper())
@@ -89,8 +96,19 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     private <T> Collection<Class<?>> findAllNonAbstractSubclassesOf(Class<T> baseClass) {
         return reflections.getSubTypesOf(baseClass)
             .stream()
-            .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
+            .filter(nonAbstractClasses())
             .collect(Collectors.toSet());
+    }
+
+    private <T extends Annotation> Collection<Class<?>> findAllNonAbstractClassesAnnotatedWith(Class<T> baseClass) {
+        return reflections.getTypesAnnotatedWith(baseClass)
+            .stream()
+            .filter(nonAbstractClasses())
+            .collect(Collectors.toSet());
+    }
+
+    private <T> Predicate<Class<? extends T>> nonAbstractClasses() {
+        return clazz -> !Modifier.isAbstract(clazz.getModifiers());
     }
 
     private void clearDirectory(File directory) {
