@@ -77,16 +77,16 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         return cachedTestConfiguration;
     }
 
-    private ClassFinder classFinder() {
-        return cachedTestConfiguration().getClassFinder();
-    }
-
     private JsonBackwardsCompatibilityAsserter jsonBackwardsCompatibilityAsserter() {
         return new JsonBackwardsCompatibilityAsserter(cachedTestConfiguration());
     }
 
     private MetadataBackwardsCompatibilityAsserter metadataBackwardsCompatibilityAsserter() {
         return new MetadataBackwardsCompatibilityAsserter(cachedTestConfiguration());
+    }
+
+    private ClassFinder classFinder() {
+        return cachedTestConfiguration().getClassFinder();
     }
 
     private File folder(String folderName) {
