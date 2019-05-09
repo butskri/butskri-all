@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
 
-    private BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration;
+    private JsonBackwardsCompatibilityAsserterConfiguration jsonBackwardsCompatibilityAsserterConfiguration;
 
-    public JsonBackwardsCompatibilityAsserter(BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration) {
-        this.backwardsCompatibilityAsserterConfiguration = backwardsCompatibilityAsserterConfiguration;
+    public JsonBackwardsCompatibilityAsserter(JsonBackwardsCompatibilityAsserterConfiguration jsonBackwardsCompatibilityAsserterConfiguration) {
+        this.jsonBackwardsCompatibilityAsserterConfiguration = jsonBackwardsCompatibilityAsserterConfiguration;
     }
 
     public <T> void assertJsonIsBackwardsCompatibleFor(File baseFolder, Collection<Class<? extends T>> classes) throws Throwable {
@@ -68,11 +68,11 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
     }
 
     private ObjectMapper objectMapper() {
-        return backwardsCompatibilityAsserterConfiguration.getObjectMapper();
+        return jsonBackwardsCompatibilityAsserterConfiguration.getObjectMapper();
     }
 
     private EnhancedRandom enhancedRandom() {
-        return backwardsCompatibilityAsserterConfiguration.getEnhancedRandom();
+        return jsonBackwardsCompatibilityAsserterConfiguration.getEnhancedRandom();
     }
 
     public static String fileNameFor(Class<?> clazz) {
@@ -99,7 +99,7 @@ public class JsonBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private void generateJsonWhenNecessary() {
-            if (!expectedFile().exists() && backwardsCompatibilityAsserterConfiguration.isFailOnMissingExpectedFile()) {
+            if (!expectedFile().exists() && jsonBackwardsCompatibilityAsserterConfiguration.isFailOnMissingExpectedFile()) {
                 fail(String.format("No json found for %s in folder %s", clazz, expectedFolder()));
             }
             if (!expectedFile().exists()) {

@@ -1,7 +1,7 @@
 package be.kindengezin.backwardscompatibility.json;
 
-import be.kindengezin.backwardscompatibility.json.assertions.BackwardsCompatibilityAsserterConfiguration;
-import be.kindengezin.backwardscompatibility.json.assertions.EventMetadataBackwardsCompatibilityAsserter;
+import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserterConfiguration;
+import be.kindengezin.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter;
 import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants;
 import be.kindengezin.groeipakket.commons.domain.event.Event;
@@ -51,7 +51,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     @Test
     public void eventAnnotationsAreBackwardsCompatible() throws Throwable {
-        File baseFolder = new File(getRootFolder(), "metadata");
+        File baseFolder = new File(getRootFolder(), "metadata/events");
         clearDirectory(new File(baseFolder, "actual"));
         Collection<Class<?>> eventsSubclasses = findAllNonAbstractSubclassesOf(Event.class);
         eventMetadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, eventsSubclasses);
@@ -75,8 +75,8 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(new File(getRootFolder(), folderName), subclasses);
     }
 
-    protected BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
-        return new BackwardsCompatibilityAsserterConfiguration()
+    protected JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
+        return new JsonBackwardsCompatibilityAsserterConfiguration()
             .withObjectMapper(getObjectMapper())
             .withEnhancedRandom(enhancedRandomBuilder().build());
     }
@@ -89,8 +89,8 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         return new JsonBackwardsCompatibilityAsserter(backwardsCompatibilityAsserterConfiguration());
     }
 
-    private EventMetadataBackwardsCompatibilityAsserter eventMetadataBackwardsCompatibilityAsserter() {
-        return new EventMetadataBackwardsCompatibilityAsserter(backwardsCompatibilityAsserterConfiguration());
+    private MetadataBackwardsCompatibilityAsserter eventMetadataBackwardsCompatibilityAsserter() {
+        return new MetadataBackwardsCompatibilityAsserter(backwardsCompatibilityAsserterConfiguration());
     }
 
     private <T> Collection<Class<?>> findAllNonAbstractSubclassesOf(Class<T> baseClass) {

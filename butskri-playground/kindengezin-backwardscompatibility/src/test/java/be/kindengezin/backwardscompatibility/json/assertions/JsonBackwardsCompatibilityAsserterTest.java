@@ -114,12 +114,12 @@ public class JsonBackwardsCompatibilityAsserterTest {
         return asserter(backwardsCompatibilityAsserterConfiguration());
     }
 
-    private JsonBackwardsCompatibilityAsserter asserter(BackwardsCompatibilityAsserterConfiguration configuration) {
+    private JsonBackwardsCompatibilityAsserter asserter(JsonBackwardsCompatibilityAsserterConfiguration configuration) {
         return new JsonBackwardsCompatibilityAsserter(configuration);
     }
 
-    private BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
-        return new BackwardsCompatibilityAsserterConfiguration()
+    private JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
+        return new JsonBackwardsCompatibilityAsserterConfiguration()
                 .withObjectMapper(objectMapperForTests())
                 .withEnhancedRandom(enhancedRandomBuilder());
     }

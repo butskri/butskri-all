@@ -3,23 +3,23 @@ package be.kindengezin.backwardscompatibility.json.assertions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.api.EnhancedRandom;
 
-public class BackwardsCompatibilityAsserterConfiguration {
+public class JsonBackwardsCompatibilityAsserterConfiguration {
 
     private ObjectMapper objectMapper;
     private EnhancedRandom enhancedRandom;
     private boolean failOnMissingExpectedFile = false;
 
-    public BackwardsCompatibilityAsserterConfiguration withFailOnMissingExpectedFile(boolean failOnMissingExpectedFile) {
+    public JsonBackwardsCompatibilityAsserterConfiguration withFailOnMissingExpectedFile(boolean failOnMissingExpectedFile) {
         this.failOnMissingExpectedFile = failOnMissingExpectedFile;
         return this;
     }
 
-    public BackwardsCompatibilityAsserterConfiguration withObjectMapper(ObjectMapper objectMapper) {
+    public JsonBackwardsCompatibilityAsserterConfiguration withObjectMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         return this;
     }
 
-    public BackwardsCompatibilityAsserterConfiguration withEnhancedRandom(EnhancedRandom enhancedRandom) {
+    public JsonBackwardsCompatibilityAsserterConfiguration withEnhancedRandom(EnhancedRandom enhancedRandom) {
         this.enhancedRandom = enhancedRandom;
         return this;
     }

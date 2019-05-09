@@ -17,13 +17,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static be.kindengezin.backwardscompatibility.json.assertions.EventMetadataBackwardsCompatibilityAsserter.fileNameFor;
+import static be.kindengezin.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter.fileNameFor;
 import static be.kindengezin.backwardscompatibility.json.assertions.ObjectMapperTestConstants.objectMapperForTests;
 import static be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants.baseEnhancedRandomBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class EventMetadataBackwardsCompatibilityAsserterTest {
+public class MetadataBackwardsCompatibilityAsserterTest {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -91,21 +91,21 @@ public class EventMetadataBackwardsCompatibilityAsserterTest {
                             String.format("Metadata file .* missing for %s. " +
                                             "Probably you created a new event or added a new @DeepPersonalData field. " +
                                             "You can generate the expected file using " +
-                                            "BackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile\\(false\\)",
+                                            "JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile\\(false\\)",
                                     MyIntegrationEvent.class));
         }
     }
 
-    private EventMetadataBackwardsCompatibilityAsserter asserter() {
+    private MetadataBackwardsCompatibilityAsserter asserter() {
         return asserter(backwardsCompatibilityAsserterConfiguration());
     }
 
-    private EventMetadataBackwardsCompatibilityAsserter asserter(BackwardsCompatibilityAsserterConfiguration configuration) {
-        return new EventMetadataBackwardsCompatibilityAsserter(configuration);
+    private MetadataBackwardsCompatibilityAsserter asserter(JsonBackwardsCompatibilityAsserterConfiguration configuration) {
+        return new MetadataBackwardsCompatibilityAsserter(configuration);
     }
 
-    private BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
-        return new BackwardsCompatibilityAsserterConfiguration()
+    private JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
+        return new JsonBackwardsCompatibilityAsserterConfiguration()
                 .withObjectMapper(objectMapperForTests())
                 .withEnhancedRandom(enhancedRandomBuilder());
     }
@@ -116,7 +116,7 @@ public class EventMetadataBackwardsCompatibilityAsserterTest {
 
     private void assertFolderContainsOnlyMetadataFor(File folder, Class<?>... classes) {
         List<String> expectedFileNames = Arrays.stream(classes)
-                .map(EventMetadataBackwardsCompatibilityAsserter::fileNameFor)
+                .map(MetadataBackwardsCompatibilityAsserter::fileNameFor)
                 .collect(Collectors.toList());
         assertThat(folder.listFiles()).extracting(File::getName).containsOnlyElementsOf(expectedFileNames);
     }

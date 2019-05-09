@@ -23,11 +23,11 @@ import static be.kindengezin.backwardscompatibility.json.assertions.JsonAssertio
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector {
+public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
-    private BackwardsCompatibilityAsserterConfiguration configuration;
+    private JsonBackwardsCompatibilityAsserterConfiguration configuration;
 
-    public EventMetadataBackwardsCompatibilityAsserter(BackwardsCompatibilityAsserterConfiguration configuration) {
+    public MetadataBackwardsCompatibilityAsserter(JsonBackwardsCompatibilityAsserterConfiguration configuration) {
         this.configuration = configuration;
     }
 
@@ -156,7 +156,7 @@ public class EventMetadataBackwardsCompatibilityAsserter extends ErrorCollector 
             if (!expectedFile().exists() && configuration.isFailOnMissingExpectedFile()) {
                 fail(String.format("Metadata file %s missing for %s. " +
                                 "Probably you created a new event or added a new @DeepPersonalData field. " +
-                                "You can generate the expected file using BackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile(false)",
+                                "You can generate the expected file using JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile(false)",
                         expectedFile(),
                         clazz));
             }
