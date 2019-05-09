@@ -18,18 +18,17 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static be.kindengezin.groeipakket.backwardscompatibility.json.util.MyFileUtils.cleanDirectory;
-
 public abstract class AbstractJsonBackwardsCompatibilityTest {
 
-    private File DEFAULT_ROOT_FOLDER = new File("src/test/resources/backwardscompatibility");
+    private static final File DEFAULT_ROOT_FOLDER = new File("src/test/resources/backwardscompatibility");
+    private static final String DEFAULT_BASE_PACKAGE = "be.kindengezin";
 
     private Reflections reflections;
     private JsonBackwardsCompatibilityTestConfiguration cachedTestConfiguration;
 
     @Before
     public void setUpReflections() {
-        this.reflections = new Reflections(getBasePackage());
+        this.reflections = new Reflections(cachedTestConfiguration().getBasePackage());
     }
 
     @Test
@@ -50,26 +49,20 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     @Test
     public void eventMetadataIsBackwardsCompatible() throws Throwable {
         File baseFolder = folder("metadata/events");
-        cleanDirectory(new File(baseFolder, "actual"));
         metadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, findAllNonAbstractSubclassesOf(Event.class));
     }
 
     @Test
     public void deepPersonalDataMetadataIsBackwardsCompatible() throws Throwable {
         File baseFolder = folder("metadata/deeppersonaldata");
-        cleanDirectory(new File(baseFolder, "actual"));
         metadataBackwardsCompatibilityAsserter()
                 .assertGdprAnnotations(baseFolder, cachedTestConfiguration().getDeepPersonalDataClasses());
     }
 
-    protected File getRootFolder() {
-        return DEFAULT_ROOT_FOLDER;
-    }
-
-    protected abstract String getBasePackage();
-
     protected JsonBackwardsCompatibilityTestConfiguration testConfiguration() {
         return new JsonBackwardsCompatibilityTestConfiguration()
+                .withBasePackage(DEFAULT_BASE_PACKAGE)
+                .withRootFolder(DEFAULT_ROOT_FOLDER)
                 .withEnhancedRandom(enhancedRandomBuilder().build());
     }
 
@@ -103,7 +96,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     }
 
     private File folder(String folderName) {
-        return new File(getRootFolder(), folderName);
+        return new File(cachedTestConfiguration().getRootFolder(), folderName);
     }
 
     private <T> Collection<Class<?>> findAllNonAbstractSubclassesOf(Class<T> baseClass) {
@@ -120,7 +113,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
                 .collect(Collectors.toSet());
     }
 
-    private <T> Predicate<Class<? extends T>> nonAbstractClasses() {
+    private static <T> Predicate<Class<? extends T>> nonAbstractClasses() {
         return clazz -> !Modifier.isAbstract(clazz.getModifiers());
     }
 }

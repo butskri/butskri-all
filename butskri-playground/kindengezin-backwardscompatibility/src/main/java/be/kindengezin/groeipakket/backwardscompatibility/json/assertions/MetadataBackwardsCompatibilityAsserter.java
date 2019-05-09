@@ -18,8 +18,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonAssertions.assertJsonEqual;
-import static be.kindengezin.groeipakket.backwardscompatibility.json.util.MyFileUtils.loadJson;
-import static be.kindengezin.groeipakket.backwardscompatibility.json.util.MyFileUtils.writeJsonToFile;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.util.MyFileUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -32,6 +31,7 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
     }
 
     public void assertAnnotationsForEvents(File baseFolder, Collection<Class<?>> classes) throws Throwable {
+        cleanDirectory(new File(baseFolder, "actual"));
         Collection<ClassMetaDataAsserter> asserters = annotationAssertersFor(baseFolder, classes);
         assertGdprAnnotationsUsedCorrectly(asserters);
         assertSubjectIdPresentWhenPersonalDataAnnotationsPresent(asserters);
@@ -40,6 +40,7 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
     }
 
     public void assertGdprAnnotations(File baseFolder, Collection<Class<?>> classes) throws Throwable {
+        cleanDirectory(new File(baseFolder, "actual"));
         Collection<ClassMetaDataAsserter> asserters = annotationAssertersFor(baseFolder, classes);
         assertGdprAnnotationsUsedCorrectly(asserters);
         verify();

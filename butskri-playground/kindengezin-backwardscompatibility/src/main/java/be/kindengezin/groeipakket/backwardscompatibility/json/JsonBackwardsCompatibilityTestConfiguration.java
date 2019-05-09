@@ -5,16 +5,29 @@ import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.Metadat
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.api.EnhancedRandom;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class JsonBackwardsCompatibilityTestConfiguration
         implements JsonBackwardsCompatibilityAsserterConfiguration, MetadataBackwardsCompatibilityAsserterConfiguration {
 
+    private String basePackage;
+    private File rootFolder;
     private ObjectMapper objectMapper;
     private EnhancedRandom enhancedRandom;
     private boolean failOnMissingExpectedFile = false;
     private Collection<Class<?>> deepPersonalDataClasses = new ArrayList<>();
+
+    public JsonBackwardsCompatibilityTestConfiguration withBasePackage(String basePackage) {
+        this.basePackage = basePackage;
+        return this;
+    }
+
+    public JsonBackwardsCompatibilityTestConfiguration withRootFolder(File rootFolder) {
+        this.rootFolder = rootFolder;
+        return this;
+    }
 
     public JsonBackwardsCompatibilityTestConfiguration withFailOnMissingExpectedFile(boolean failOnMissingExpectedFile) {
         this.failOnMissingExpectedFile = failOnMissingExpectedFile;
@@ -34,6 +47,14 @@ public class JsonBackwardsCompatibilityTestConfiguration
     public JsonBackwardsCompatibilityTestConfiguration withDeepPersonalDataClasses(Collection<Class<?>> deepPersonalDataClasses) {
         this.deepPersonalDataClasses = deepPersonalDataClasses;
         return this;
+    }
+
+    String getBasePackage() {
+        return basePackage;
+    }
+
+    File getRootFolder() {
+        return rootFolder;
     }
 
     @Override

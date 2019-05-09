@@ -24,13 +24,9 @@ public class JsonBackwardsCompatibilityTest extends AbstractJsonBackwardsCompati
     );
 
     @Override
-    protected String getBasePackage() {
-        return "be.kindengezin.myservice";
-    }
-
-    @Override
     protected JsonBackwardsCompatibilityTestConfiguration testConfiguration() {
         return super.testConfiguration()
+                .withBasePackage("be.kindengezin.myservice")
                 .withDeepPersonalDataClasses(DEEP_PERSONAL_DATA_CLASSES)
                 .withObjectMapper(objectMapperForTests());
     }
