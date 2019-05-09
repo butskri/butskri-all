@@ -40,17 +40,17 @@ public class MetadataBackwardsCompatibilityAsserterTest {
     }
 
     @Test
-    public void assertionSucceedsWhenMetadataIsGeneratedAndMatchesPerfectlyWithClass() throws Throwable {
+    public void assertAnnotationsForEventsSucceedsWhenMetadataIsGeneratedAndMatchesPerfectlyWithClass() throws Throwable {
         asserter().assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyEvent.class, MyIntegrationEvent.class));
 
         assertFolderIsEmpty(actualFolder);
         assertFolderContainsOnlyMetadataFor(
-                expectedFolder,
-                MyEvent.class, MyIntegrationEvent.class, SomeDeepPersonalData.class);
+            expectedFolder,
+            MyEvent.class, MyIntegrationEvent.class);
     }
 
     @Test
-    public void assertionSucceedsWhenMetadataMatchesPerfectlyWithClasses() throws Throwable {
+    public void assertAnnotationsForEventsSucceedsWhenMetadataMatchesPerfectlyWithClasses() throws Throwable {
         setUpExpectedMetadata("MyEventMetadataFullyMatching.metadata", MyEvent.class);
 
         asserter().assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyEvent.class));
@@ -58,7 +58,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
     }
 
     @Test
-    public void assertionSucceedsWhenJsonFormattedDifferentlyButContentsMatches() throws Throwable {
+    public void assertAnnotationsForEventsSucceedsWhenJsonFormattedDifferentlyButContentsMatches() throws Throwable {
         setUpExpectedMetadata("MyEventMetadataFormattedDifferently.metadata", MyEvent.class);
 
         asserter().assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyEvent.class));
@@ -66,7 +66,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
     }
 
     @Test
-    public void assertionFailsWhenMetadataDoesNotMatch() throws Throwable {
+    public void assertAnnotationsForEventsFailsWhenMetadataDoesNotMatch() throws Throwable {
         setUpExpectedMetadata("MyEventMetadataNotMatching.metadata", MyEvent.class);
 
         try {
@@ -74,25 +74,27 @@ public class MetadataBackwardsCompatibilityAsserterTest {
             fail("AssertionError should have been thrown!");
         } catch (ComparisonFailure expected) {
             assertThat(expected.getMessage())
-                    .contains(String.format("metadata for %s should remain the same", MyEvent.class));
+                .contains(String.format("metadata for %s should remain the same", MyEvent.class));
         }
         assertFolderContainsOnlyMetadataFor(actualFolder, MyEvent.class);
     }
 
     @Test
-    public void assertionFailsWhenNewUnknownClassAndAsserterConfiguredToFailOnMissingExpectedFile() throws Throwable {
+    public void assertAnnotationsForEventsFailsWhenNewUnknownClassAndAsserterConfiguredToFailOnMissingExpectedFile() throws Throwable {
         try {
-            asserter(backwardsCompatibilityAsserterConfiguration().withFailOnMissingExpectedFile(true))
-                    .assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyIntegrationEvent.class));
+            asserter(
+                backwardsCompatibilityAsserterConfiguration()
+                    .withFailOnMissingExpectedFile(true))
+                .assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyIntegrationEvent.class));
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
             assertThat(expected.getMessage())
-                    .matches(
-                            String.format("Metadata file .* missing for %s. " +
-                                            "Probably you created a new event or added a new @DeepPersonalData field. " +
-                                            "You can generate the expected file using " +
-                                            "JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile\\(false\\)",
-                                    MyIntegrationEvent.class));
+                .matches(
+                    String.format("Metadata file .* missing for %s. " +
+                            "Probably you created a new event or added a new @DeepPersonalData field. " +
+                            "You can generate the expected file using " +
+                            "JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile\\(false\\)",
+                        MyIntegrationEvent.class));
         }
     }
 
@@ -106,8 +108,8 @@ public class MetadataBackwardsCompatibilityAsserterTest {
 
     private JsonBackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
         return new JsonBackwardsCompatibilityAsserterConfiguration()
-                .withObjectMapper(objectMapperForTests())
-                .withEnhancedRandom(enhancedRandomBuilder());
+            .withObjectMapper(objectMapperForTests())
+            .withEnhancedRandom(enhancedRandomBuilder());
     }
 
     private EnhancedRandom enhancedRandomBuilder() {
@@ -116,8 +118,8 @@ public class MetadataBackwardsCompatibilityAsserterTest {
 
     private void assertFolderContainsOnlyMetadataFor(File folder, Class<?>... classes) {
         List<String> expectedFileNames = Arrays.stream(classes)
-                .map(MetadataBackwardsCompatibilityAsserter::fileNameFor)
-                .collect(Collectors.toList());
+            .map(MetadataBackwardsCompatibilityAsserter::fileNameFor)
+            .collect(Collectors.toList());
         assertThat(folder.listFiles()).extracting(File::getName).containsOnlyElementsOf(expectedFileNames);
     }
 
@@ -125,7 +127,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
         File file = new File(expectedFolder, fileNameFor(clazz));
         if (file.createNewFile()) {
             InputStream resource = getClass()
-                    .getResourceAsStream("/backwardscompatibilitytests/metadata/" + resourcePath);
+                .getResourceAsStream("/backwardscompatibilitytests/metadata/" + resourcePath);
             FileUtils.write(file, IOUtils.toString(resource, "UTF-8"), "UTF-8");
         }
     }

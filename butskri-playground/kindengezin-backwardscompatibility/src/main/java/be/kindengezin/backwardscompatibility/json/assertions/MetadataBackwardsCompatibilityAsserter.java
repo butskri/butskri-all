@@ -1,15 +1,15 @@
 package be.kindengezin.backwardscompatibility.json.assertions;
 
-import io.axoniq.gdpr.api.DataSubjectId;
-import io.axoniq.gdpr.api.DeepPersonalData;
-import io.axoniq.gdpr.api.PersonalData;
-import be.kindengezin.groeipakket.commons.integration.annotations.producer.CorrelationId;
 import be.kindengezin.backwardscompatibility.json.metadata.ClassInfo;
 import be.kindengezin.backwardscompatibility.json.metadata.ClassMetadata;
 import be.kindengezin.backwardscompatibility.json.metadata.FieldInfo;
 import be.kindengezin.backwardscompatibility.json.util.JsonUtils;
 import be.kindengezin.groeipakket.commons.domain.event.IntegrationEvent;
+import be.kindengezin.groeipakket.commons.integration.annotations.producer.CorrelationId;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.axoniq.gdpr.api.DataSubjectId;
+import io.axoniq.gdpr.api.DeepPersonalData;
+import io.axoniq.gdpr.api.PersonalData;
 import org.junit.rules.ErrorCollector;
 
 import java.io.File;
@@ -17,9 +17,9 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static be.kindengezin.backwardscompatibility.json.assertions.JsonAssertions.assertJsonEqual;
 import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.loadJson;
 import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.writeJsonToFile;
-import static be.kindengezin.backwardscompatibility.json.assertions.JsonAssertions.assertJsonEqual;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -36,16 +36,19 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
         assertGdprAnnotationsUsedCorrectly(asserters);
         assertSubjectIdPresentWhenPersonalDataAnnotationsPresent(asserters);
         assertCorrelationIdPresentForIntegrationEvent(asserters);
+        verify();
+    }
 
-        Collection<Class<?>> nestedDeepPersonalDataClasses = allNestedDeepPersonalDataClasses(asserters);
-        assertGdprAnnotationsUsedCorrectly(annotationAssertersFor(baseFolder, nestedDeepPersonalDataClasses));
+    public void assertGdprAnnotations(File baseFolder, Collection<Class<?>> classes) throws Throwable {
+        Collection<ClassMetaDataAsserter> asserters = annotationAssertersFor(baseFolder, classes);
+        assertGdprAnnotationsUsedCorrectly(asserters);
         verify();
     }
 
     private Collection<ClassMetaDataAsserter> annotationAssertersFor(File parentFolder, Collection<Class<?>> classes) {
         return classes.stream()
-                .map(clazz -> new ClassMetaDataAsserter(clazz, parentFolder))
-                .collect(Collectors.toList());
+            .map(clazz -> new ClassMetaDataAsserter(clazz, parentFolder))
+            .collect(Collectors.toList());
     }
 
     private void assertGdprAnnotationsUsedCorrectly(Collection<ClassMetaDataAsserter> asserters) {
@@ -54,10 +57,10 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
     private Collection<Class<?>> allNestedDeepPersonalDataClasses(Collection<ClassMetaDataAsserter> asserters) {
         return asserters.stream()
-                .map(ClassMetaDataAsserter::classInfo)
-                .map(ClassInfo::getNestedDeepPersonalDataClasses)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
+            .map(ClassMetaDataAsserter::classInfo)
+            .map(ClassInfo::getNestedDeepPersonalDataClasses)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toSet());
     }
 
     private void assertSubjectIdPresentWhenPersonalDataAnnotationsPresent(Collection<ClassMetaDataAsserter> asserters) {
@@ -94,17 +97,18 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
         public ClassMetaDataAsserter assertSubjectIdPresentWhenPersonalDataAnnotationsPresent() {
             if (hasPersonalDataFields()) {
                 assertThat(classInfo().findFieldInfoCollectionByAnnotation(DataSubjectId.class))
-                        .describedAs("clazz %s containing personal data should have @DataSubjectId", clazz)
-                        .hasSize(1);
+                    .describedAs("clazz %s containing personal data should have @DataSubjectId", clazz)
+                    .hasSize(1);
             }
             return this;
         }
 
         public ClassMetaDataAsserter assertExactlyOneCorrelationIdPresentForIntegrationEvent() {
-            if (clazz.isAssignableFrom(IntegrationEvent.class))
+            if (clazz.isAssignableFrom(IntegrationEvent.class)) {
                 assertThat(classInfo().findFieldInfoCollectionByAnnotation(CorrelationId.class))
-                        .describedAs("%s should have exactly one @CorrelationId", clazz)
-                        .hasSize(1);
+                    .describedAs("%s should have exactly one @CorrelationId", clazz)
+                    .hasSize(1);
+            }
             return this;
         }
 
@@ -117,22 +121,22 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
         private ClassMetaDataAsserter assertAtMost1DataSubjectId() {
             assertThat(classInfo().findFieldInfoCollectionByAnnotation(DataSubjectId.class).size())
-                    .describedAs("class %s should have maximum 1 field annotated with @DatasubjectId", clazz)
-                    .isLessThanOrEqualTo(1);
+                .describedAs("class %s should have maximum 1 field annotated with @DatasubjectId", clazz)
+                .isLessThanOrEqualTo(1);
             return this;
         }
 
         private ClassMetaDataAsserter assertPersonalDataFields() {
             assertThat(classInfo().findFieldInfoCollectionByAnnotation(PersonalData.class).stream().filter(not(FieldInfo::canBeAnnotatedWithPersonalData)))
-                    .describedAs("Fields in class %s annotated with @PersonalData that shouldn't", clazz)
-                    .isEmpty();
+                .describedAs("Fields in class %s annotated with @PersonalData that shouldn't", clazz)
+                .isEmpty();
             return this;
         }
 
         private ClassMetaDataAsserter assertDeepPersonalDataFields() {
             assertThat(classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class).stream().filter(not(FieldInfo::canBeAnnotatedWithDeepPersonalData)))
-                    .describedAs("Fields in class %s annotated with @DeepPersonalData that shouldn't", clazz)
-                    .isEmpty();
+                .describedAs("Fields in class %s annotated with @DeepPersonalData that shouldn't", clazz)
+                .isEmpty();
             return this;
         }
 
@@ -141,9 +145,9 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
             ClassMetadata classMetadata = classMetadata();
             try {
                 assertJsonEqual(
-                        String.format("metadata for %s should remain the same", clazz),
-                        loadJson(expectedFile()),
-                        jsonFor(classMetadata)
+                    String.format("metadata for %s should remain the same", clazz),
+                    loadJson(expectedFile()),
+                    jsonFor(classMetadata)
                 );
             } catch (AssertionError error) {
                 writeClassMetadata(classMetadata, actualFile());
@@ -155,10 +159,10 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
         private void generateJsonWhenNecessary() {
             if (!expectedFile().exists() && configuration.isFailOnMissingExpectedFile()) {
                 fail(String.format("Metadata file %s missing for %s. " +
-                                "Probably you created a new event or added a new @DeepPersonalData field. " +
-                                "You can generate the expected file using JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile(false)",
-                        expectedFile(),
-                        clazz));
+                        "Probably you created a new event or added a new @DeepPersonalData field. " +
+                        "You can generate the expected file using JsonBackwardsCompatibilityAsserterConfiguration.withFailOnMissingExpectedFile(false)",
+                    expectedFile(),
+                    clazz));
             }
             if (!expectedFile().exists()) {
                 writeClassMetadata(classMetadata(), expectedFile());
@@ -188,16 +192,16 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
         private ClassMetadata classMetadata() {
             return ClassMetadata.builder()
-                    .withCorrelationIdInfo(classInfo().findSingleFieldInfoByAnnotation(CorrelationId.class).orElse(null))
-                    .withDataSubjectIdInfo(classInfo().findSingleFieldInfoByAnnotation(DataSubjectId.class).orElse(null))
-                    .withPersonalDataFieldsInfos(classInfo().findFieldInfoCollectionByAnnotation(PersonalData.class))
-                    .withDeepPersonalDataFieldsInfos(classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class))
-                    .build();
+                .withCorrelationIdInfo(classInfo().findSingleFieldInfoByAnnotation(CorrelationId.class).orElse(null))
+                .withDataSubjectIdInfo(classInfo().findSingleFieldInfoByAnnotation(DataSubjectId.class).orElse(null))
+                .withPersonalDataFieldsInfos(classInfo().findFieldInfoCollectionByAnnotation(PersonalData.class))
+                .withDeepPersonalDataFieldsInfos(classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class))
+                .build();
         }
 
         private boolean hasPersonalDataFields() {
             return !classInfo().findFieldInfoCollectionByAnnotation(PersonalData.class).isEmpty()
-                    || !classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class).isEmpty();
+                || !classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class).isEmpty();
         }
 
         private ClassInfo classInfo() {

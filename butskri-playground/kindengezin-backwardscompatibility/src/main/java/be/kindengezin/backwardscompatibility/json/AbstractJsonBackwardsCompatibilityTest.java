@@ -55,6 +55,14 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         metadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, findAllNonAbstractSubclassesOf(Event.class));
     }
 
+    @Test
+    public void deepPersonalDataMetadataIsBackwardsCompatible() throws Throwable {
+        File baseFolder = new File(getRootFolder(), "metadata/deeppersonaldata");
+        cleanDirectory(new File(baseFolder, "actual"));
+        metadataBackwardsCompatibilityAsserter()
+            .assertGdprAnnotations(baseFolder, backwardsCompatibilityAsserterConfiguration().getDeepPersonalDataClasses());
+    }
+
     protected File getRootFolder() {
         return DEFAULT_ROOT_FOLDER;
     }
