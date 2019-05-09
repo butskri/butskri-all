@@ -1,12 +1,12 @@
 package be.kindengezin.backwardscompatibility.json;
 
-import be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants;
 import be.butskri.playground.keng.commons.domain.ProcessManager;
-import be.kindengezin.groeipakket.domain.read.ViewObject;
-import be.kindengezin.groeipakket.commons.domain.event.Event;
 import be.kindengezin.backwardscompatibility.json.assertions.BackwardsCompatibilityAsserterConfiguration;
 import be.kindengezin.backwardscompatibility.json.assertions.EventMetadataBackwardsCompatibilityAsserter;
 import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
+import be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants;
+import be.kindengezin.groeipakket.commons.domain.event.Event;
+import be.kindengezin.groeipakket.domain.read.ViewObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import org.apache.commons.io.FileUtils;
@@ -70,8 +70,8 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     protected BackwardsCompatibilityAsserterConfiguration backwardsCompatibilityAsserterConfiguration() {
         return new BackwardsCompatibilityAsserterConfiguration()
-                .withObjectMapper(getObjectMapper())
-                .withEnhancedRandom(enhancedRandomBuilder().build());
+            .withObjectMapper(getObjectMapper())
+            .withEnhancedRandom(enhancedRandomBuilder().build());
     }
 
     protected EnhancedRandomBuilder enhancedRandomBuilder() {
@@ -88,14 +88,16 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     private <T> Collection<Class<?>> findAllNonAbstractSubclassesOf(Class<T> baseClass) {
         return reflections.getSubTypesOf(baseClass)
-                .stream()
-                .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
-                .collect(Collectors.toSet());
+            .stream()
+            .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
+            .collect(Collectors.toSet());
     }
 
     private void clearDirectory(File directory) {
         try {
-            FileUtils.cleanDirectory(directory);
+            if (directory.exists()) {
+                FileUtils.cleanDirectory(directory);
+            }
         } catch (IOException e) {
             Assertions.fail(String.format("Could not clean directory %s", directory), e);
         }
