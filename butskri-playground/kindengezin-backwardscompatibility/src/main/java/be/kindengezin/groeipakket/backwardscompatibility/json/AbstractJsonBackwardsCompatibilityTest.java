@@ -53,6 +53,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         return new JsonBackwardsCompatibilityTestConfiguration()
                 .withBasePackage(DEFAULT_BASE_PACKAGE)
                 .withRootFolder(DEFAULT_ROOT_FOLDER)
+                .withFailOnMissingExpectedFileEnabled(false)
                 .withEnhancedRandom(enhancedRandomBuilder().build());
     }
 

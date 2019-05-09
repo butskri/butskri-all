@@ -9,5 +9,5 @@ public interface JsonBackwardsCompatibilityAsserterConfiguration {
 
     EnhancedRandom getEnhancedRandom();
 
-    boolean isFailOnMissingExpectedFile();
+    boolean isFailOnMissingExpectedFileEnabled();
 }

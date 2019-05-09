@@ -85,7 +85,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
         try {
             asserter(
                     backwardsCompatibilityAsserterConfiguration()
-                            .withFailOnMissingExpectedFile(true))
+                            .withFailOnMissingExpectedFileEnabled(true))
                     .assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyIntegrationEvent.class));
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
@@ -94,7 +94,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
                             String.format("Metadata file .* missing for %s. " +
                                             "Probably you created a new event or added a new @DeepPersonalData field. " +
                                             "You can generate the expected file using " +
-                                            "JsonBackwardsCompatibilityTestConfiguration.withFailOnMissingExpectedFile\\(false\\)",
+                                            "JsonBackwardsCompatibilityTestConfiguration.withFailOnMissingExpectedFileEnabled\\(false\\)",
                                     MyIntegrationEvent.class));
         }
     }

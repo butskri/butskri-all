@@ -102,7 +102,7 @@ public class JsonBackwardsCompatibilityAsserterTest {
     @Test
     public void assertionFailsWhenNewUnknownClassAndAsserterConfiguredToFailOnNewBeanGeneration() throws Throwable {
         try {
-            asserter(backwardsCompatibilityAsserterConfiguration().withFailOnMissingExpectedFile(true))
+            asserter(backwardsCompatibilityAsserterConfiguration().withFailOnMissingExpectedFileEnabled(true))
                     .assertJsonIsBackwardsCompatibleFor(rootFolder, Lists.newArrayList(MyEvent.class));
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {

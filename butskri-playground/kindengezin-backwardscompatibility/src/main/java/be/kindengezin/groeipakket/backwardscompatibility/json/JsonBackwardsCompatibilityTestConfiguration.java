@@ -5,6 +5,7 @@ import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.Metadat
 import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.ClassFinder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.api.EnhancedRandom;
+import org.assertj.core.api.Assertions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class JsonBackwardsCompatibilityTestConfiguration
     private File rootFolder;
     private ObjectMapper objectMapper;
     private EnhancedRandom enhancedRandom;
-    private boolean failOnMissingExpectedFile = false;
+    private boolean failOnMissingExpectedFileEnabled = false;
     private Collection<Class<?>> deepPersonalDataClasses = new ArrayList<>();
 
     public JsonBackwardsCompatibilityTestConfiguration withBasePackage(String basePackage) {
@@ -30,8 +31,8 @@ public class JsonBackwardsCompatibilityTestConfiguration
         return this;
     }
 
-    public JsonBackwardsCompatibilityTestConfiguration withFailOnMissingExpectedFile(boolean failOnMissingExpectedFile) {
-        this.failOnMissingExpectedFile = failOnMissingExpectedFile;
+    public JsonBackwardsCompatibilityTestConfiguration withFailOnMissingExpectedFileEnabled(boolean failOnMissingExpectedFileEnabled) {
+        this.failOnMissingExpectedFileEnabled = failOnMissingExpectedFileEnabled;
         return this;
     }
 
@@ -59,12 +60,15 @@ public class JsonBackwardsCompatibilityTestConfiguration
     }
 
     @Override
-    public boolean isFailOnMissingExpectedFile() {
-        return failOnMissingExpectedFile;
+    public boolean isFailOnMissingExpectedFileEnabled() {
+        return failOnMissingExpectedFileEnabled;
     }
 
     @Override
     public ObjectMapper getObjectMapper() {
+        if (objectMapper == null) {
+            Assertions.fail("no objectMapper configured!");
+        }
         return objectMapper;
     }
 

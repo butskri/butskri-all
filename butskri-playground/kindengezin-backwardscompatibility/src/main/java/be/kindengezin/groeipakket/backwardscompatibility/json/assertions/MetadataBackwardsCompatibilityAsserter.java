@@ -158,10 +158,10 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
         }
 
         private void generateJsonWhenNecessary() {
-            if (!expectedFile().exists() && configuration.isFailOnMissingExpectedFile()) {
+            if (!expectedFile().exists() && configuration.isFailOnMissingExpectedFileEnabled()) {
                 fail(String.format("Metadata file %s missing for %s. " +
                                 "Probably you created a new event or added a new @DeepPersonalData field. " +
-                                "You can generate the expected file using JsonBackwardsCompatibilityTestConfiguration.withFailOnMissingExpectedFile(false)",
+                                "You can generate the expected file using JsonBackwardsCompatibilityTestConfiguration.withFailOnMissingExpectedFileEnabled(false)",
                         expectedFile(),
                         clazz));
             }
