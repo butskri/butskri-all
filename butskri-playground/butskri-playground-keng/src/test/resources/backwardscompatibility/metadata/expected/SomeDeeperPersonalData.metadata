@@ -1,4 +1,0 @@
-{
-  "personalDataFields" : [ "privatePart" ],
-  "deepPersonalDataFields" : [ "deepestPersonalData: SomeDeepestPersonalData" ]
-}

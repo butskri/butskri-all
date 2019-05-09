@@ -1,6 +1,0 @@
-{
-  "correlationId" : "myId",
-  "dataSubjectId" : "myId",
-  "personalDataFields" : [ "someOtherPersonalData", "somePersonalData" ],
-  "deepPersonalDataFields" : [ "deepPersonalData: SomeDeepPersonalData" ]
-}

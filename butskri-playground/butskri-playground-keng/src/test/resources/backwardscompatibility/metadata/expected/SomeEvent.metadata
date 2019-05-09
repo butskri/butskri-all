@@ -1,5 +1,0 @@
-{
-  "dataSubjectId" : "myId",
-  "personalDataFields" : [ "someOtherPersonalData", "somePersonalData" ],
-  "deepPersonalDataFields" : [ "deepPersonalData: SomeDeepPersonalData" ]
-}
