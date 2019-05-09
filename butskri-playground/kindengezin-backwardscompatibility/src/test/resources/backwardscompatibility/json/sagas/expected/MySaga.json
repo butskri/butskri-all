@@ -1,0 +1,32 @@
+{
+  "someField" : "NwjbmLGEkzmFBxoOjZ",
+  "someOtherField" : 1245489778,
+  "someBean" : {
+    "someString" : "egYiucQtYJQbAc",
+    "someInt" : -1069501735,
+    "someInteger" : 1245489778,
+    "someUuid" : "4a3caa71-c040-b2d9-375d-1bb61c4fa2be",
+    "someListOfStrings" : [ "pGrZbJFDEirMFZQewnyGV", "CrUrDvF" ],
+    "nestedBean" : {
+      "something" : "eOLlEpJwBELAUliunEV"
+    },
+    "superBeans" : [ {
+      "_type" : "SUB_BEAN_TWO",
+      "superProperty" : "VBZPphjCpNaYKtwicoRXMjoHcRCoZ",
+      "subPropertyTwo" : "yWgiQ"
+    }, {
+      "_type" : "SUB_BEAN_ONE",
+      "superProperty" : "bvNcxFdxlnnttjSLzeQLJpuHQl",
+      "subPropertyOne" : "sZvpzIcsXngxprsvqAOJaHxgrTTnhcfx"
+    } ],
+    "inss" : "93787291720",
+    "localDateTime" : "2015-10-20T06:57:34",
+    "localDate" : "2015-10-20",
+    "yearMonth" : "2015-6"
+  },
+  "superBean" : {
+    "_type" : "SUB_BEAN_ONE",
+    "superProperty" : "YqKCibEYKLubnGMXZblaHaXBINZjvANoynLawwcweKZTXq",
+    "subPropertyOne" : "KBnmpKkxoaeMiMjTbNmtNhVIMXxeNfHVgJnSKEkZWkeVAZMo"
+  }
+}

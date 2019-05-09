@@ -1,0 +1,5 @@
+{
+  "personalDataFields": [ "personalData" ],
+  "deepPersonalDataFields": [ "deepPersonalData: SomeDeepPersonalData" ],
+  "dataSubjectId": "id"
+}

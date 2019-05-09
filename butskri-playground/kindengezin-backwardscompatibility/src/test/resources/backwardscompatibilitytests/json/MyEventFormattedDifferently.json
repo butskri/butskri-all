@@ -1,0 +1,10 @@
+{
+  "myString": "hahaha",
+  "myInt": 512,
+  "id": "16438dab-0562-4de8-91cd-b2394e64c46b",
+  "personalData": "privateValue",
+  "deepPersonalData": {
+    "privatePart": "privateStuff",
+    "publicPart": "publicStuff"
+  }
+}
