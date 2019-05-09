@@ -3,33 +3,23 @@ package be.kindengezin.groeipakket.backwardscompatibility.json;
 import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter;
 import be.kindengezin.groeipakket.backwardscompatibility.json.random.RandomizationTestConstants;
+import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.ClassFinder;
 import be.kindengezin.groeipakket.commons.domain.event.Event;
 import be.kindengezin.groeipakket.domain.read.ViewObject;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import org.axonframework.spring.stereotype.Saga;
-import org.junit.Before;
 import org.junit.Test;
-import org.reflections.Reflections;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     private static final File DEFAULT_ROOT_FOLDER = new File("src/test/resources/backwardscompatibility");
     private static final String DEFAULT_BASE_PACKAGE = "be.kindengezin";
 
-    private Reflections reflections;
     private JsonBackwardsCompatibilityTestConfiguration cachedTestConfiguration;
-
-    @Before
-    public void setUpReflections() {
-        this.reflections = new Reflections(cachedTestConfiguration().getBasePackage());
-    }
 
     @Test
     public void sagasAreBackwardsCompatible() throws Throwable {
@@ -49,7 +39,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     @Test
     public void eventMetadataIsBackwardsCompatible() throws Throwable {
         File baseFolder = folder("metadata/events");
-        metadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, findAllNonAbstractSubclassesOf(Event.class));
+        metadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, classFinder().findAllNonAbstractSubclassesOf(Event.class));
     }
 
     @Test
@@ -71,12 +61,12 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     }
 
     <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) throws Throwable {
-        Collection<Class<?>> subclasses = findAllNonAbstractSubclassesOf(baseClass);
+        Collection<Class<?>> subclasses = classFinder().findAllNonAbstractSubclassesOf(baseClass);
         jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(folder(folderName), subclasses);
     }
 
     <T extends Annotation> void assertAnnotatedClassesAreBackwardsCompatible(String folderName, Class<T> baseAnnotation) throws Throwable {
-        Collection<Class<?>> subclasses = findAllNonAbstractClassesAnnotatedWith(baseAnnotation);
+        Collection<Class<?>> subclasses = classFinder().findAllNonAbstractClassesAnnotatedWith(baseAnnotation);
         jsonBackwardsCompatibilityAsserter().assertJsonIsBackwardsCompatibleFor(folder(folderName), subclasses);
     }
 
@@ -85,6 +75,10 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
             this.cachedTestConfiguration = testConfiguration();
         }
         return cachedTestConfiguration;
+    }
+
+    private ClassFinder classFinder() {
+        return cachedTestConfiguration().getClassFinder();
     }
 
     private JsonBackwardsCompatibilityAsserter jsonBackwardsCompatibilityAsserter() {
@@ -97,23 +91,5 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     private File folder(String folderName) {
         return new File(cachedTestConfiguration().getRootFolder(), folderName);
-    }
-
-    private <T> Collection<Class<?>> findAllNonAbstractSubclassesOf(Class<T> baseClass) {
-        return reflections.getSubTypesOf(baseClass)
-                .stream()
-                .filter(nonAbstractClasses())
-                .collect(Collectors.toSet());
-    }
-
-    private <T extends Annotation> Collection<Class<?>> findAllNonAbstractClassesAnnotatedWith(Class<T> baseClass) {
-        return reflections.getTypesAnnotatedWith(baseClass)
-                .stream()
-                .filter(nonAbstractClasses())
-                .collect(Collectors.toSet());
-    }
-
-    private static <T> Predicate<Class<? extends T>> nonAbstractClasses() {
-        return clazz -> !Modifier.isAbstract(clazz.getModifiers());
     }
 }
