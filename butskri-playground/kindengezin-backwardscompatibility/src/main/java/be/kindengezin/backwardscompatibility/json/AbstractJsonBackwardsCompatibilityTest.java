@@ -1,27 +1,26 @@
 package be.kindengezin.backwardscompatibility.json;
 
+import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserterConfiguration;
 import be.kindengezin.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter;
-import be.kindengezin.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.kindengezin.backwardscompatibility.json.random.RandomizationTestConstants;
 import be.kindengezin.groeipakket.commons.domain.event.Event;
 import be.kindengezin.groeipakket.domain.read.ViewObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
-import org.apache.commons.io.FileUtils;
-import org.assertj.core.api.Assertions;
 import org.axonframework.spring.stereotype.Saga;
 import org.junit.Before;
 import org.junit.Test;
 import org.reflections.Reflections;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.cleanDirectory;
 
 public abstract class AbstractJsonBackwardsCompatibilityTest {
 
@@ -52,9 +51,8 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     @Test
     public void eventMetadataIsBackwardsCompatible() throws Throwable {
         File baseFolder = new File(getRootFolder(), "metadata/events");
-        clearDirectory(new File(baseFolder, "actual"));
-        Collection<Class<?>> eventsSubclasses = findAllNonAbstractSubclassesOf(Event.class);
-        eventMetadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, eventsSubclasses);
+        cleanDirectory(new File(baseFolder, "actual"));
+        metadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, findAllNonAbstractSubclassesOf(Event.class));
     }
 
     protected File getRootFolder() {
@@ -89,7 +87,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
         return new JsonBackwardsCompatibilityAsserter(backwardsCompatibilityAsserterConfiguration());
     }
 
-    private MetadataBackwardsCompatibilityAsserter eventMetadataBackwardsCompatibilityAsserter() {
+    private MetadataBackwardsCompatibilityAsserter metadataBackwardsCompatibilityAsserter() {
         return new MetadataBackwardsCompatibilityAsserter(backwardsCompatibilityAsserterConfiguration());
     }
 
@@ -109,15 +107,5 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     private <T> Predicate<Class<? extends T>> nonAbstractClasses() {
         return clazz -> !Modifier.isAbstract(clazz.getModifiers());
-    }
-
-    private void clearDirectory(File directory) {
-        try {
-            if (directory.exists()) {
-                FileUtils.cleanDirectory(directory);
-            }
-        } catch (IOException e) {
-            Assertions.fail(String.format("Could not clean directory %s", directory), e);
-        }
     }
 }

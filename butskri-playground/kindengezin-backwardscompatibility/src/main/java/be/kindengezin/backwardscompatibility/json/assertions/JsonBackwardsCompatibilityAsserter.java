@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static be.kindengezin.backwardscompatibility.json.assertions.DeepAssertions.assertNoDeepNullValues;
-import static be.kindengezin.backwardscompatibility.json.util.JsonUtils.loadJson;
-import static be.kindengezin.backwardscompatibility.json.util.JsonUtils.writeJsonToFile;
+import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.loadJson;
+import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.writeJsonToFile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 

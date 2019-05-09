@@ -17,8 +17,8 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static be.kindengezin.backwardscompatibility.json.util.JsonUtils.loadJson;
-import static be.kindengezin.backwardscompatibility.json.util.JsonUtils.writeJsonToFile;
+import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.loadJson;
+import static be.kindengezin.backwardscompatibility.json.util.MyFileUtils.writeJsonToFile;
 import static be.kindengezin.backwardscompatibility.json.assertions.JsonAssertions.assertJsonEqual;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -31,14 +31,14 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
         this.configuration = configuration;
     }
 
-    public void assertAnnotationsForEvents(File parentFolder, Collection<Class<?>> classes) throws Throwable {
-        Collection<ClassMetaDataAsserter> asserters = annotationAssertersFor(parentFolder, classes);
+    public void assertAnnotationsForEvents(File baseFolder, Collection<Class<?>> classes) throws Throwable {
+        Collection<ClassMetaDataAsserter> asserters = annotationAssertersFor(baseFolder, classes);
         assertGdprAnnotationsUsedCorrectly(asserters);
         assertSubjectIdPresentWhenPersonalDataAnnotationsPresent(asserters);
         assertCorrelationIdPresentForIntegrationEvent(asserters);
 
         Collection<Class<?>> nestedDeepPersonalDataClasses = allNestedDeepPersonalDataClasses(asserters);
-        assertGdprAnnotationsUsedCorrectly(annotationAssertersFor(parentFolder, nestedDeepPersonalDataClasses));
+        assertGdprAnnotationsUsedCorrectly(annotationAssertersFor(baseFolder, nestedDeepPersonalDataClasses));
         verify();
     }
 
