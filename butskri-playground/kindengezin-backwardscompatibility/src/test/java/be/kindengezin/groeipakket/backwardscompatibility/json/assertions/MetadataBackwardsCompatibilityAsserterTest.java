@@ -4,7 +4,6 @@ import be.kindengezin.groeipakket.backwardscompatibility.json.JsonBackwardsCompa
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.ComparisonFailure;
 import org.junit.Rule;
@@ -23,9 +22,11 @@ import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.
 import static be.kindengezin.groeipakket.backwardscompatibility.json.random.RandomizationTestConstants.baseEnhancedRandomBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.util.Lists.newArrayList;
 
 public class MetadataBackwardsCompatibilityAsserterTest {
 
+    public static final String WHITESPACE = "[\\s]*";
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
@@ -42,7 +43,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
 
     @Test
     public void assertAnnotationsForEventsSucceedsWhenMetadataIsGeneratedAndMatchesPerfectlyWithClass() throws Throwable {
-        asserter().assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyEvent.class, MyIntegrationEvent.class));
+        asserter().assertAnnotationsForEvents(rootFolder, newArrayList(MyEvent.class, MyIntegrationEvent.class));
 
         assertFolderIsEmpty(actualFolder);
         assertFolderContainsOnlyMetadataFor(
@@ -54,7 +55,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
     public void assertAnnotationsForEventsSucceedsWhenMetadataMatchesPerfectlyWithClasses() throws Throwable {
         setUpExpectedMetadata("MyEventMetadataFullyMatching.metadata", MyEvent.class);
 
-        asserter().assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyEvent.class));
+        asserter().assertAnnotationsForEvents(rootFolder, newArrayList(MyEvent.class));
         assertFolderIsEmpty(actualFolder);
     }
 
@@ -62,7 +63,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
     public void assertAnnotationsForEventsSucceedsWhenJsonFormattedDifferentlyButContentsMatches() throws Throwable {
         setUpExpectedMetadata("MyEventMetadataFormattedDifferently.metadata", MyEvent.class);
 
-        asserter().assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyEvent.class));
+        asserter().assertAnnotationsForEvents(rootFolder, newArrayList(MyEvent.class));
         assertFolderIsEmpty(actualFolder);
     }
 
@@ -71,7 +72,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
         setUpExpectedMetadata("MyEventMetadataNotMatching.metadata", MyEvent.class);
 
         try {
-            asserter().assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyEvent.class));
+            asserter().assertAnnotationsForEvents(rootFolder, newArrayList(MyEvent.class));
             fail("AssertionError should have been thrown!");
         } catch (ComparisonFailure expected) {
             assertThat(expected.getMessage())
@@ -86,7 +87,7 @@ public class MetadataBackwardsCompatibilityAsserterTest {
             asserter(
                     backwardsCompatibilityAsserterConfiguration()
                             .withFailOnMissingExpectedFileEnabled(true))
-                    .assertAnnotationsForEvents(rootFolder, Lists.newArrayList(MyIntegrationEvent.class));
+                    .assertAnnotationsForEvents(rootFolder, newArrayList(MyIntegrationEvent.class));
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
             assertThat(expected.getMessage())
@@ -96,6 +97,40 @@ public class MetadataBackwardsCompatibilityAsserterTest {
                                             "You can generate the expected file using " +
                                             "JsonBackwardsCompatibilityTestConfiguration.withFailOnMissingExpectedFileEnabled\\(false\\)",
                                     MyIntegrationEvent.class));
+        }
+    }
+
+    @Test
+    public void assertAnnotationsForEventsFailsWhenExpectedFilesDiffer() throws Throwable {
+        setUpExpectedMetadata("MyEventMetadataNotMatching.metadata", MyEvent.class);
+        try {
+            asserter(backwardsCompatibilityAsserterConfiguration()).assertAnnotationsForEvents(rootFolder, newArrayList());
+            fail("AssertionError should have been thrown!");
+        } catch (AssertionError expected) {
+            assertThat(expected.getMessage())
+                    .matches(WHITESPACE + "Expecting:" + WHITESPACE +
+                            "<\\[\"MyEvent.metadata\"\\]>" + WHITESPACE +
+                            "to contain exactly \\(and in same order\\):" + WHITESPACE +
+                            "<\\[\\]>" + WHITESPACE +
+                            "but some elements were not expected:" + WHITESPACE +
+                            "<\\[\"MyEvent.metadata\"\\]>" + WHITESPACE);
+        }
+    }
+
+    @Test
+    public void assertGdprAnnotationsForEventsFailsWhenExpectedFilesDiffer() throws Throwable {
+        setUpExpectedMetadata("MyEventMetadataNotMatching.metadata", MyEvent.class);
+        try {
+            asserter(backwardsCompatibilityAsserterConfiguration()).assertGdprAnnotations(rootFolder, newArrayList());
+            fail("AssertionError should have been thrown!");
+        } catch (AssertionError expected) {
+            assertThat(expected.getMessage())
+                    .matches(WHITESPACE + "Expecting:" + WHITESPACE +
+                            "<\\[\"MyEvent.metadata\"\\]>" + WHITESPACE +
+                            "to contain exactly \\(and in same order\\):" + WHITESPACE +
+                            "<\\[\\]>" + WHITESPACE +
+                            "but some elements were not expected:" + WHITESPACE +
+                            "<\\[\"MyEvent.metadata\"\\]>" + WHITESPACE);
         }
     }
 
