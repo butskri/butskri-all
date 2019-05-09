@@ -20,6 +20,7 @@ public class JsonBackwardsCompatibilityTestConfiguration
     private EnhancedRandom enhancedRandom;
     private boolean failOnMissingExpectedFileEnabled = false;
     private Collection<Class<?>> deepPersonalDataClasses = new ArrayList<>();
+    private boolean metadataBackwardsCompatibilityTestsEnabled = true;
 
     public JsonBackwardsCompatibilityTestConfiguration withBasePackage(String basePackage) {
         this.classFinder = new ClassFinder(basePackage);
@@ -48,6 +49,11 @@ public class JsonBackwardsCompatibilityTestConfiguration
 
     public JsonBackwardsCompatibilityTestConfiguration withDeepPersonalDataClasses(Collection<Class<?>> deepPersonalDataClasses) {
         this.deepPersonalDataClasses = deepPersonalDataClasses;
+        return this;
+    }
+
+    public JsonBackwardsCompatibilityTestConfiguration withMetadataBackwardsCompatibilityTestsEnabled(boolean metadataBackwardsCompatibilityTestsEnabled) {
+        this.metadataBackwardsCompatibilityTestsEnabled = metadataBackwardsCompatibilityTestsEnabled;
         return this;
     }
 
@@ -80,5 +86,9 @@ public class JsonBackwardsCompatibilityTestConfiguration
     @Override
     public Collection<Class<?>> getDeepPersonalDataClasses() {
         return deepPersonalDataClasses;
+    }
+
+    boolean isMetadataBackwardsCompatibilityTestsEnabled() {
+        return metadataBackwardsCompatibilityTestsEnabled;
     }
 }

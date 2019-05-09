@@ -38,12 +38,18 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
 
     @Test
     public void eventMetadataIsBackwardsCompatible() throws Throwable {
+        if (!cachedTestConfiguration().isMetadataBackwardsCompatibilityTestsEnabled()) {
+            return;
+        }
         File baseFolder = folder("events/metadata");
         metadataBackwardsCompatibilityAsserter().assertAnnotationsForEvents(baseFolder, classFinder().findAllNonAbstractSubclassesOf(Event.class));
     }
 
     @Test
     public void deepPersonalDataMetadataIsBackwardsCompatible() throws Throwable {
+        if (!cachedTestConfiguration().isMetadataBackwardsCompatibilityTestsEnabled()) {
+            return;
+        }
         File baseFolder = folder("deeppersonaldata/metadata");
         metadataBackwardsCompatibilityAsserter()
                 .assertGdprAnnotations(baseFolder, cachedTestConfiguration().getDeepPersonalDataClasses());
@@ -54,7 +60,8 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
                 .withBasePackage(DEFAULT_BASE_PACKAGE)
                 .withRootFolder(DEFAULT_ROOT_FOLDER)
                 .withFailOnMissingExpectedFileEnabled(false)
-                .withEnhancedRandom(enhancedRandomBuilder().build());
+                .withEnhancedRandom(enhancedRandomBuilder().build())
+                .withMetadataBackwardsCompatibilityTestsEnabled(true);
     }
 
     protected EnhancedRandomBuilder enhancedRandomBuilder() {
