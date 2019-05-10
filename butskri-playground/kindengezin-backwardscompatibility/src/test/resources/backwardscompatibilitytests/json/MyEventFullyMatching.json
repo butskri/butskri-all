@@ -1,4 +1,11 @@
 {
+  "metadata": {
+    "timestamp": 1557508588.395000000,
+    "principal": {
+      "id": "principalId",
+      "type": "principalType"
+    }
+  },
   "id" : "16438dab-0562-4de8-91cd-b2394e64c46b",
   "myString" : "hahaha",
   "myInt" : 512,

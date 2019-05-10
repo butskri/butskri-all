@@ -6,5 +6,12 @@
   "deepPersonalData": {
     "privatePart": "privateStuff",
     "publicPart": "publicStuff"
+  },
+  "metadata": {
+    "timestamp": 1557508588.395000000,
+    "principal": {
+      "id": "principalId",
+      "type": "principalType"
+    }
   }
 }

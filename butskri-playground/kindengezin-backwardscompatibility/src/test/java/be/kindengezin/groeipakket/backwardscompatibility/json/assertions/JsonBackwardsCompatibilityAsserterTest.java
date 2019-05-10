@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter.fileNameFor;
 import static be.kindengezin.groeipakket.backwardscompatibility.json.assertions.ObjectMapperTestConstants.objectMapperForTests;
-import static be.kindengezin.groeipakket.backwardscompatibility.json.random.RandomizationTestConstants.baseEnhancedRandomBuilder;
+import static be.kindengezin.groeipakket.backwardscompatibility.json.random.Randomization.baseEnhancedRandomBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 

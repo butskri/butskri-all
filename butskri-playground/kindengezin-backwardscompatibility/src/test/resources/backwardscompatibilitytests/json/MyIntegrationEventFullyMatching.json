@@ -1,4 +1,11 @@
 {
+  "metadata": {
+    "timestamp": 1557508588.395000000,
+    "principal": {
+      "id": "principalId",
+      "type": "principalType"
+    }
+  },
   "someString" : "hihi",
   "someInt" : 1024
 }

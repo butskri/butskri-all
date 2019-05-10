@@ -1,10 +1,11 @@
 package be.kindengezin.groeipakket.backwardscompatibility.json.random;
 
+import be.kindengezin.groeipakket.commons.domain.Metadata;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 
 import static java.nio.charset.Charset.forName;
 
-public class RandomizationTestConstants {
+public class Randomization {
 
     private static final int DEFAULT_MIN_STRING_LENGTH = 5;
     private static final int DEFAULT_MAX_STRING_LENGTH = 50;
@@ -19,6 +20,8 @@ public class RandomizationTestConstants {
                 .stringLengthRange(DEFAULT_MIN_STRING_LENGTH, DEFAULT_MAX_STRING_LENGTH)
                 .collectionSizeRange(DEFAULT_MIN_COLLECTION_SIZE, DEFAULT_MAX_COLLECTION_SIZE)
                 .scanClasspathForConcreteTypes(true)
-                .overrideDefaultInitialization(true);
+                .overrideDefaultInitialization(true)
+                .randomize(Metadata.class, new MetadataRandomizer())
+                ;
     }
 }

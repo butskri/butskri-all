@@ -1,4 +1,11 @@
 {
+  "metadata" : {
+    "timestamp" : 1557508588.395000000,
+    "principal" : {
+      "id" : "principalId",
+      "type": "principalType"
+    }
+  },
   "myId" : "6e3e9188-a022-f2ba-4db6-b86ddae2afe4",
   "someId" : "3ed38e54-4774-119c-fb1e-b2cbbeb52443",
   "someOtherId" : "24456f66-6cfc-3b6f-2ec5-473669225b7b",

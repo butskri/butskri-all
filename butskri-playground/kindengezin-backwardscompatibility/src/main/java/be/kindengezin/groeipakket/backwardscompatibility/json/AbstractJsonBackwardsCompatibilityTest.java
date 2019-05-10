@@ -2,7 +2,7 @@ package be.kindengezin.groeipakket.backwardscompatibility.json;
 
 import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.JsonBackwardsCompatibilityAsserter;
 import be.kindengezin.groeipakket.backwardscompatibility.json.assertions.MetadataBackwardsCompatibilityAsserter;
-import be.kindengezin.groeipakket.backwardscompatibility.json.random.RandomizationTestConstants;
+import be.kindengezin.groeipakket.backwardscompatibility.json.random.Randomization;
 import be.kindengezin.groeipakket.backwardscompatibility.json.reflection.ClassFinder;
 import be.kindengezin.groeipakket.commons.domain.event.Event;
 import be.kindengezin.groeipakket.domain.read.ViewObject;
@@ -65,7 +65,7 @@ public abstract class AbstractJsonBackwardsCompatibilityTest {
     }
 
     protected EnhancedRandomBuilder enhancedRandomBuilder() {
-        return RandomizationTestConstants.baseEnhancedRandomBuilder();
+        return Randomization.baseEnhancedRandomBuilder();
     }
 
     <T> void assertSubclassesAreBackwardsCompatible(String folderName, Class<T> baseClass) throws Throwable {
