@@ -44,7 +44,7 @@ public class FieldInfo {
     public Class<?> underlyingType(Type type) {
         if (type instanceof WildcardType) {
             WildcardType wildcardType = (WildcardType) type;
-            return underlyingType(((WildcardType) type).getUpperBounds()[0]);
+            return underlyingType((wildcardType).getUpperBounds()[0]);
         } else if (type instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
             Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
