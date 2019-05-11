@@ -140,7 +140,7 @@ public class MetadataBackwardsCompatibilityAsserter extends ErrorCollector {
 
         private ClassMetaDataAsserter assertDeepPersonalDataFields() {
             assertThat(classInfo().findFieldInfoCollectionByAnnotation(DeepPersonalData.class).stream()
-                    .filter(fieldInfo -> !configuration.getDeepPersonalDataClasses().contains(fieldInfo.getType())))
+                    .filter(fieldInfo -> !configuration.getDeepPersonalDataClasses().contains(fieldInfo.underlyingType())))
                     .describedAs("Fields in class %s annotated with @DeepPersonalData that shouldn't", clazz)
                     .isEmpty();
             return this;

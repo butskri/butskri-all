@@ -28,10 +28,6 @@ public class FieldInfo {
         return isCollection(field.getType());
     }
 
-    public Class<?> getType() {
-        return field.getType();
-    }
-
     public Class<?> underlyingType() {
         if (isArray()) {
             return field.getType().getComponentType();
