@@ -7,21 +7,31 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
+        <axon-framework.version>4.1</axon-framework.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-csv.version>1.6</commons-csv.version>
         <jackson.version>2.9.7</jackson.version>
         <reflections.version>0.9.11</reflections.version>
         <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
         <jsonassert.version>1.5.0</jsonassert.version>
+        <easy-random.version>4.0.0</easy-random.version>
         <randombeans.version>3.8.0</randombeans.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!-- axon framework -->
             <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-spring-boot-starter</artifactId>
+                <version>${axon-framework.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-configuration</artifactId>
+                <version>${axon-framework.version}</version>
+            </dependency>
+
+            <!-- commons -->
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
@@ -37,6 +47,15 @@
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
             </dependency>
+
+            <!-- jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- spring -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
@@ -50,17 +69,25 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- testing -->
             <dependency>
                 <groupId>org.skyscreamer</groupId>
                 <artifactId>jsonassert</artifactId>
                 <version>${jsonassert.version}</version>
             </dependency>
+
+            <!-- randomization -->
             <dependency>
                 <groupId>io.github.benas</groupId>
                 <artifactId>random-beans</artifactId>
                 <version>${randombeans.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-random-core</artifactId>
+                <version>${easy-random.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
