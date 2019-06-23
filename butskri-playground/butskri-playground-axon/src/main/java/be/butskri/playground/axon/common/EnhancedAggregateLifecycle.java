@@ -4,13 +4,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateLifecycle;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EnhancedAggregateLifecycle {
 
-    private PreviouslySendEvents previouslySendEvents = new PreviouslySendEvents();
+    private transient PreviouslySendEvents previouslySendEvents = new PreviouslySendEvents();
 
     @EventSourcingHandler
     public void eventWasPublished(AggregateEvent event) {
@@ -27,22 +25,59 @@ public class EnhancedAggregateLifecycle {
         }
     }
 
+    public AsPotentialDuplicatesForBuilder considering(MatchComparator matchComparator) {
+        return types -> {
+            Arrays.stream(types).forEach(type -> previouslySendEvents.useMatchComparator(type, matchComparator));
+            return this;
+        };
+    }
+
+    public interface AsPotentialDuplicatesForBuilder {
+        EnhancedAggregateLifecycle asPotentialDuplicateFor(Class<? extends AggregateEvent>... types);
+    }
+
     private static class PreviouslySendEvents {
-        private Map<Class, AggregateEvent> previousEvents = new HashMap<>();
+        private Map<Class, MatchComparator> matchComparatorMap = new HashMap<>();
+        private List<AggregateEvent> previouslySentEvents = new ArrayList<>();
 
         void registerPreviousEvent(AggregateEvent event) {
-            previousEvents.put(event.getClass(), event);
+            previouslySentEvents.add(0, event);
         }
 
-        boolean wasPreviouslySent(AggregateEvent event) {
-            if (!previousEvents.containsKey(event.getClass())) {
-                return false;
+        boolean wasPreviouslySent(AggregateEvent newEvent) {
+            return findPotentialDuplicateEventOf(newEvent)
+                    .map(potentialDuplicateEvent -> areEqualExcludingMetadata(newEvent, potentialDuplicateEvent))
+                    .orElse(false);
+        }
+
+        private Optional<AggregateEvent> findPotentialDuplicateEventOf(AggregateEvent event) {
+            return findMostRecentEventMatching(event, matchComparatorToBeUsedFor(event));
+        }
+
+        private Optional<AggregateEvent> findMostRecentEventMatching(AggregateEvent newEvent, MatchComparator matchComparator) {
+            return previouslySentEvents.stream()
+                    .filter(event -> matchComparator.areEqual(event, newEvent))
+                    .findFirst();
+        }
+
+        private MatchComparator matchComparatorToBeUsedFor(AggregateEvent event) {
+            MatchComparator result = matchComparatorMap.get(event.getClass());
+            if (result != null) {
+                return result;
             }
-            return areEqualExcludingMetadata(event, previousEvents.get(event.getClass()));
+            return defaultMatchComparator();
+        }
+
+        private MatchComparator defaultMatchComparator() {
+            return (value, otherValue) -> value.getClass().equals(otherValue.getClass());
         }
 
         private boolean areEqualExcludingMetadata(AggregateEvent event, AggregateEvent other) {
             return EqualsBuilder.reflectionEquals(event, other, "metadata");
+        }
+
+        private void useMatchComparator(Class<? extends AggregateEvent> type, MatchComparator matchComparator) {
+            matchComparatorMap.put(type, matchComparator);
         }
     }
 }

@@ -15,6 +15,8 @@ import static java.util.UUID.randomUUID;
 public class EnhancedAggregateLifecycle_SendOnlyWhenEventDiffersFromPreviousTest {
 
     private static final MySampleAggregateId AGGREGATE_ID = new MySampleAggregateId(randomUUID());
+    private static final String SOMEONE = "someone";
+    private static final String SOMEONE_ELSE = "someoneElse";
     private static final String STRING1 = "first";
     private static final String STRING2 = "second";
 
@@ -27,10 +29,10 @@ public class EnhancedAggregateLifecycle_SendOnlyWhenEventDiffersFromPreviousTest
 
     @Test
     public void eventIsSentWhenNoEventOfTypeWasSentYet() {
-        SomethingHappenedOnMySampleAggregateEvent firstEvent = somethingHappenedEvent(STRING1);
+        SomethingHappenedEvent firstEvent = somethingHappenedEvent(STRING1);
         CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
 
-        SomethingElseHappenedOnMySampleAggregateEvent eventOfOtherType = somethingElseHappenedEvent(STRING1);
+        SomethingElseHappenedEvent eventOfOtherType = somethingElseHappenedEvent(STRING1);
         MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, eventOfOtherType);
 
         fixture.givenCommands(createCommand)
@@ -41,10 +43,10 @@ public class EnhancedAggregateLifecycle_SendOnlyWhenEventDiffersFromPreviousTest
 
     @Test
     public void eventIsSentWhenDifferentEventOfSameTypeWasSent() {
-        SomethingHappenedOnMySampleAggregateEvent firstEvent = somethingHappenedEvent(STRING1);
+        SomethingHappenedEvent firstEvent = somethingHappenedEvent(STRING1);
         CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
 
-        SomethingHappenedOnMySampleAggregateEvent eventOfSameTypeWithDifferentValue = somethingHappenedEvent(STRING2);
+        SomethingHappenedEvent eventOfSameTypeWithDifferentValue = somethingHappenedEvent(STRING2);
         MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, eventOfSameTypeWithDifferentValue);
 
         fixture.givenCommands(createCommand)
@@ -55,10 +57,10 @@ public class EnhancedAggregateLifecycle_SendOnlyWhenEventDiffersFromPreviousTest
 
     @Test
     public void eventIsNotSentWhenEqualEventOfSameTypeWasSent() {
-        SomethingHappenedOnMySampleAggregateEvent firstEvent = somethingHappenedEvent(STRING1);
+        SomethingHappenedEvent firstEvent = somethingHappenedEvent(STRING1);
         CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
 
-        SomethingHappenedOnMySampleAggregateEvent sameEventAsFirst = somethingHappenedEvent(STRING1);
+        SomethingHappenedEvent sameEventAsFirst = somethingHappenedEvent(STRING1);
         MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, sameEventAsFirst);
 
         fixture.givenCommands(createCommand)
@@ -69,10 +71,10 @@ public class EnhancedAggregateLifecycle_SendOnlyWhenEventDiffersFromPreviousTest
 
     @Test
     public void eventIsSentWhenEventOfDifferentTypeWasSent() {
-        SomethingHappenedOnMySampleAggregateEvent firstEvent = somethingHappenedEvent(STRING1);
+        SomethingHappenedEvent firstEvent = somethingHappenedEvent(STRING1);
         CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
 
-        SomethingElseHappenedOnMySampleAggregateEvent eventOfDifferentType = somethingElseHappenedEvent(STRING1);
+        SomethingElseHappenedEvent eventOfDifferentType = somethingElseHappenedEvent(STRING1);
         MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, eventOfDifferentType);
 
         fixture.givenCommands(createCommand)
@@ -83,11 +85,11 @@ public class EnhancedAggregateLifecycle_SendOnlyWhenEventDiffersFromPreviousTest
 
     @Test
     public void eventIsNotSentWhenEqualEventOfSameTypeWasSentBeforeEventOfDifferentType() {
-        SomethingHappenedOnMySampleAggregateEvent firstEvent = somethingHappenedEvent(STRING1);
+        SomethingHappenedEvent firstEvent = somethingHappenedEvent(STRING1);
         CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
-        SomethingElseHappenedOnMySampleAggregateEvent eventOfDifferentType = somethingElseHappenedEvent(STRING1);
+        SomethingElseHappenedEvent eventOfDifferentType = somethingElseHappenedEvent(STRING1);
 
-        SomethingHappenedOnMySampleAggregateEvent sameEventAsFirst = somethingHappenedEvent(STRING1);
+        SomethingHappenedEvent sameEventAsFirst = somethingHappenedEvent(STRING1);
         MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, sameEventAsFirst);
 
         fixture.givenCommands(createCommand)
@@ -96,12 +98,171 @@ public class EnhancedAggregateLifecycle_SendOnlyWhenEventDiffersFromPreviousTest
                 .expectEvents();
     }
 
-    private SomethingHappenedOnMySampleAggregateEvent somethingHappenedEvent(String data) {
-        return new SomethingHappenedOnMySampleAggregateEvent(randomMetadata(), AGGREGATE_ID, data);
+    @Test
+    public void eventIsSentWhenSameThingHappenedToSomeoneElse() {
+        SomethingHappenedToSomeoneEvent firstEvent = somethingHappenedToSomeoneEvent(SOMEONE_ELSE, STRING1);
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+
+        SomethingHappenedToSomeoneEvent somethingHappenedToSomeoneElse = somethingHappenedToSomeoneEvent(SOMEONE, STRING1);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, somethingHappenedToSomeoneElse);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(firstEvent)
+                .when(command)
+                .expectEvents(somethingHappenedToSomeoneElse);
     }
 
-    private SomethingElseHappenedOnMySampleAggregateEvent somethingElseHappenedEvent(String data) {
-        return new SomethingElseHappenedOnMySampleAggregateEvent(randomMetadata(), AGGREGATE_ID, data);
+    @Test
+    public void eventIsNotSentWhenSameThingHappenedToSamePersonWithSomethingHappeningToSomeoneElseInBetween() {
+        SomethingHappenedToSomeoneEvent firstEvent = somethingHappenedToSomeoneEvent(SOMEONE, STRING1);
+        SomethingHappenedToSomeoneEvent somethingHappenedToSomeoneElse = somethingHappenedToSomeoneEvent(SOMEONE_ELSE, STRING1);
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+
+        SomethingHappenedToSomeoneEvent sameThingHappenedToSomeoneAgain = somethingHappenedToSomeoneEvent(SOMEONE, STRING1);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, sameThingHappenedToSomeoneAgain);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(firstEvent, somethingHappenedToSomeoneElse)
+                .when(command)
+                .expectEvents();
+    }
+
+    @Test
+    public void eventIsSentWhenAnotherThingHappenedToSamePersonWithSomethingHappeningToSomeoneElseInBetween() {
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+        SomethingHappenedToSomeoneEvent firstEvent = somethingHappenedToSomeoneEvent(SOMEONE, STRING1);
+        SomethingHappenedToSomeoneEvent somethingHappenedToSomeoneElse = somethingHappenedToSomeoneEvent(SOMEONE_ELSE, STRING1);
+
+        SomethingHappenedToSomeoneEvent anotherThingHappenedToSomeone = somethingHappenedToSomeoneEvent(SOMEONE, STRING2);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, anotherThingHappenedToSomeone);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(firstEvent, somethingHappenedToSomeoneElse)
+                .when(command)
+                .expectEvents(anotherThingHappenedToSomeone);
+    }
+
+    @Test
+    public void givenSomethingWasSetForSomeoneElse_whenSomethingIsSetForSomeone_thenEventIsSent() {
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeoneElse = somethingHasBeenSetForSomeoneEvent(SOMEONE_ELSE, STRING1);
+
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeone = somethingHasBeenSetForSomeoneEvent(SOMEONE, STRING1);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, somethingHasBeenSetForSomeone);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(somethingHasBeenSetForSomeoneElse)
+                .when(command)
+                .expectEvents(somethingHasBeenSetForSomeone);
+    }
+
+    @Test
+    public void givenSomethingWasSetForSomeoneAndThenItWasUnsetForSamePerson_whenSomethingIsSetAgainWithSameValueForSamePerson_thenEventIsSent() {
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeone = somethingHasBeenSetForSomeoneEvent(SOMEONE, STRING1);
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeone = somethingHasBeenUnsetForSomeoneEvent(SOMEONE);
+
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeoneAgain = somethingHasBeenSetForSomeoneEvent(SOMEONE, STRING1);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, somethingHasBeenSetForSomeoneAgain);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(somethingHasBeenSetForSomeone, somethingHasBeenUnsetForSomeone)
+                .when(command)
+                .expectEvents(somethingHasBeenSetForSomeoneAgain);
+    }
+
+    @Test
+    public void givenSomethingWasSetForSomeoneAndThenSomethingWasUnsetForSomeoneElse_whenSomethingIsSetForSomeoneWithSameValueAsBefore_thenNoEventIsSent() {
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeone = somethingHasBeenSetForSomeoneEvent(SOMEONE, STRING1);
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeoneElse = somethingHasBeenUnsetForSomeoneEvent(SOMEONE_ELSE);
+
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeoneAgain = somethingHasBeenSetForSomeoneEvent(SOMEONE, STRING1);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, somethingHasBeenSetForSomeoneAgain);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(somethingHasBeenSetForSomeone, somethingHasBeenUnsetForSomeoneElse)
+                .when(command)
+                .expectEvents();
+    }
+
+    @Test
+    public void givenSomethingWasSetForSomeoneAndThenSomethingWasUnsetForSomeoneElse_whenSomethingIsSetForSomeoneWithDifferentValue_thenEventIsSent() {
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeone = somethingHasBeenSetForSomeoneEvent(SOMEONE, STRING1);
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeoneElse = somethingHasBeenUnsetForSomeoneEvent(SOMEONE_ELSE);
+
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeoneAgain = somethingHasBeenSetForSomeoneEvent(SOMEONE, STRING1);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, somethingHasBeenSetForSomeoneAgain);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(somethingHasBeenSetForSomeone, somethingHasBeenUnsetForSomeoneElse)
+                .when(command)
+                .expectEvents();
+    }
+
+    @Test
+    public void givenSomethingWasUnsetForSomeoneElse_whenSomethingIsUnsetForSomeone_thenEventIsSent() {
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeoneElse = somethingHasBeenUnsetForSomeoneEvent(SOMEONE_ELSE);
+
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeone = somethingHasBeenUnsetForSomeoneEvent(SOMEONE);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, somethingHasBeenUnsetForSomeone);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(somethingHasBeenUnsetForSomeoneElse)
+                .when(command)
+                .expectEvents(somethingHasBeenUnsetForSomeone);
+    }
+
+    @Test
+    public void givenSomethingWasUnsetForSomeoneAndThenItWasSetForSamePerson_whenSomethingIsUnsetAgainWithSameValueForSamePerson_thenEventIsSent() {
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeone = somethingHasBeenUnsetForSomeoneEvent(SOMEONE);
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeone = somethingHasBeenSetForSomeoneEvent(SOMEONE, STRING1);
+
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeoneAgain = somethingHasBeenUnsetForSomeoneEvent(SOMEONE);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, somethingHasBeenUnsetForSomeoneAgain);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(somethingHasBeenUnsetForSomeone, somethingHasBeenSetForSomeone)
+                .when(command)
+                .expectEvents(somethingHasBeenUnsetForSomeoneAgain);
+    }
+
+    @Test
+    public void givenSomethingWasUnsetForSomeoneAndThenSomethingWasSetForSomeoneElse_whenSomethingIsUnsetForSomeoneAgain_thenNoEventIsSent() {
+        CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID);
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeone = somethingHasBeenUnsetForSomeoneEvent(SOMEONE);
+        SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeoneElse = somethingHasBeenSetForSomeoneEvent(SOMEONE_ELSE, STRING1);
+
+        SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeoneAgain = somethingHasBeenUnsetForSomeoneEvent(SOMEONE);
+        MySampleAggregateCommand command = new MySampleAggregateCommand(AGGREGATE_ID, somethingHasBeenUnsetForSomeoneAgain);
+
+        fixture.givenCommands(createCommand)
+                .andGiven(somethingHasBeenUnsetForSomeone, somethingHasBeenSetForSomeoneElse)
+                .when(command)
+                .expectEvents();
+    }
+
+    private SomethingHappenedEvent somethingHappenedEvent(String data) {
+        return new SomethingHappenedEvent(randomMetadata(), AGGREGATE_ID, data);
+    }
+
+    private SomethingElseHappenedEvent somethingElseHappenedEvent(String data) {
+        return new SomethingElseHappenedEvent(randomMetadata(), AGGREGATE_ID, data);
+    }
+
+    private SomethingHappenedToSomeoneEvent somethingHappenedToSomeoneEvent(String someone, String data) {
+        return new SomethingHappenedToSomeoneEvent(randomMetadata(), AGGREGATE_ID, someone, data);
+    }
+
+    private SomethingHasBeenSetForSomeoneEvent somethingHasBeenSetForSomeoneEvent(String someone, String data) {
+        return new SomethingHasBeenSetForSomeoneEvent(randomMetadata(), AGGREGATE_ID, someone, data);
+    }
+
+    private SomethingHasBeenUnsetForSomeoneEvent somethingHasBeenUnsetForSomeoneEvent(String someone) {
+        return new SomethingHasBeenUnsetForSomeoneEvent(randomMetadata(), AGGREGATE_ID, someone);
     }
 
     private Map<String, String> randomMetadata() {

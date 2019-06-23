@@ -25,8 +25,8 @@ public class MySampleAggregateScenarioTest {
 
     @Test
     public void createSendsOutCreateEventAndOtherEvents() {
-        SomethingHappenedOnMySampleAggregateEvent firstEvent = somethingHappenedEvent(STRING1);
-        SomethingElseHappenedOnMySampleAggregateEvent secondEvent = somethingElseHappenedEvent(STRING1);
+        SomethingHappenedEvent firstEvent = somethingHappenedEvent(STRING1);
+        SomethingElseHappenedEvent secondEvent = somethingElseHappenedEvent(STRING1);
         CreateMySampleAggregateCommand createCommand = new CreateMySampleAggregateCommand(AGGREGATE_ID, firstEvent, secondEvent);
 
         fixture.given()
@@ -38,12 +38,12 @@ public class MySampleAggregateScenarioTest {
                 );
     }
 
-    private SomethingHappenedOnMySampleAggregateEvent somethingHappenedEvent(String data) {
-        return new SomethingHappenedOnMySampleAggregateEvent(randomMetadata(), AGGREGATE_ID, data);
+    private SomethingHappenedEvent somethingHappenedEvent(String data) {
+        return new SomethingHappenedEvent(randomMetadata(), AGGREGATE_ID, data);
     }
 
-    private SomethingElseHappenedOnMySampleAggregateEvent somethingElseHappenedEvent(String data) {
-        return new SomethingElseHappenedOnMySampleAggregateEvent(randomMetadata(), AGGREGATE_ID, data);
+    private SomethingElseHappenedEvent somethingElseHappenedEvent(String data) {
+        return new SomethingElseHappenedEvent(randomMetadata(), AGGREGATE_ID, data);
     }
 
     private Map<String, String> randomMetadata() {

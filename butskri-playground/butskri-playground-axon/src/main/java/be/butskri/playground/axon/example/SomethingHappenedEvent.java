@@ -5,13 +5,13 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 
 import java.util.Map;
 
-public class SomethingElseHappenedOnMySampleAggregateEvent extends AggregateEvent {
+public class SomethingHappenedEvent extends AggregateEvent {
 
     @AggregateIdentifier
     private MySampleAggregateId id;
     private String data;
 
-    public SomethingElseHappenedOnMySampleAggregateEvent(Map<String, String> metadata, MySampleAggregateId id, String data) {
+    public SomethingHappenedEvent(Map<String, String> metadata, MySampleAggregateId id, String data) {
         super(metadata);
         this.id = id;
         this.data = data;
