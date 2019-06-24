@@ -6,19 +6,15 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 
 import java.util.*;
 
+import static be.butskri.playground.axon.common.MatchComparators.instancesOfSameType;
+
 public class EnhancedAggregateLifecycle {
 
-    private transient PreviouslySendEvents previouslySendEvents = new PreviouslySendEvents();
+    private PreviouslySendEvents previouslySendEvents = new PreviouslySendEvents();
 
     @EventSourcingHandler
     public void eventWasPublished(AggregateEvent event) {
         previouslySendEvents.registerPreviousEvent(event);
-    }
-
-    public <T extends AggregateEvent> EnhancedAggregateLifecycle identifyingPotentialDuplicatesBy(MatchComparator<T> matchComparator, Class<? extends T>... types) {
-        Arrays.stream(types)
-                .forEach(type -> previouslySendEvents.useMatchComparator(type, matchComparator));
-        return this;
     }
 
     public void sendEventsOnlyWhenDifferentFromPrevious(List<AggregateEvent> events) {
@@ -29,13 +25,6 @@ public class EnhancedAggregateLifecycle {
         if (!previouslySendEvents.wasPreviouslySent(event)) {
             AggregateLifecycle.apply(event);
         }
-    }
-
-    public AsPotentialDuplicateForBuilder considering(MatchComparator matchComparator) {
-        return types -> {
-            Arrays.stream(types).forEach(type -> previouslySendEvents.useMatchComparator(type, matchComparator));
-            return this;
-        };
     }
 
     public <T extends AggregateEvent> AsPotentialDuplicateWhenBuilder<T> consideringEventsOfTypes(Class<? extends T>... types) {
@@ -50,12 +39,8 @@ public class EnhancedAggregateLifecycle {
         EnhancedAggregateLifecycle asPotentialDuplicateWhen(MatchComparator<T> matchComparator);
     }
 
-    public interface AsPotentialDuplicateForBuilder {
-        EnhancedAggregateLifecycle asPotentialDuplicateFor(Class<? extends AggregateEvent>... types);
-    }
-
     private static class PreviouslySendEvents {
-        private Map<Class, MatchComparator> matchComparatorMap = new HashMap<>();
+        private transient Map<Class, MatchComparator> matchComparatorMap = new HashMap<>();
         private List<AggregateEvent> previouslySentEvents = new ArrayList<>();
 
         void registerPreviousEvent(AggregateEvent event) {
@@ -87,7 +72,7 @@ public class EnhancedAggregateLifecycle {
         }
 
         private MatchComparator defaultMatchComparator() {
-            return (value, otherValue) -> value.getClass().equals(otherValue.getClass());
+            return instancesOfSameType();
         }
 
         private boolean areEqualExcludingMetadata(AggregateEvent event, AggregateEvent other) {

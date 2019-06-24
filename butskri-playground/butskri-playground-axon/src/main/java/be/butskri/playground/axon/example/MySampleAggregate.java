@@ -7,36 +7,21 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateMember;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import static be.butskri.playground.axon.common.TypedMatchComparator.eventsOfType;
-import static be.butskri.playground.axon.common.TypedMatchComparator.eventsWhereTypeIn;
+import static be.butskri.playground.axon.common.MatchComparators.fieldsHaveSameValues;
+import static be.butskri.playground.axon.common.MatchComparators.havingSameValuesFor;
 
 @Aggregate
 public class MySampleAggregate {
 
     @AggregateIdentifier
     private MySampleAggregateId id;
-//    @AggregateMember
-//    private EnhancedAggregateLifecycle lifecycle = new EnhancedAggregateLifecycle()
-//            .considering(eventsOfType(SomethingHappenedToSomeoneEvent.class)
-//                    .withSameValuesFor(SomethingHappenedToSomeoneEvent::getSomeone))
-//            .asPotentialDuplicateFor(SomethingHappenedToSomeoneEvent.class)
-//            .considering(eventsWhereTypeIn(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class)
-//                    .withAllFieldsHavingSameValue("someone"))
-//            .asPotentialDuplicateFor(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class);
-
-//    @AggregateMember
-//    private EnhancedAggregateLifecycle lifecycle = new EnhancedAggregateLifecycle()
-//            .consideringEventsOfTypes(SomethingHappenedToSomeoneEvent.class)
-//            .asPotentialDuplicateWhen(havingSameValuesFor(SomethingHappenedToSomeoneEvent::getSomeone))
-//            .consideringEventsOfTypes(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class)
-//            .asPotentialDuplicateWhen(fieldsHaveSameValues("someone"));
 
     @AggregateMember
     private EnhancedAggregateLifecycle lifecycle = new EnhancedAggregateLifecycle()
-            .identifyingPotentialDuplicatesBy(eventsOfType(SomethingHappenedToSomeoneEvent.class)
-                    .withSameValuesFor(SomethingHappenedToSomeoneEvent::getSomeone), SomethingHappenedToSomeoneEvent.class)
-            .identifyingPotentialDuplicatesBy(eventsWhereTypeIn(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class)
-                    .withAllFieldsHavingSameValue("someone"), SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class);
+            .consideringEventsOfTypes(SomethingHappenedToSomeoneEvent.class)
+            .asPotentialDuplicateWhen(havingSameValuesFor(SomethingHappenedToSomeoneEvent::getSomeone))
+            .consideringEventsOfTypes(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class)
+            .asPotentialDuplicateWhen(fieldsHaveSameValues("someone"));
 
     private MySampleAggregate() {
     }
