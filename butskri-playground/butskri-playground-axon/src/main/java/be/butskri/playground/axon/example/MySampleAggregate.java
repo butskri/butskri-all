@@ -7,7 +7,8 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateMember;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import static be.butskri.playground.axon.common.TypedMatchComparator.*;
+import static be.butskri.playground.axon.common.TypedMatchComparator.eventsOfType;
+import static be.butskri.playground.axon.common.TypedMatchComparator.eventsWhereTypeIn;
 
 @Aggregate
 public class MySampleAggregate {
@@ -23,12 +24,19 @@ public class MySampleAggregate {
 //                    .withAllFieldsHavingSameValue("someone"))
 //            .asPotentialDuplicateFor(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class);
 
+//    @AggregateMember
+//    private EnhancedAggregateLifecycle lifecycle = new EnhancedAggregateLifecycle()
+//            .consideringEventsOfTypes(SomethingHappenedToSomeoneEvent.class)
+//            .asPotentialDuplicateWhen(havingSameValuesFor(SomethingHappenedToSomeoneEvent::getSomeone))
+//            .consideringEventsOfTypes(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class)
+//            .asPotentialDuplicateWhen(fieldsHaveSameValues("someone"));
+
     @AggregateMember
     private EnhancedAggregateLifecycle lifecycle = new EnhancedAggregateLifecycle()
-            .consideringEventsOfTypes(SomethingHappenedToSomeoneEvent.class)
-            .asPotentialDuplicateWhen(havingSameValuesFor(SomethingHappenedToSomeoneEvent::getSomeone))
-            .consideringEventsOfTypes(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class)
-            .asPotentialDuplicateWhen(fieldsHaveSameValues("someone"));
+            .identifyingPotentialDuplicatesBy(eventsOfType(SomethingHappenedToSomeoneEvent.class)
+                    .withSameValuesFor(SomethingHappenedToSomeoneEvent::getSomeone), SomethingHappenedToSomeoneEvent.class)
+            .identifyingPotentialDuplicatesBy(eventsWhereTypeIn(SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class)
+                    .withAllFieldsHavingSameValue("someone"), SomethingHasBeenUnsetForSomeoneEvent.class, SomethingHasBeenSetForSomeoneEvent.class);
 
     private MySampleAggregate() {
     }

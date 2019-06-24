@@ -15,6 +15,12 @@ public class EnhancedAggregateLifecycle {
         previouslySendEvents.registerPreviousEvent(event);
     }
 
+    public <T extends AggregateEvent> EnhancedAggregateLifecycle identifyingPotentialDuplicatesBy(MatchComparator<T> matchComparator, Class<? extends T>... types) {
+        Arrays.stream(types)
+                .forEach(type -> previouslySendEvents.useMatchComparator(type, matchComparator));
+        return this;
+    }
+
     public void sendEventsOnlyWhenDifferentFromPrevious(List<AggregateEvent> events) {
         events.forEach(this::sendEventOnlyWhenDifferentFromPrevious);
     }
