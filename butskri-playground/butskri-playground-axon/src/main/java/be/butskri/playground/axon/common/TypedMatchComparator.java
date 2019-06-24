@@ -36,27 +36,34 @@ public class TypedMatchComparator<T extends AggregateEvent> implements MatchComp
     }
 
     public MatchComparator<T> withSameValuesFor(Function<T, Object>... functions) {
-        return and((value, otherValue) -> Arrays.stream(functions)
+        return and(havingSameValuesFor(functions));
+    }
+
+    public static <T extends AggregateEvent> MatchComparator<T> havingSameValuesFor(Function<T, Object>... functions) {
+        return (value, otherValue) -> Arrays.stream(functions)
                 .map(function -> Objects.equals(function.apply(value), function.apply(otherValue)))
-                .reduce(true, Boolean::logicalAnd)
-        );
+                .reduce(true, Boolean::logicalAnd);
     }
 
     public MatchComparator<T> withAllFieldsHavingSameValue(String... fields) {
-        return and((value, otherValue) -> fieldsHaveSameValues(value, otherValue, fields));
+        return and(fieldsHaveSameValues(fields));
     }
 
-    private boolean fieldsHaveSameValues(T value, T otherValue, String... fields) {
+    public static <T extends AggregateEvent> MatchComparator<T> fieldsHaveSameValues(String... fields) {
+        return (value, otherValue) -> havingSameValuesForFields(value, otherValue, fields);
+    }
+
+    public static boolean havingSameValuesForFields(AggregateEvent value, AggregateEvent otherValue, String... fields) {
         return Arrays.stream(fields)
                 .map(field -> fieldHasSameValue(value, otherValue, field))
                 .reduce(true, Boolean::logicalAnd);
     }
 
-    private boolean fieldHasSameValue(T value, T otherValue, String field) {
+    private static boolean fieldHasSameValue(AggregateEvent value, AggregateEvent otherValue, String field) {
         return Objects.equals(getFieldValue(value, field), getFieldValue(otherValue, field));
     }
 
-    private Object getFieldValue(T value, String fieldName) {
+    private static Object getFieldValue(Object value, String fieldName) {
         try {
             Field field = getDeclaredField(value.getClass(), fieldName);
             field.setAccessible(true);
@@ -66,7 +73,7 @@ public class TypedMatchComparator<T extends AggregateEvent> implements MatchComp
         }
     }
 
-    private Field getDeclaredField(Class clazz, String fieldName) {
+    private static Field getDeclaredField(Class clazz, String fieldName) {
         if (Object.class.equals(clazz)) {
             throw new RuntimeException("field " + fieldName + " cannot be found");
         }

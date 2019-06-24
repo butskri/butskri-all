@@ -25,14 +25,26 @@ public class EnhancedAggregateLifecycle {
         }
     }
 
-    public AsPotentialDuplicatesForBuilder considering(MatchComparator matchComparator) {
+    public AsPotentialDuplicateForBuilder considering(MatchComparator matchComparator) {
         return types -> {
             Arrays.stream(types).forEach(type -> previouslySendEvents.useMatchComparator(type, matchComparator));
             return this;
         };
     }
 
-    public interface AsPotentialDuplicatesForBuilder {
+    public <T extends AggregateEvent> AsPotentialDuplicateWhenBuilder<T> consideringEventsOfTypes(Class<? extends T>... types) {
+        return matchComparator -> {
+            MatchComparator<T> typesAndOthersShouldMatchComparator = TypedMatchComparator.eventsWhereTypeIn(types).and(matchComparator);
+            Arrays.stream(types).forEach(type -> previouslySendEvents.useMatchComparator(type, typesAndOthersShouldMatchComparator));
+            return this;
+        };
+    }
+
+    public interface AsPotentialDuplicateWhenBuilder<T extends AggregateEvent> {
+        EnhancedAggregateLifecycle asPotentialDuplicateWhen(MatchComparator<T> matchComparator);
+    }
+
+    public interface AsPotentialDuplicateForBuilder {
         EnhancedAggregateLifecycle asPotentialDuplicateFor(Class<? extends AggregateEvent>... types);
     }
 
