@@ -3,14 +3,14 @@ package be.butskri.playground.axon.common;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AggregateEvent extends EqualByStateObject {
+public class Event extends EqualByStateObject {
 
     private Map<String, String> metadata = new HashMap<>();
 
-    AggregateEvent() {
+    Event() {
     }
 
-    protected AggregateEvent(Map<String, String> metadata) {
+    protected Event(Map<String, String> metadata) {
         this.metadata = metadata;
     }
 

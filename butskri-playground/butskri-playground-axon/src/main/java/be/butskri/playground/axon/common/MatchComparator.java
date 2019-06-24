@@ -2,7 +2,7 @@ package be.butskri.playground.axon.common;
 
 import java.util.function.Predicate;
 
-public interface MatchComparator<T extends AggregateEvent> {
+public interface MatchComparator<T extends Event> {
 
     boolean areEqual(T value, T otherValue);
 

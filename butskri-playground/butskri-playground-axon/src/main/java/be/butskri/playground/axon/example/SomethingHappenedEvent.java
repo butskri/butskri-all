@@ -1,11 +1,11 @@
 package be.butskri.playground.axon.example;
 
-import be.butskri.playground.axon.common.AggregateEvent;
+import be.butskri.playground.axon.common.Event;
 import org.axonframework.modelling.command.AggregateIdentifier;
 
 import java.util.Map;
 
-public class SomethingHappenedEvent extends AggregateEvent {
+public class SomethingHappenedEvent extends Event {
 
     @AggregateIdentifier
     private MySampleAggregateId id;

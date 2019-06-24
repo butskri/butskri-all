@@ -1,6 +1,6 @@
 package be.butskri.playground.axon.example;
 
-import be.butskri.playground.axon.common.AggregateEvent;
+import be.butskri.playground.axon.common.Event;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.util.Arrays;
@@ -10,9 +10,9 @@ public class CreateMySampleAggregateCommand {
 
     @TargetAggregateIdentifier
     private MySampleAggregateId id;
-    private List<AggregateEvent> events;
+    private List<Event> events;
 
-    public CreateMySampleAggregateCommand(MySampleAggregateId id, AggregateEvent... events) {
+    public CreateMySampleAggregateCommand(MySampleAggregateId id, Event... events) {
         this.id = id;
         this.events = Arrays.asList(events);
     }
@@ -21,7 +21,7 @@ public class CreateMySampleAggregateCommand {
         return id;
     }
 
-    public List<AggregateEvent> getEvents() {
+    public List<Event> getEvents() {
         return events;
     }
 }

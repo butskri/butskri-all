@@ -10,27 +10,27 @@ public class MatchComparators {
     private MatchComparators() {
     }
 
-    static <T extends AggregateEvent> MatchComparator<T> instancesOfSameType() {
+    static <T extends Event> MatchComparator<T> instancesOfSameType() {
         return (value, otherValue) -> value.getClass().equals(otherValue.getClass());
     }
 
-    public static <T extends AggregateEvent> MatchComparator<T> havingSameValuesFor(Function<T, Object>... functions) {
+    public static <T extends Event> MatchComparator<T> havingSameValuesFor(Function<T, Object>... functions) {
         return (value, otherValue) -> Arrays.stream(functions)
                 .map(function -> Objects.equals(function.apply(value), function.apply(otherValue)))
                 .reduce(true, Boolean::logicalAnd);
     }
 
-    public static <T extends AggregateEvent> MatchComparator<T> fieldsHaveSameValues(String... fields) {
+    public static <T extends Event> MatchComparator<T> fieldsHaveSameValues(String... fields) {
         return (value, otherValue) -> havingSameValuesForFields(value, otherValue, fields);
     }
 
-    private static boolean havingSameValuesForFields(AggregateEvent value, AggregateEvent otherValue, String... fields) {
+    private static boolean havingSameValuesForFields(Event value, Event otherValue, String... fields) {
         return Arrays.stream(fields)
                 .map(field -> fieldHasSameValue(value, otherValue, field))
                 .reduce(true, Boolean::logicalAnd);
     }
 
-    private static boolean fieldHasSameValue(AggregateEvent value, AggregateEvent otherValue, String field) {
+    private static boolean fieldHasSameValue(Event value, Event otherValue, String field) {
         return Objects.equals(getFieldValue(value, field), getFieldValue(otherValue, field));
     }
 

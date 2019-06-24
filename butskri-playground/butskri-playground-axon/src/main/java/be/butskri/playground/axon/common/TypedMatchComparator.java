@@ -3,11 +3,11 @@ package be.butskri.playground.axon.common;
 import java.util.Arrays;
 import java.util.List;
 
-public class TypedMatchComparator<T extends AggregateEvent> implements MatchComparator<T> {
+public class TypedMatchComparator<T extends Event> implements MatchComparator<T> {
 
     private List<Class> types;
 
-    public static <T extends AggregateEvent> TypedMatchComparator<T> eventsWhereTypeIn(Class<? extends T>... types) {
+    public static <T extends Event> TypedMatchComparator<T> eventsWhereTypeIn(Class<? extends T>... types) {
         return new TypedMatchComparator<T>(Arrays.asList(types));
     }
 
@@ -20,7 +20,7 @@ public class TypedMatchComparator<T extends AggregateEvent> implements MatchComp
         return isInstanceOfOneOfTheAllowedTypes(value) && isInstanceOfOneOfTheAllowedTypes(otherValue);
     }
 
-    private boolean isInstanceOfOneOfTheAllowedTypes(AggregateEvent value) {
+    private boolean isInstanceOfOneOfTheAllowedTypes(Event value) {
         return types.stream()
                 .map(clazz -> clazz.isInstance(value))
                 .filter(Boolean.TRUE::equals)
