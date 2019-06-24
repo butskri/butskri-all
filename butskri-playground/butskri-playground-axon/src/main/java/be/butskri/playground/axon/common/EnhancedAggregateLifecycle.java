@@ -30,7 +30,7 @@ public class EnhancedAggregateLifecycle {
     public <T extends AggregateEvent> AsPotentialDuplicateWhenBuilder<T> consideringEventsOfTypes(Class<? extends T>... types) {
         return matchComparator -> {
             MatchComparator<T> typesAndOthersShouldMatchComparator = TypedMatchComparator.eventsWhereTypeIn(types).and(matchComparator);
-            Arrays.stream(types).forEach(type -> previouslySendEvents.useMatchComparator(type, typesAndOthersShouldMatchComparator));
+            Arrays.stream(types).forEach(type -> previouslySendEvents.configureMatchComparator(type, typesAndOthersShouldMatchComparator));
             return this;
         };
     }
@@ -79,7 +79,7 @@ public class EnhancedAggregateLifecycle {
             return EqualsBuilder.reflectionEquals(event, other, "metadata");
         }
 
-        private void useMatchComparator(Class<? extends AggregateEvent> type, MatchComparator matchComparator) {
+        private void configureMatchComparator(Class<? extends AggregateEvent> type, MatchComparator matchComparator) {
             matchComparatorMap.put(type, matchComparator);
         }
     }
