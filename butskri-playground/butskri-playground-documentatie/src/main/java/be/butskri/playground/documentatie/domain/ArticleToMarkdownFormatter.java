@@ -15,8 +15,8 @@ public class ArticleToMarkdownFormatter {
                 .append(article.getName(), 1, 95)
                 .append(article.getStatus(), 1, 8)
                 .appendScore(article.getInterest(), 6, 10)
-                .appendScore(article.getScore(), 6, 10)
-                .append(article.getTags(), 1, 65)
+                .appendScore(article.getScore(), 3, 7)
+                .append(article.getTags(), 1, 64)
                 .asString();
     }
 

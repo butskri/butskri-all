@@ -24,27 +24,19 @@ public class ArticleToMarkdownFormatterTest {
 
     @Test
     public void doPrintArticleDocumentationLine() {
-        printNewArticleLineFor("https://dzone.com/articles/deploying-spring-boot-microservice-to-docker-a-qui");
-        printNewArticleLineFor("https://dzone.com/articles/what-is-bill-of-materials-bom-in-spring-boot");
-        printNewArticleLineFor("https://dzone.com/articles/improving-reliability-with-alibaba-cloud-message-s");
-        printNewArticleLineFor("https://dzone.com/articles/google-cloud-vision-with-spring-boot");
-        printNewArticleLineFor("https://dzone.com/articles/mitigating-deployment-risk-in-microservice-archite");
-        printNewArticleLineFor("https://dzone.com/articles/moving-towards-a-standard-operating-model-for-kube");
-        printNewArticleLineFor("https://dzone.com/articles/java-persistence-done-right");
-        printNewArticleLineFor("https://axoniq.io/blog-overview/eventstore");
-        printNewArticleLineFor("https://dzone.com/articles/concurrency-and-locking-with-jpa-everything-you-ne");
-        printNewArticleLineFor("https://dzone.com/articles/my-advice-junior-developers");
-        printNewArticleLineFor("https://dzone.com/articles/kubernetes-vs-openshift-what-is-the-difference");
-        printNewArticleLineFor("https://dzone.com/articles/adding-swagger-to-spring-boot");
-        printNewArticleLineFor("https://dzone.com/articles/hexagonal-architecture-in-java");
-        printNewArticleLineFor("https://dzone.com/articles/spring-boot-where-do-the-default-metrics-come-from");
-        printNewArticleLineFor("https://dzone.com/articles/java-simpledateformat-is-not-simple");
-        printNewArticleLineFor("https://dzone.com/articles/5-free-courses-to-learn-linux-commands-in-depth");
-        printNewArticleLineFor("https://dzone.com/articles/how-devs-can-improve-security-part-1");
-        printNewArticleLineFor("https://dzone.com/articles/3-javascript-array-methods-every-developer-should");
-        printNewArticleLineFor("https://dzone.com/articles/open-id-connect-authentication-with-oauth20-author");
-        printNewArticleLineFor("https://dzone.com/articles/add-login-to-your-spring-boot-app-in-10-mins");
-        printNewArticleLineFor("https://dzone.com/articles/four-most-used-rest-api-authentication-methods");
+        printNewArticleLineFor("https://dzone.com/articles/kubernetes-vs-openshift-a-detailed-comparison");
+        printNewArticleLineFor("https://dzone.com/articles/doing-more-with-swaggger-and-spring");
+        printNewArticleLineFor("https://dzone.com/articles/java/spring/spring-mvc-tutorial-1.html");
+        printNewArticleLineFor("https://dzone.com/articles/build-beautiful-console-dashboards-with-sampler");
+        printNewArticleLineFor("https://dzone.com/articles/spring-boot-transactions-tutorial-understanding-tr");
+        printNewArticleLineFor("https://dzone.com/articles/event-driven-microservices-with-spring-boot-and-ac");
+        printNewArticleLineFor("https://dzone.com/articles/top-5-online-training-courses-to-learn-frontend-we");
+        printNewArticleLineFor("https://dzone.com/articles/top-8-javascript-automation-testing-frameworks-in");
+        printNewArticleLineFor("https://dzone.com/articles/microservice-architecture-on-kubernetes");
+        printNewArticleLineFor("https://dzone.com/articles/software-quality-the-top-10-metrics-to-build-confi");
+        printNewArticleLineFor("https://dzone.com/articles/5-questions-everyones-asking-about-microservices-p");
+        printNewArticleLineFor("https://dzone.com/articles/allard-buijze-on-event-driven-microservices-the-se");
+        printNewArticleLineFor("https://dzone.com/articles/five-questions-everyone-is-asking-about-microservi");
     }
 
     @Before
@@ -57,11 +49,17 @@ public class ArticleToMarkdownFormatterTest {
                 .configureSimpleTag("docker")
                 .configureSimpleTag("jpa")
                 .configureSimpleTag("kubernetes")
+                .configureSimpleTag("metrics")
+                .configureSimpleTag("monitoring")
                 .configureSimpleTag("spring")
                 .configureSimpleTag("security")
                 .configureSimpleTag("javascript")
                 .configureSimpleTag("swagger")
+                .configureSimpleTag("testing")
+                .configureSimpleTag("event-driven")
                 .configureTag("event-sourcing", "event store")
+                .configureTag("transactions", "transaction")
+                .configureTag("spring-mvc", "spring mvc")
                 .configureTag("open-id", "open id")
                 .configureTag("open-id", "open-id")
                 .configureTag("authentication", "login")
