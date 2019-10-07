@@ -3,9 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>be.butskri</groupId>
-        <artifactId>butskri-base-springboot</artifactId>
+        <artifactId>butskri-base-java</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../butskri-base/butskri-base-springboot/pom.xml</relativePath>
     </parent>
     <artifactId>butskri-playground-documentatie</artifactId>
     <version>0.0.1-SNAPSHOT</version>

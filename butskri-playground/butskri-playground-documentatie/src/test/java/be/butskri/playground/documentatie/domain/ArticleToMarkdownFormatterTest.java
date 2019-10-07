@@ -26,17 +26,6 @@ public class ArticleToMarkdownFormatterTest {
     public void doPrintArticleDocumentationLine() {
         printNewArticleLineFor("https://dzone.com/articles/kubernetes-vs-openshift-a-detailed-comparison");
         printNewArticleLineFor("https://dzone.com/articles/doing-more-with-swaggger-and-spring");
-        printNewArticleLineFor("https://dzone.com/articles/java/spring/spring-mvc-tutorial-1.html");
-        printNewArticleLineFor("https://dzone.com/articles/build-beautiful-console-dashboards-with-sampler");
-        printNewArticleLineFor("https://dzone.com/articles/spring-boot-transactions-tutorial-understanding-tr");
-        printNewArticleLineFor("https://dzone.com/articles/event-driven-microservices-with-spring-boot-and-ac");
-        printNewArticleLineFor("https://dzone.com/articles/top-5-online-training-courses-to-learn-frontend-we");
-        printNewArticleLineFor("https://dzone.com/articles/top-8-javascript-automation-testing-frameworks-in");
-        printNewArticleLineFor("https://dzone.com/articles/microservice-architecture-on-kubernetes");
-        printNewArticleLineFor("https://dzone.com/articles/software-quality-the-top-10-metrics-to-build-confi");
-        printNewArticleLineFor("https://dzone.com/articles/5-questions-everyones-asking-about-microservices-p");
-        printNewArticleLineFor("https://dzone.com/articles/allard-buijze-on-event-driven-microservices-the-se");
-        printNewArticleLineFor("https://dzone.com/articles/five-questions-everyone-is-asking-about-microservi");
     }
 
     @Before
