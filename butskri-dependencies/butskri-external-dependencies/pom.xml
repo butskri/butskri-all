@@ -14,6 +14,7 @@
         <reflections.version>0.9.11</reflections.version>
         <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
         <jsonassert.version>1.5.0</jsonassert.version>
+        <jsoup.version>1.12.1</jsoup.version>
         <easy-random.version>4.0.0</easy-random.version>
         <randombeans.version>3.8.0</randombeans.version>
     </properties>
@@ -58,6 +59,13 @@
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- html parsing -->
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
             </dependency>
 
             <!-- spring -->
