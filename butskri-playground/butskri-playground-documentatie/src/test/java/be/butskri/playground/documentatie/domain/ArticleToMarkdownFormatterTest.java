@@ -24,8 +24,7 @@ public class ArticleToMarkdownFormatterTest {
 
     @Test
     public void doPrintArticleDocumentationLine() {
-        printNewArticleLineFor("https://dzone.com/articles/kubernetes-vs-openshift-a-detailed-comparison");
-        printNewArticleLineFor("https://dzone.com/articles/doing-more-with-swaggger-and-spring");
+        printNewArticleLineFor("https://www.google.com");
     }
 
     @Before
@@ -46,6 +45,7 @@ public class ArticleToMarkdownFormatterTest {
                 .configureSimpleTag("swagger")
                 .configureSimpleTag("testing")
                 .configureSimpleTag("event-driven")
+                .configureTag("javascript", "js")
                 .configureTag("event-sourcing", "event store")
                 .configureTag("transactions", "transaction")
                 .configureTag("spring-mvc", "spring mvc")
