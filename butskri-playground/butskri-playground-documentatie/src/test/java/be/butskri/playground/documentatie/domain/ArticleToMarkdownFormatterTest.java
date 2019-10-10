@@ -46,6 +46,7 @@ public class ArticleToMarkdownFormatterTest {
                 .configureSimpleTag("testing")
                 .configureSimpleTag("event-driven")
                 .configureTag("javascript", "js")
+                .configureTag("patterns", "pattern")
                 .configureTag("event-sourcing", "event store")
                 .configureTag("transactions", "transaction")
                 .configureTag("spring-mvc", "spring mvc")
