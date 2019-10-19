@@ -3,6 +3,7 @@ package be.butskri.playground.documentatie.domain;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,7 +14,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class ArticleToMarkdownFormatterTest {
+
+@Ignore
+class ArticleToMarkdownFormatterTest {
 
     private static final int DEFAULT_INTEREST = 80;
     private static final Integer DEFAULT_SCORE = null;
