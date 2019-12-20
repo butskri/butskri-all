@@ -13,6 +13,7 @@
         <module>./butskri-playground-java</module>
         <module>./butskri-playground-jpa</module>
         <module>./butskri-playground-springboot</module>
+        <module>./butskri-project-cleaner</module>
         <module>./kindengezin-backwardscompatibility</module>
     </modules>
 </project>
