@@ -3,7 +3,6 @@ package be.butskri.playground.documentatie.domain;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,11 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 
-@Ignore
 class ArticleToMarkdownFormatterTest {
 
     private static final int DEFAULT_INTEREST = 80;
@@ -79,7 +76,6 @@ class ArticleToMarkdownFormatterTest {
     private Article newArticle(String link) {
         String name = resolveArticleName(link);
         return Article.builder()
-                .withId(UUID.randomUUID())
                 .withDate(LocalDate.now())
                 .withLink(link)
                 .withName(name)

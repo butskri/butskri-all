@@ -8,6 +8,7 @@ public class Article {
 
     private UUID id;
     private LocalDate date;
+    private String category;
     private String link;
     private String name;
     private Status status;
@@ -20,8 +21,8 @@ public class Article {
     }
 
     private Article(Builder builder) {
-        this.id = builder.id;
         this.date = builder.date;
+        this.category = builder.category;
         this.link = builder.link;
         this.name = builder.name;
         this.status = builder.status;
@@ -30,12 +31,12 @@ public class Article {
         this.tags = builder.tags;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     public LocalDate getDate() {
         return date;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public String getLink() {
@@ -63,8 +64,8 @@ public class Article {
     }
 
     public static class Builder {
-        private UUID id;
         private LocalDate date;
+        private String category;
         private String link;
         private String name;
         private Status status;
@@ -76,13 +77,13 @@ public class Article {
             return new Article(this);
         }
 
-        public Builder withId(UUID id) {
-            this.id = id;
+        public Builder withDate(LocalDate date) {
+            this.date = date;
             return this;
         }
 
-        public Builder withDate(LocalDate date) {
-            this.date = date;
+        public Builder withCategory(String category) {
+            this.category = category;
             return this;
         }
 

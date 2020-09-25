@@ -1,0 +1,7 @@
+#https://dzone.com/articles/15-examples-for-linux-curl-command
+#https://www.talend.com/blog/2015/12/15/understanding-and-using-cors/
+#https://www.talend.com/blog/2016/09/27/how-to-fix-cors-problems/
+#https://dzone.com/articles/exploring-nlp-concepts-using-apache-ope
+#https://dzone.com/articles/design-patterns-in-the-age-of-microservices-and-frameworksnnlp
+#https://dzone.com/articles/spring-batch-writing-to-multiple-destination
+#https://dzone.com/articles/break-a-monolith-to-microservices-12-best-practice
