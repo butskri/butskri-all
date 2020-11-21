@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-class ArticleToMarkdownFormatterTest {
+public class ArticleToMarkdownFormatterTest {
 
     private static final int DEFAULT_INTEREST = 80;
     private static final Integer DEFAULT_SCORE = null;
