@@ -1,5 +1,8 @@
 package be.butskri.playground.documentatie.domain;
 
+import be.butskri.playground.documentatie.domain.data.Article;
+import be.butskri.playground.documentatie.domain.data.Status;
+import be.butskri.playground.documentatie.domain.mappers.ArticleToMarkdownFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.junit.Before;

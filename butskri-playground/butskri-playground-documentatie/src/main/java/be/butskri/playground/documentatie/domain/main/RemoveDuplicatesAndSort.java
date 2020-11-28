@@ -1,4 +1,4 @@
-package be.butskri.playground.documentatie.domain;
+package be.butskri.playground.documentatie.domain.main;
 
 import java.util.ArrayList;
 import java.util.List;

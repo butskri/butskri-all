@@ -1,4 +1,4 @@
-package be.butskri.playground.documentatie.domain;
+package be.butskri.playground.documentatie.domain.data;
 
 import java.time.LocalDate;
 import java.util.List;
