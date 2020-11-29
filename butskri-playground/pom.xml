@@ -10,6 +10,7 @@
         <module>./butskri-playground-axon</module>
         <module>./butskri-playground-csv</module>
         <module>./butskri-playground-documentatie</module>
+        <module>./butskri-playground-images</module>
         <module>./butskri-playground-java</module>
         <module>./butskri-playground-jpa</module>
         <module>./butskri-playground-springboot</module>
