@@ -10,7 +10,7 @@
         <axon-framework.version>4.1</axon-framework.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-csv.version>1.6</commons-csv.version>
-        <jackson.version>2.9.7</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <reflections.version>0.9.11</reflections.version>
         <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
         <jsonassert.version>1.5.0</jsonassert.version>
