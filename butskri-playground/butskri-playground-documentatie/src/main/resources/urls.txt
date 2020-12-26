@@ -5,3 +5,13 @@
 #https://dzone.com/articles/design-patterns-in-the-age-of-microservices-and-frameworksnnlp
 #https://dzone.com/articles/spring-batch-writing-to-multiple-destination
 #https://dzone.com/articles/break-a-monolith-to-microservices-12-best-practice
+https://blog.thoughtram.io/angular/2016/07/27/custom-form-controls-in-angular-2.html
+https://dzone.com/articles/7-best-angular-component-libraries-to-use-in-2020
+https://dzone.com/articles/how-to-find-all-the-classes-of-a-package-in-java
+https://dzone.com/articles/the-best-linux-distribution-for-beginners-is-arch
+https://dzone.com/articles/15-productivity-tips-from-bill-gates-elon-musk-war
+https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4
+https://dzone.com/articles/top-10-most-useful-websites-on-java-developers
+https://dzone.com/articles/containerizing-your-spring-boot-application-with-j
+https://www.regular-expressions.info/java.html
+https://dzone.com/articles/top-40-questions-for-a-spring-framework-interview

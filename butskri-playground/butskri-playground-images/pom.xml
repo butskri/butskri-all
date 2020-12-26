@@ -5,6 +5,7 @@
         <groupId>be.butskri</groupId>
         <artifactId>butskri-base-java</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../butskri-base/butskri-base-java/pom.xml</relativePath>
     </parent>
     <artifactId>butskri-playground-images</artifactId>
     <version>0.0.1-SNAPSHOT</version>

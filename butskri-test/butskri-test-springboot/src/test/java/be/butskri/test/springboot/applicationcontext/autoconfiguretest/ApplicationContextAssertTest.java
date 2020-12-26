@@ -133,6 +133,6 @@ public class ApplicationContextAssertTest {
     public void assertContainsAtMostZeroBeanOfTypeThrowsExceptionWhenMoreBeansFound() {
         assertThatExceptionOfType(AssertionError.class)
                 .isThrownBy(() -> assertThatContext(context).containsAtMost(0).beansOfType(DataSource.class))
-                .withMessage("expecting at most 0 beans of type " + DataSource.class.getName() + " but found 1");
+                .withMessageStartingWith("expecting at most 0 beans of type " + DataSource.class.getName() + " but found 1");
     }
 }

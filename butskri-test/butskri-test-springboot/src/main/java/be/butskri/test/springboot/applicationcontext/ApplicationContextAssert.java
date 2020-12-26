@@ -104,6 +104,24 @@ public class ApplicationContextAssert {
         return context.getBean(beanName);
     }
 
+    private static String toString(Collection<?> beans) {
+        String csv = beans.stream()
+                .map(ApplicationContextAssert::safeToString)
+                .collect(Collectors.joining(",\n"));
+        return String.format("[%s]", csv);
+    }
+
+    public static String safeToString(Object object) {
+        if (object == null) {
+            return null;
+        }
+        try {
+            return object.toString();
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            return String.format("{instanceof %s}", object.getClass().getName());
+        }
+    }
+
     public abstract class ApplicationContextBeansAsserter {
 
         protected ApplicationContextBeansAsserter() {
@@ -156,7 +174,7 @@ public class ApplicationContextAssert {
         @Override
         protected void assertBeans(Collection<?> beans, String beansDescription) {
             if (beans.size() > number) {
-                fail("expecting at most %s %s but found %s", number, beansDescription, beans.size());
+                fail("expecting at most %s %s but found %s: %s", number, beansDescription, beans.size(), ApplicationContextAssert.toString(beans));
             }
         }
     }

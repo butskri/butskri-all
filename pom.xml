@@ -10,6 +10,7 @@
         <module>./butskri-base</module>
         <module>./butskri-dependencies</module>
         <module>./butskri-playground</module>
+        <module>./butskri-springboot</module>
         <module>./butskri-test</module>
     </modules>
 </project>

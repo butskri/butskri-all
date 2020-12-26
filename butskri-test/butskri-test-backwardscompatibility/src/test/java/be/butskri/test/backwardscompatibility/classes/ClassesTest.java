@@ -67,7 +67,7 @@ public class ClassesTest {
                         WrappedStringValue.class,
                         int.class,
                         String.class,
-                        char.class);
+                        byte.class);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class ClassesTest {
                         WrappedStringValue.class,
                         int.class,
                         String.class,
-                        char.class);
+                        byte.class);
     }
 
     @Test

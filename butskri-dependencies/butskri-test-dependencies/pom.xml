@@ -24,6 +24,12 @@
                 <version>${project.version}</version>
                 <type>jar</type>
             </dependency>
+            <dependency>
+                <groupId>be.butskri</groupId>
+                <artifactId>butskri-test-springboot</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
