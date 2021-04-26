@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
     <properties>
         <axon-framework.version>4.1</axon-framework.version>
-        <commons-io.version>2.6</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <commons-csv.version>1.6</commons-csv.version>
         <jackson.version>2.9.8</jackson.version>
         <reflections.version>0.9.11</reflections.version>
