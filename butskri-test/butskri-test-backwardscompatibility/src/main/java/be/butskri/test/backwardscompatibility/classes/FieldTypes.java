@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -63,6 +64,10 @@ public class FieldTypes extends Classes<FieldTypes> {
         }
 
         private Set<Type> fieldTypesFor(Class clazz) {
+            // TODO check what to do with this
+            if (String.class.equals(clazz)) {
+                return Collections.emptySet();
+            }
             return Stream.of(clazz.getDeclaredFields())
                     .filter(this::isNonStaticField)
                     .map(Field::getGenericType)

@@ -81,7 +81,7 @@ public class DeepAssertions {
     }
 
     private static List<Field> getAllNonTransientInstanceFields(Class<?> clazz) {
-        if (Object.class.equals(clazz)) {
+        if (isStandardJavaClass(clazz)) {
             return Collections.emptyList();
         }
         List<Field> result = new ArrayList<>();
@@ -91,6 +91,10 @@ public class DeepAssertions {
                 .filter(DeepAssertions::isNonStatic)
                 .filter(DeepAssertions::isNonTransient)
                 .collect(Collectors.toList());
+    }
+
+    private static boolean isStandardJavaClass(Class<?> clazz) {
+        return clazz.getPackage().getName().startsWith("java");
     }
 
     private static boolean isNonStatic(Field field) {

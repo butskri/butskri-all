@@ -1,4 +1,4 @@
-be.butskri.test.backwardscompatibility.subclasses.Bla=cf48b1e3b24840ef50e7e6cc9ce12a0a
-be.butskri.test.backwardscompatibility.subclasses.Blie=6fbabcf36f8ad23ef3b7d9587a4130e6
-be.butskri.test.backwardscompatibility.subclasses.EnumField=e3a32d2c6551a08879e096cfe652e6ca
-be.butskri.test.backwardscompatibility.subclasses.SomeEnum=5c20f303cc28042a650ba567b61e2d1d
+be.butskri.test.backwardscompatibility.subclasses.Bla=4dc88a33b193d77d4a553f8ca42445dc
+be.butskri.test.backwardscompatibility.subclasses.Blie=d524730dbe8b4f8ba3b87bbb190b3ae2
+be.butskri.test.backwardscompatibility.subclasses.EnumField=da8a4883a14432d4d651c70e6fe50dfb
+be.butskri.test.backwardscompatibility.subclasses.SomeEnum=ce3907665af8f80d3e185d7742adf238

@@ -1,1 +1,1 @@
-be.butskri.test.backwardscompatibility.annotated.SomeEntityField=a101a5f3138ee5f39f35429c4aba4b16
+be.butskri.test.backwardscompatibility.annotated.SomeEntityField=f64a5faea514392d517646218684efeb

@@ -1,2 +1,2 @@
-be.butskri.test.backwardscompatibility.annotated.SomeEntity=8b7f7c3bf38cb3fa18b6467b587ed80b
-be.butskri.test.backwardscompatibility.annotated.SomeOtherEntity=1cddc1493796170014f3bb0b62a01616
+be.butskri.test.backwardscompatibility.annotated.SomeEntity=958708f4f4676616aa0410e264cf115d
+be.butskri.test.backwardscompatibility.annotated.SomeOtherEntity=50a4facb45cb1beaab010e65f61d1404

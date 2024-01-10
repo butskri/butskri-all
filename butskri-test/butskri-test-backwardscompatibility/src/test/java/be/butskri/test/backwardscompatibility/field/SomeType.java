@@ -6,12 +6,14 @@ public class SomeType {
     private int intValue;
     private RecursiveValue recursiveValue;
     private WrappedStringValue wrappedStringValue;
+    private byte[] bytes;
 
-    public SomeType(NestedValue nestedValue, int intValue, RecursiveValue recursiveValue, WrappedStringValue wrappedStringValue) {
+    public SomeType(NestedValue nestedValue, int intValue, RecursiveValue recursiveValue, WrappedStringValue wrappedStringValue, byte[] bytes) {
         this.nestedValue = nestedValue;
         this.intValue = intValue;
         this.recursiveValue = recursiveValue;
         this.wrappedStringValue = wrappedStringValue;
+        this.bytes = bytes;
     }
 
     public NestedValue getNestedValue() {
@@ -28,5 +30,9 @@ public class SomeType {
 
     public WrappedStringValue getWrappedStringValue() {
         return wrappedStringValue;
+    }
+
+    public byte[] getBytes() {
+        return bytes;
     }
 }
