@@ -1,8 +1,8 @@
 package be.butskri.playground.documentatie.domain.main;
 
-import be.butskri.playground.documentatie.domain.mappers.UrlToArticleMapper;
 import be.butskri.playground.documentatie.domain.data.Article;
 import be.butskri.playground.documentatie.domain.mappers.ArticleToMarkdownFormatter;
+import be.butskri.playground.documentatie.domain.mappers.UrlToArticleMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -27,14 +27,10 @@ public class ArticleCsvLineGenerator {
 
     private static List<String> readUrls() {
         InputStream inputStream = ArticleCsvLineGenerator.class.getResourceAsStream("/urls.txt");
-        try {
-            return IOUtils.readLines(inputStream, "UTF-8")
-                    .stream()
-                    .filter(url -> !url.startsWith("#"))
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return IOUtils.readLines(inputStream, "UTF-8")
+                .stream()
+                .filter(url -> !url.startsWith("#"))
+                .collect(Collectors.toList());
     }
 
     private void printArticleLines(List<String> urls) throws IOException {

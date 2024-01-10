@@ -2,6 +2,10 @@ package be.butskri.playground.jpa.criteriabuilder;
 
 import be.butskri.playground.jpa.SpringJpaConfiguration;
 import be.butskri.playground.jpa.entitities.MySimpleEntity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +14,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 import static java.util.UUID.randomUUID;
@@ -39,14 +39,14 @@ public class CriteriaBuilderIntegrationTest {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<MySimpleEntity> query = criteriaBuilder.createQuery(MySimpleEntity.class);
         Root<MySimpleEntity> root = query.from(MySimpleEntity.class);
-        query.where(root.<String>get("myString").in( entity1.getMyString(), entity2.getMyString()));
+        query.where(root.<String>get("myString").in(entity1.getMyString(), entity2.getMyString()));
         List<MySimpleEntity> found = entityManager.createQuery(query).getResultList();
 
         assertThat(found).containsOnly(entity1, entity2);
     }
 
     private MySimpleEntity setUpRandomEntity() {
-        MySimpleEntity entity = new MySimpleEntity(randomUUID(), "my_" + randomUUID().toString());
+        MySimpleEntity entity = new MySimpleEntity(randomUUID(), "my_" + randomUUID());
         entityManager.persist(entity);
         return entity;
     }

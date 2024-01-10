@@ -7,8 +7,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.Instant;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+import static org.assertj.core.util.Preconditions.checkNotNull;
 
 public class Metadata {
 

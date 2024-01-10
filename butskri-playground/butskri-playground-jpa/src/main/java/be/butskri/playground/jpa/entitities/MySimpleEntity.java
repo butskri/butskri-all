@@ -1,9 +1,10 @@
 package be.butskri.playground.jpa.entitities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.util.UUID;
 
 @Entity
@@ -15,7 +16,7 @@ public class MySimpleEntity extends EqualByStateObject {
     @Column
     private String myString;
 
-    private MySimpleEntity() {
+    protected MySimpleEntity() {
         // necessary for hibernate
     }
 

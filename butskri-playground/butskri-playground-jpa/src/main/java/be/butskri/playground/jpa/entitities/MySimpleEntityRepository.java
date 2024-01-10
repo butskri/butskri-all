@@ -1,8 +1,7 @@
 package be.butskri.playground.jpa.entitities;
 
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.EntityManager;
 
 @Component
 public class MySimpleEntityRepository {

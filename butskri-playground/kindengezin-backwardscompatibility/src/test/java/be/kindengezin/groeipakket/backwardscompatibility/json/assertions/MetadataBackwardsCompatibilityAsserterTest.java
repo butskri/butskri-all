@@ -108,12 +108,22 @@ public class MetadataBackwardsCompatibilityAsserterTest {
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
             assertThat(expected.getMessage())
-                    .matches(WHITESPACE + "Expecting:" + WHITESPACE +
-                            "<\\[\"MyEvent.metadata\"\\]>" + WHITESPACE +
-                            "to contain exactly \\(and in same order\\):" + WHITESPACE +
-                            "<\\[\\]>" + WHITESPACE +
-                            "but some elements were not expected:" + WHITESPACE +
-                            "<\\[\"MyEvent.metadata\"\\]>" + WHITESPACE);
+                    .matches("(?s)"
+                            + WHITESPACE
+                            + "Expecting actual:"
+                            + WHITESPACE
+                            + "\\[\"MyEvent.metadata\"\\]"
+                            + WHITESPACE
+                            + "to contain exactly \\(and in same order\\):"
+                            + WHITESPACE
+                            + "\\[\\]"
+                            + WHITESPACE
+                            + "but some elements were not expected:"
+                            + WHITESPACE
+                            + "\\[\"MyEvent.metadata\"\\]"
+                            + WHITESPACE
+                            + ".*"
+                    );
         }
     }
 
@@ -125,12 +135,22 @@ public class MetadataBackwardsCompatibilityAsserterTest {
             fail("AssertionError should have been thrown!");
         } catch (AssertionError expected) {
             assertThat(expected.getMessage())
-                    .matches(WHITESPACE + "Expecting:" + WHITESPACE +
-                            "<\\[\"MyEvent.metadata\"\\]>" + WHITESPACE +
-                            "to contain exactly \\(and in same order\\):" + WHITESPACE +
-                            "<\\[\\]>" + WHITESPACE +
-                            "but some elements were not expected:" + WHITESPACE +
-                            "<\\[\"MyEvent.metadata\"\\]>" + WHITESPACE);
+                    .matches("(?s)"
+                            + WHITESPACE
+                            + "Expecting actual:"
+                            + WHITESPACE +
+                            "\\[\"MyEvent.metadata\"\\]"
+                            + WHITESPACE
+                            + "to contain exactly \\(and in same order\\):"
+                            + WHITESPACE
+                            + "\\[\\]"
+                            + WHITESPACE
+                            + "but some elements were not expected:"
+                            + WHITESPACE
+                            + "\\[\"MyEvent.metadata\"\\]"
+                            + WHITESPACE
+                            + ".*"
+                    );
         }
     }
 

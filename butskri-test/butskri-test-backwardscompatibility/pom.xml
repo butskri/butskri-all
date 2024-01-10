@@ -5,9 +5,8 @@
         <groupId>be.butskri</groupId>
         <artifactId>butskri-base-java</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../butskri-base/butskri-base-java/</relativePath>
+        <relativePath>../../butskri-base/butskri-base-java</relativePath>
     </parent>
-    <groupId>be.butskri</groupId>
     <artifactId>butskri-test-backwardscompatibility</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
@@ -17,8 +16,17 @@
             <artifactId>assertj-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+        </dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -40,11 +48,6 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

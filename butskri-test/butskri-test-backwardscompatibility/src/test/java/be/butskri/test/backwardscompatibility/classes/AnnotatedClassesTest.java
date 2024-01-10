@@ -2,9 +2,8 @@ package be.butskri.test.backwardscompatibility.classes;
 
 import be.butskri.test.backwardscompatibility.annotated.SomeEntity;
 import be.butskri.test.backwardscompatibility.annotated.SomeOtherEntity;
+import jakarta.persistence.Entity;
 import org.junit.Test;
-
-import javax.persistence.Entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
